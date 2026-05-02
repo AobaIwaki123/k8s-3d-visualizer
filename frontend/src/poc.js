@@ -34,11 +34,11 @@ async function main() {
     s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
   })
 
-  // レイヤーの初期化
+  // レイヤーの初期化（オプトアウト中：演出を戻す場合はコメントを外す）
   const layers = [
-    new IngressLayer(scene, clusterData, models),
-    new MonitoringLayer(scene, clusterData, pods),
-    new StorageLayer(scene, clusterData, pods)
+    // new IngressLayer(scene, clusterData, models),
+    // new MonitoringLayer(scene, clusterData, pods),
+    // new StorageLayer(scene, clusterData, pods)
   ]
 
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
@@ -91,13 +91,14 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
       const cephPods = pods.filter(p => p.meta.isStorage)
       if (cephPods.length === 0) return
 
+      // 前回のラインを削除
       storageLines.forEach(l => scene.remove(l))
       storageLines.length = 0
 
       let targetX = 0, targetZ = 0
       if (activeNs === 'all') {
         const box = new THREE.Box3()
-        pods.filter(p => !p.meta.isStorage && !p.meta.isIngress).forEach(p => box.expandByPoint(p.mesh.position))
+        pods.filter(p => !p.meta.isStorage).forEach(p => box.expandByPoint(p.mesh.position))
         const center = new THREE.Vector3()
         if (box.isEmpty()) center.set(0, 0, 0); else box.getCenter(center)
         targetX = center.x; targetZ = center.z
@@ -106,6 +107,7 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
         if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
       }
 
+      // Ceph Pod の配置
       const COLS = 6; const SPACING = 1.4
       const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
       const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
@@ -114,14 +116,13 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
         p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
       })
 
+      // ストレージパイプライン（接続線）の生成
       const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6 })
       pods.forEach(p => {
-        const isAppPod = !p.meta.isStorage && !p.meta.isIngress && !p.meta.isMonitoring
+        const isAppPod = !p.meta.isStorage && (p.meta.namespace !== 'cloudflare-tunnel-ingress-controller')
         if (p.mesh.visible && isAppPod) {
-          // Pod の位置 (Y=0 または現在の Y) から、地下層 (Y=-3) へ垂直に降りる線
           const from = p.mesh.position.clone()
-          const to = from.clone().setY(-3) 
-
+          const to = from.clone().setY(-3) // 垂直
           const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
           const line = new THREE.Line(geometry, lineMat)
           scene.add(line)
@@ -133,48 +134,42 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     }
   }
 
-
   const updateVisibility = (activeNs) => {
     try {
-      // 各レイヤーにフィルタリング状態を通知
       layers.forEach(l => {
         try { l.setNamespaceFilter?.(activeNs) } catch (e) { console.error('Layer error:', e) }
       })
-// 1. 表示・非表示の切り替え
-zones.forEach(z => {
-  const ns = z.userData.namespace
-  // isStorage を含む Zone は常に表示（または適宜調整）
-  const isStorageZone = pods.some(p => p.meta.namespace === ns && p.meta.isStorage)
-  const visible = (activeNs === 'all' || activeNs === ns || isStorageZone)
 
-  z.visible = visible
-  pods.filter(p => p.meta.namespace === ns).forEach(p => {
-    p.mesh.visible = visible
-    if (p.label) p.label.element.style.display = visible ? '' : 'none'
-  })
-  services.filter(s => s.meta.namespace === ns).forEach(s => {
-    s.mesh.visible = visible
-    if (s.label) s.label.element.style.display = visible ? '' : 'none'
-  })
-  connections.filter(c => c.userData.namespace === ns).forEach(c => {
-    c.visible = visible
-  })
-})
-
+      // 1. 表示・非表示の切り替え
+      zones.forEach(z => {
+        const ns = z.userData.namespace
+        // ストレージ関連の Zone は常に表示（または適宜調整）
+        const isStorageZone = pods.some(p => p.meta.namespace === ns && p.meta.isStorage)
+        const visible = (activeNs === 'all' || activeNs === ns || isStorageZone)
+        
+        z.visible = visible
+        pods.filter(p => p.meta.namespace === ns).forEach(p => {
+          p.mesh.visible = visible
+          if (p.label) p.label.element.style.display = visible ? '' : 'none'
+        })
+        services.filter(s => s.meta.namespace === ns).forEach(s => {
+          s.mesh.visible = visible
+          if (s.label) s.label.element.style.display = visible ? '' : 'none'
+        })
+        connections.filter(c => c.userData.namespace === ns).forEach(c => {
+          c.visible = visible
+        })
+      })
 
       // 2. Rook-Ceph と接続線を移動させる
       repositionCephAndPipes(activeNs)
 
       // 3. カメラのフォーカス
-      if (activeNs === 'all') {
-        const visibleMeshes = pods.filter(p => p.mesh.visible).map(p => p.mesh)
-        fitCamera(camera, controls, visibleMeshes)
-      } else {
-        const nsPods = pods.filter(p => p.meta.namespace === activeNs).map(p => p.mesh)
-        const nsSvcs = services.filter(s => s.meta.namespace === activeNs).map(s => s.mesh)
-        const cephMeshes = pods.filter(p => p.meta.isStorage).map(p => p.mesh)
-        fitCamera(camera, controls, [...nsPods, ...nsSvcs, ...cephMeshes])
-      }
+      const visibleMeshes = []
+      pods.filter(p => p.mesh.visible).forEach(p => visibleMeshes.push(p.mesh))
+      services.filter(s => s.mesh.visible).forEach(s => visibleMeshes.push(s.mesh))
+      fitCamera(camera, controls, visibleMeshes)
+      
     } catch (err) {
       console.error('Error in updateVisibility:', err)
     }

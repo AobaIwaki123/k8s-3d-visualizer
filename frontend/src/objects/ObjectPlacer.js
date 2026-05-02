@@ -3,10 +3,11 @@ import { PodDecorator } from './PodDecorator.js'
 
 const SPACING = 1.4
 const COLS = 4
-
-export const STORAGE_NAMESPACES = new Set(['rook-ceph'])
 const SERVICE_Y = 4.5
 const NS_GAP = 6.0 // 名前空間同士の間隔
+
+// ストレージと判定する名前空間
+const STORAGE_NAMESPACES = new Set(['rook-ceph', 'rook-ceph-system'])
 
 // 文字列からハッシュ形式で色を生成
 function stringToColor(str) {
@@ -98,8 +99,6 @@ export function placeClusterObjects(data, models) {
   return { pods, services, namespaceZones }
 }
 
-const STORAGE_NAMESPACES = new Set(['rook-ceph', 'rook-ceph-system'])
-
 function createPodMesh(def, models, pos) {
   const phase = def.phase.toLowerCase()
   const modelKey = `pod-${['running', 'pending', 'failed'].includes(phase) ? phase : 'running'}`
@@ -113,6 +112,9 @@ function createPodMesh(def, models, pos) {
 
   mesh.position.copy(initialPos)
   mesh.userData.meta = { ...def, type: 'pod', isStorage }
+
+  // デコレーター適用をオプトアウト（必要に応じて再開可能）
+  // PodDecorator.decorate(mesh, mesh.userData.meta)
 
   return mesh
 }
