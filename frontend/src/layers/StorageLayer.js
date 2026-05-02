@@ -101,10 +101,23 @@ export class StorageLayer {
    * @param {string} activeNs 
    */
   setNamespaceFilter(activeNs) {
-    this.pipelines.forEach(line => {
-      line.visible = (activeNs === 'all' || line.userData.namespace === activeNs)
+    this.pipelines.forEach(pipe => {
+      // 既存の実装が pipelines.push({ line, pod }) 形式の場合と line 形式の場合があるため
+      const pod = pipe.pod || { meta: { namespace: pipe.userData?.namespace } }
+      const nsMatch = (activeNs === 'all' || pod.meta.namespace === activeNs)
+      const line = pipe.line || pipe
+      line.visible = nsMatch
     })
-    // Bedrock Plate と Storage Pods は常に表示（または適宜調整）
+
+    // Rook-Ceph 自体はインフラなので、ALLの時、または rook-ceph が選択されている時に表示
+    const showInfra = (activeNs === 'all' || activeNs === 'rook-ceph')
+    
+    this.storagePods.forEach(p => {
+      p.mesh.visible = this.isVisible && showInfra
+      if (p.label && p.label.element) {
+        p.label.element.style.display = (this.isVisible && showInfra) ? '' : 'none'
+      }
+    })
   }
 
   /**

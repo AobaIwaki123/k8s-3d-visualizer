@@ -64,59 +64,74 @@ export function placeClusterObjects(data, models) {
     nsMap.get(p.namespace).push(p)
   })
 
-  let currentX = 0
-  const sortedNamespaces = Array.from(nsMap.keys()).sort()
+  // 1. 通常の Namespace と インフラ系を分離
+  const infraNamespaces = ['cloudflare-tunnel-ingress-controller', 'rook-ceph', 'observability']
+  const sortedNamespaces = Array.from(nsMap.keys())
+    .filter(ns => !infraNamespaces.includes(ns))
+    .sort()
 
+  let currentX = 0
+
+  // 2. 標準的なワークロードの配置
   sortedNamespaces.forEach(nsName => {
     const nsPods = nsMap.get(nsName)
     const color = stringToColor(nsName)
 
-    // Pod 配置
     nsPods.forEach((def, idx) => {
       const pos = podPosition(currentX, idx)
       posMap.set(def.name, pos)
-
-      const phase = def.phase.toLowerCase()
-      const modelKey = `pod-${['running', 'pending', 'failed'].includes(phase) ? phase : 'running'}`
-      const mesh = models[modelKey].clone()
-      mesh.position.copy(pos)
-      
-      // メタデータ付与
-      mesh.userData.meta = { ...def, type: 'pod' }
-
-      // デコレーター適用（役割に応じた装飾）
-      PodDecorator.decorate(mesh, mesh.userData.meta)
-
+      const mesh = createPodMesh(def, models, pos)
       pods.push({ mesh, meta: mesh.userData.meta })
     })
 
-    // Service 配置 (この Namespace に属するもののみ)
-    const nsServices = data.services.filter(s => s.namespace === nsName)
-    nsServices.forEach(def => {
-      // relationship からこの Service のターゲット Pod 名を取得
-      const rel = data.relationships.serviceToPods.find(r => r.name === def.name && r.namespace === nsName)
-      const targets = rel ? rel.pods : []
-      
-      const pos = servicePosition(posMap, targets)
-      if (pos) {
-        const mesh = models['service-hex'].clone()
-        mesh.position.copy(pos)
-        mesh.userData.meta = { ...def, type: 'service', targets }
-        services.push({ mesh, meta: mesh.userData.meta })
-      }
-    })
+    placeServices(data, nsName, models, posMap, services)
 
-    // Zone 描画
     const zone = buildZonePlane(currentX, nsPods.length, color)
     if (zone) {
       zone.userData.namespace = nsName
       namespaceZones.push(zone)
     }
 
-    // 次の Namespace の開始位置を計算 (現在の列数分 + マージン)
     const colsInNs = Math.min(nsPods.length, COLS)
     currentX += (colsInNs * SPACING) + NS_GAP
   })
 
+  // 3. Rook-Ceph の特別配置（地下センター）
+  if (nsMap.has('rook-ceph')) {
+    const cephPods = nsMap.get('rook-ceph')
+    const startX = (currentX - NS_GAP) / 2 - 2 // クラスターの中央付近
+    cephPods.forEach((def, idx) => {
+      const pos = new THREE.Vector3(startX + (idx % 6) * SPACING, -3, Math.floor(idx / 6) * SPACING)
+      posMap.set(def.name, pos)
+      const mesh = createPodMesh(def, models, pos)
+      pods.push({ mesh, meta: mesh.userData.meta })
+    })
+  }
+
   return { pods, services, namespaceZones }
+}
+
+function createPodMesh(def, models, pos) {
+  const phase = def.phase.toLowerCase()
+  const modelKey = `pod-${['running', 'pending', 'failed'].includes(phase) ? phase : 'running'}`
+  const mesh = models[modelKey].clone()
+  mesh.position.copy(pos)
+  mesh.userData.meta = { ...def, type: 'pod' }
+  PodDecorator.decorate(mesh, mesh.userData.meta)
+  return mesh
+}
+
+function placeServices(data, nsName, models, posMap, services) {
+  const nsServices = data.services.filter(s => s.namespace === nsName)
+  nsServices.forEach(def => {
+    const rel = data.relationships.serviceToPods.find(r => r.name === def.name && r.namespace === nsName)
+    const targets = rel ? rel.pods : []
+    const pos = servicePosition(posMap, targets)
+    if (pos) {
+      const mesh = models['service-hex'].clone()
+      mesh.position.copy(pos)
+      mesh.userData.meta = { ...def, type: 'service', targets }
+      services.push({ mesh, meta: mesh.userData.meta })
+    }
+  })
 }

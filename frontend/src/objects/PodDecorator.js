@@ -48,20 +48,20 @@ export class PodDecorator {
         // マテリアルをクローンする — 個別の Pod ごとに見た目を変え、他へ影響させないため
         child.material = child.material.clone()
 
-        // restartCount がある場合は赤色の発光を付与（不安定さの表現）
+        // restartCount がある場合はマゼンタ色の発光を付与（Failedの赤と区別）
         if (restartCount > 0) {
-          child.material.emissive = new THREE.Color(0xff3333)
-          child.material.emissiveIntensity = Math.min(restartCount * 0.15, 0.8)
+          child.material.emissive = new THREE.Color(0xff00ff)
+          child.material.emissiveIntensity = Math.min(restartCount * 0.2, 0.8)
         }
 
-        // 新しい Pod は青白く発光させる（活性状態の表現）
+        // 新しい Pod は青白く発光させる
         if (isNew) {
           const freshColor = new THREE.Color(0x00ffff)
           if (restartCount === 0) {
             child.material.emissive = freshColor
             child.material.emissiveIntensity = 0.6
           } else {
-            // restartCount と isNew 両方の場合は色を混ぜる
+            // 両方の場合は色を混ぜる
             child.material.emissive.lerp(freshColor, 0.5)
             child.material.emissiveIntensity = Math.min(child.material.emissiveIntensity + 0.3, 1.0)
           }
