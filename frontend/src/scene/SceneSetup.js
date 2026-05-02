@@ -21,14 +21,14 @@ export function fitCamera(camera, controls, objects) {
 //      startLoop(onFrame) — 描画ループ開始。非同期処理完了後に呼ぶ前提
 export function initScene(canvasId) {
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x0a0a0f)
+  scene.background = null
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
   camera.position.set(0, 6, 12)
   camera.lookAt(0, 0, 0)
 
   const canvas = document.getElementById(canvasId)
-  const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
+  const renderer = new THREE.WebGLRenderer({ antialias: true, canvas, alpha: true })
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.setPixelRatio(window.devicePixelRatio)
 
