@@ -82,6 +82,10 @@ export function placeClusterObjects(data, models) {
       
       // メタデータ付与
       mesh.userData.meta = { ...def, type: 'pod' }
+
+      // デコレーター適用（役割に応じた装飾）
+      PodDecorator.decorate(mesh, mesh.userData.meta)
+
       pods.push({ mesh, meta: mesh.userData.meta })
     })
 

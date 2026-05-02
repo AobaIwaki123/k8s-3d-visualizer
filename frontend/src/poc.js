@@ -29,6 +29,13 @@ async function main() {
     s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
   })
 
+  // レイヤーの初期化
+  const layers = [
+    new IngressLayer(scene, clusterData, models),
+    new MonitoringLayer(scene, clusterData, pods),
+    new StorageLayer(scene, clusterData, pods)
+  ]
+
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
 
   const connections = []
@@ -202,6 +209,16 @@ function renderMeta(meta) {
         <span class="meta-val">${Array.isArray(v) ? v.join('<br>') : v}</span>
       </div>`)
     .join('')
+}
+
+main()
+ v}</span>
+      </div>`)
+    .join('')
+}
+
+main()
+   .join('')
 }
 
 main()
