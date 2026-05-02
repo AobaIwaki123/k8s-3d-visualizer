@@ -91,30 +91,70 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     // 1. 表示・非表示の切り替え
     zones.forEach(z => {
       const ns = z.userData.namespace
-      const visible = (activeNs === 'all' || activeNs === ns)
+      // rook-ceph は常に（土台として）表示し続ける
+      const visible = (activeNs === 'all' || activeNs === ns || ns === 'rook-ceph')
       
       z.visible = visible
       pods.filter(p => p.meta.namespace === ns).forEach(p => {
         p.mesh.visible = visible
-        p.label.element.style.display = visible ? '' : 'none'
+        if (p.label) p.label.element.style.display = visible ? '' : 'none'
       })
       services.filter(s => s.meta.namespace === ns).forEach(s => {
         s.mesh.visible = visible
-        s.label.element.style.display = visible ? '' : 'none'
+        if (s.label) s.label.element.style.display = visible ? '' : 'none'
       })
       connections.filter(c => c.userData.namespace === ns).forEach(c => {
         c.visible = visible
       })
     })
 
-    // 2. カメラのフォーカス
+    // 2. Rook-Ceph を選択中の Namespace の真下に移動させる
+    repositionCeph(activeNs, zones, pods)
+
+    // 3. カメラのフォーカス
     if (activeNs === 'all') {
-      fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
+      const visibleMeshes = pods.filter(p => p.mesh.visible).map(p => p.mesh)
+      fitCamera(camera, controls, visibleMeshes)
     } else {
       const nsPods = pods.filter(p => p.meta.namespace === activeNs).map(p => p.mesh)
       const nsSvcs = services.filter(s => s.meta.namespace === activeNs).map(s => s.mesh)
       fitCamera(camera, controls, [...nsPods, ...nsSvcs])
     }
+  }
+
+  // Ceph の位置を動的に計算して移動
+  const repositionCeph = (activeNs, zones, pods) => {
+    const cephPods = pods.filter(p => p.meta.namespace === 'rook-ceph')
+    if (cephPods.length === 0) return
+
+    let targetX = 0, targetZ = 0
+    if (activeNs === 'all') {
+      // 全体の中心を求める
+      const box = new THREE.Box3()
+      zones.forEach(z => box.expandByObject(z))
+      const center = new THREE.Vector3()
+      box.getCenter(center)
+      targetX = center.x; targetZ = center.z
+    } else {
+      // 選択された Zone の中心を求める
+      const zone = zones.find(z => z.userData.namespace === activeNs)
+      if (zone) {
+        targetX = zone.position.x; targetZ = zone.position.z
+      }
+    }
+
+    // Ceph Pod を地下にグリッド状に配置（ターゲット中心に合わせる）
+    const COLS = 6; const SPACING = 1.4
+    const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
+    const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
+
+    cephPods.forEach((p, idx) => {
+      p.mesh.position.set(
+        startX + (idx % COLS) * SPACING,
+        -3,
+        startZ + Math.floor(idx / COLS) * SPACING
+      )
+    })
   }
 
   // "All" オプションの追加

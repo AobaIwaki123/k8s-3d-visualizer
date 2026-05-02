@@ -100,10 +100,17 @@ function createPodMesh(def, models, pos) {
   const phase = def.phase.toLowerCase()
   const modelKey = `pod-${['running', 'pending', 'failed'].includes(phase) ? phase : 'running'}`
   const mesh = models[modelKey].clone()
-  mesh.position.copy(pos)
+  
+  // rook-ceph の場合は初期位置を地下に設定
+  const initialPos = pos.clone()
+  if (def.namespace === 'rook-ceph') {
+    initialPos.y = -3
+  }
+  
+  mesh.position.copy(initialPos)
   mesh.userData.meta = { ...def, type: 'pod' }
   
-  // デコレーター適用をオプトアウト
+  // デコレーター適用をオプトアウト（必要に応じて再開可能）
   // PodDecorator.decorate(mesh, mesh.userData.meta)
   
   return mesh
