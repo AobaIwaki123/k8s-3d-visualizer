@@ -27,9 +27,11 @@ frontend/
 │   │   ├── NamespaceFilter.js  # Namespace フィルター UI
 │   │   └── StatusBar.js        # 接続状態・Pod数表示
 │   └── assets/
-│       ├── models/             # Blender生成GLBファイル
-│       │   ├── server-node.glb
-│       │   └── pod-cube.glb
+│       ├── models/             # Blender生成GLBファイル（public/models/ に配置）
+│       │   ├── pod-running.glb
+│       │   ├── pod-pending.glb
+│       │   ├── pod-failed.glb
+│       │   └── service-hex.glb
 │       └── textures/           # 背景・テクスチャ
 ├── public/
 │   └── index.html
@@ -64,8 +66,8 @@ graph TD
     UI --> NF["NamespaceFilter.js"]
     UI --> SB["StatusBar.js"]
 
-    NO --> |GLB読込| Assets["assets/models/"]
-    PO --> |GLB読込| Assets
+    PO --> |GLB読込| Assets["assets/models/"]
+    SO --> |GLB読込| Assets
 ```
 
 ---
@@ -75,36 +77,31 @@ graph TD
 ### NodeObject（k8s Node）
 
 ```
-形状: サーバーラック型GLBモデル (server-node.glb)
-サイズ: W=4, H=2, D=2 (Three.js単位)
+形状: GLBモデルなし（Nodeは空間的グルーピングのみ）
 配置: X軸方向に均等配置 (間隔: 6)
-色:
-  Ready    → 素材そのまま（シルバー）
-  NotReady → エミッション赤
 子オブジェクト: PodObject を上面にグリッド配置
+注意: k8s Node に対応する3Dオブジェクトは描画しない。
+     Pod の配置位置によって Node の所在を暗示する。
 ```
 
 ### PodObject（k8s Pod）
 
 ```
-形状: 小キューブ W=0.4, H=0.4, D=0.4
-     または pod-cube.glb (Blender製)
-色（MeshStandardMaterial emissive）:
-  Running     → #00ff88 (緑)
-  Pending     → #ffaa00 (黄)
-  Failed      → #ff4444 (赤)
-  Terminating → #888888 (グレー)
-配置: 親Node上面にグリッド (4列 × n行)
+形状: フェーズ別GLBモデル (Blender製)
+  Running     → pod-running.glb  emissive #00ff88 (緑)
+  Pending     → pod-pending.glb  emissive #ffaa00 (黄)
+  Failed      → pod-failed.glb   emissive #ff4444 (赤)
+  Terminating → pod-running.glb  emissive #888888 (グレー、フォールバック)
+配置: 親Node上面にグリッド (4列 × n行、間隔 0.6)
 アニメーション: Pending時はゆっくりパルス
 ```
 
 ### ServiceObject（k8s Service）
 
 ```
-形状: 六角形プリズム（プロシージャル生成）
-サイズ: 半径0.6, 高さ0.3
-色: #4488ff (青白く発光)
-配置: Node群の中央上方に浮遊
+形状: 六角形プリズムGLBモデル (service-hex.glb, Blender製)
+色: emissive #4488ff (青白く発光)
+配置: Node群の中央上方に浮遊 (Y=5)
 接続: 対応Podへ ConnectionLine で結ぶ
 ```
 
