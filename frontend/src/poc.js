@@ -34,11 +34,11 @@ async function main() {
     s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
   })
 
-  // レイヤーの初期化（一旦オプトアウト：必要に応じて戻せます）
+  // レイヤーの初期化
   const layers = [
-    // new IngressLayer(scene, clusterData, models),
-    // new MonitoringLayer(scene, clusterData, pods),
-    // new StorageLayer(scene, clusterData, pods)
+    new IngressLayer(scene, clusterData, models),
+    new MonitoringLayer(scene, clusterData, pods),
+    new StorageLayer(scene, clusterData, pods)
   ]
 
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
@@ -69,7 +69,8 @@ async function main() {
   })
 
   // フィルタリングUIの構築
-  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers)
+  const storageLines = [] // ストレージ接続線の管理用
+  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers, storageLines, scene)
 
   window.addEventListener('resize', updateSize)
 
@@ -266,12 +267,6 @@ function renderMeta(meta) {
       <div class="meta-row">
         <span class="meta-key">${k}</span>
         <span class="meta-val">${Array.isArray(v) ? v.join('<br>') : v}</span>
-      </div>`)
-    .join('')
-}
-
-main()
-v.join('<br>') : v}</span>
       </div>`)
     .join('')
 }
