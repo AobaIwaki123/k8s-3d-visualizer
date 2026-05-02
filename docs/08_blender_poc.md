@@ -135,18 +135,33 @@ Service x1  （上記 Pod のうち Running の 2 つに接続）
 
 **初期検証は A（直線）で実装し、視認性が不十分なら D（発光直線）に切り替える。**
 
-### ファイル構成（簡易実装）
+### ファイル構成（Vite プロジェクト）
+
+PoC は `frontend/` に直接実装する。GLB が `frontend/src/assets/models/` にあるため
+パスの乖離が生じない。本実装への移行もファイル追加のみで済む。
 
 ```
-poc/
-├── index.html
-└── main.js        # Three.js シーン一式（単一ファイル）
+frontend/
+├── public/
+│   └── models/              # Vite dev server から /models/ で配信
+│       ├── pod-running.glb
+│       ├── pod-pending.glb
+│       ├── pod-failed.glb
+│       └── service-hex.glb
+├── src/
+│   └── poc.js               # PoC シーン（ハードコード）
+├── poc.html                 # PoC エントリ（index.html とは別）
+├── vite.config.js
+└── package.json
 ```
 
-### main.js の責務（概要）
+> GLB は `public/models/` に置くことで Vite が静的配信し、
+> `GLTFLoader` から `/models/pod-running.glb` のような絶対パスで参照できる。
+
+### poc.js の責務（概要）
 
 1. シーン・カメラ・レンダラー・OrbitControls を初期化
-2. `GLTFLoader` で 4 種の GLB を読み込む
+2. `GLTFLoader` で 4 種の GLB を `/models/` から読み込む
 3. ハードコードした位置に Pod・Service を配置
 4. Pod と Service の対応リストをもとに接続線を描画
 5. レンダリングループを回す
@@ -181,7 +196,8 @@ Service: position=(0.9, 4.0, 0)   ← 上方に浮遊
 - [ ] `service-hex.glb` が生成・保存できる
 
 ### Phase 2
-- [ ] 4 種の GLB が Three.js で正常に読み込める
+- [ ] Vite プロジェクトが起動できる（`npm run dev`）
+- [ ] 4 種の GLB が `/models/` から読み込める
 - [ ] Pod・Service が指定位置に配置できる
 - [ ] 直線（案 A）で Service-Pod 接続が描画できる
 - [ ] 発光直線（案 D）への切り替えが有効か確認する

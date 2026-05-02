@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Status
 
-Design-complete, code not yet written. All specs are in `docs/`. K8s manifests in `k8s/` are ready to apply.
+PoC 進行中。GLB アセット生成済み。Three.js PoC を `frontend/` で実装中。
+All specs are in `docs/`. K8s manifests in `k8s/` are ready to apply.
 
 ## Commands
 
@@ -44,9 +45,16 @@ docker build -t k8s-visualizer-frontend:latest ./frontend
 ### Read-only RBAC ServiceAccount
 - WHY NOT write permissions: Visualizer never mutates cluster state. Least-privilege by design. See `k8s/rbac.yaml`.
 
-### GLB models via Blender (not procedural geometry)
-- WHY: Richer visual fidelity for Node/Pod objects. Assets in `frontend/src/assets/models/`.
+### GLB models via Blender MCP (not procedural geometry)
+- WHY: Richer visual fidelity for Pod/Service objects. Assets in `frontend/src/assets/models/`.
 - WHY NOT for Pods at scale: Use `InstancedMesh` when Pod count exceeds ~100 to maintain 60 fps.
+- k8s Node has no rendered GLB. Three.js holds Node data only; spatial grouping is handled by Pod placement logic.
+
+### GLB asset list
+- `pod-running.glb`  — Pod (Running),     emissive #00ff88
+- `pod-pending.glb`  — Pod (Pending),     emissive #ffaa00
+- `pod-failed.glb`   — Pod (Failed),      emissive #ff4444
+- `service-hex.glb`  — Service (hexagonal prism), emissive #4488ff
 
 ### In-cluster auto-detection for k8s connection
 - WHY: Same binary works in production (reads ServiceAccount token) and local dev (reads `~/.kube/config`) without config changes. Triggered by presence of `KUBERNETES_SERVICE_HOST`.
@@ -71,7 +79,8 @@ GET /api/service/:ns/:name
 
 ## 3D Layout (non-obvious)
 
-Nodes line up on X-axis (6-unit spacing). Pods grid on top of each Node. Services float at Y=5. Namespace bubbles are transparent zones enclosing their Nodes. Service→Pod connection lines are drawn by matching selector labels.
+Pods are placed on a flat grid (4 columns, 0.6-unit spacing). Services float at Y=5. Namespace bubbles are transparent zones (procedural, no GLB). Service→Pod connection lines are drawn by matching selector labels.
+k8s Nodes have no visual object — Pod proximity implies Node grouping.
 
 Pod phase → emissive color: Running=`#00ff88`, Pending=`#ffaa00` (pulsing), Failed=`#ff4444`, Terminating=`#888888`.
 
