@@ -39,6 +39,8 @@ function podPosition(ns, idx) {
   return new THREE.Vector3(ns.startX + (idx % COLS) * SPACING, 0, Math.floor(idx / COLS) * SPACING)
 }
 
+// IN: posMap — Map<podName, THREE.Vector3>
+// OUT: THREE.Vector3 — target pod 座標の重心; targets が 1 つも解決しない場合は原点
 function servicePosition(posMap, targets) {
   const positions = targets.map(t => posMap.get(t)).filter(Boolean)
   if (!positions.length) return new THREE.Vector3(0, SERVICE_Y, 0)
@@ -46,6 +48,7 @@ function servicePosition(posMap, targets) {
   return new THREE.Vector3(avg.x, SERVICE_Y, avg.z)
 }
 
+// OUT: THREE.Mesh — 水平な半透明プレーン。y=0.01 は地面との z-fighting 回避
 function buildZonePlane(ns, podCount) {
   const cols = Math.min(podCount, COLS)
   const rows = Math.ceil(podCount / COLS)

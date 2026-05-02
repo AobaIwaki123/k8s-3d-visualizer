@@ -33,6 +33,7 @@ async function main() {
   startLoop(() => {})
 }
 
+// PRE: pods, services の各 mesh.userData.meta が設定済みであること
 function setupClickInspector(renderer, camera, pods, services) {
   const raycaster = new THREE.Raycaster()
   const pointer   = new THREE.Vector2()
@@ -50,6 +51,7 @@ function setupClickInspector(renderer, camera, pods, services) {
     if (!hits.length) { detail.classList.add('hidden'); return }
 
     let obj = hits[0].object
+    // raycaster は GLB の葉ノードをヒットする — userData.meta は clone の root に付くため親を辿る
     while (obj && !obj.userData.meta) obj = obj.parent
     if (!obj?.userData.meta) { detail.classList.add('hidden'); return }
 
@@ -64,6 +66,7 @@ function setupClickInspector(renderer, camera, pods, services) {
   })
 }
 
+// IN: meta.type は detail-title 側で描画済みなため除外
 function renderMeta(meta) {
   return Object.entries(meta)
     .filter(([k]) => k !== 'type')

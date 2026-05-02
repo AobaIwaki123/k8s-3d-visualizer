@@ -10,6 +10,7 @@ const paths = {
 // モジュールスコープに置く — loadModels() 呼び出しごとにインスタンスを生成しないため
 const loader = new GLTFLoader()
 
+// OUT: Promise<[key, THREE.Object3D]> — Object.fromEntries に渡す entry
 function loadOne(key, path) {
   return new Promise((resolve, reject) => {
     loader.load(

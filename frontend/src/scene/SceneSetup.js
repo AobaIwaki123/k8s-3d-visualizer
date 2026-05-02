@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 
-// 全オブジェクトを包む球から最適なカメラ位置を計算し即時適用する
 export function fitCamera(camera, controls, objects) {
   const box = new THREE.Box3()
   objects.forEach(obj => box.expandByObject(obj))
@@ -11,7 +10,7 @@ export function fitCamera(camera, controls, objects) {
   box.getBoundingSphere(sphere)
 
   const fov = camera.fov * (Math.PI / 180)
-  const dist = (sphere.radius / Math.sin(fov / 2)) * 1.3
+  const dist = (sphere.radius / Math.sin(fov / 2)) * 1.3  // 1.3 — bounding sphere 周囲の余白係数
 
   controls.target.copy(sphere.center)
   camera.position.set(sphere.center.x, sphere.center.y + sphere.radius * 0.4, sphere.center.z + dist)
