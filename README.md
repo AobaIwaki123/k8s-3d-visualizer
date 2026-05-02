@@ -5,7 +5,7 @@
 Claude Blender Connectorで生成した3Dモデルを活用し、Pod・Node・Serviceの状態をリアルタイムで描画する。
 
 ## ドキュメント一覧
-ちょっt
+
 | # | ファイル | 内容 |
 |---|---|---|
 | 1 | [要件定義書](docs/01_requirements.md) | 機能要件・非機能要件・画面仕様 |
