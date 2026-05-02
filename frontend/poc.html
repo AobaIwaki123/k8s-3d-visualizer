@@ -80,6 +80,32 @@
       position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
       font-size: 11px; color: #223344; z-index: 20; white-space: nowrap;
     }
+
+    /* CSS2D Labels */
+    .label {
+      background: rgba(8, 8, 18, 0.82);
+      border: 1px solid rgba(68, 136, 255, 0.25);
+      border-radius: 5px; padding: 3px 8px;
+      font-size: 11px; white-space: nowrap;
+      line-height: 1.6; text-align: center;
+    }
+    .label--pod  { border-color: rgba(0, 255, 136, 0.3); }
+    .label--service { border-color: rgba(68, 136, 255, 0.4); }
+    .label-name  { color: #cde; display: block; }
+    .label-phase { font-size: 10px; display: block; }
+    .label-phase--running     { color: #00ff88; }
+    .label-phase--pending     { color: #ffaa00; }
+    .label-phase--failed      { color: #ff4444; }
+    .label-phase--terminating { color: #888888; }
+    .label-kind  { color: #4488ff; font-size: 10px; display: block; }
+
+    /* Hover tooltip */
+    #hover-tooltip {
+      position: fixed; z-index: 15;
+      pointer-events: none;
+      font-size: 12px; padding: 6px 10px;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -114,7 +140,9 @@
     <div class="phase-item"><span class="phase-dot" style="background:#ff4444"></span>Failed</div>
   </div>
 
-  <div id="hint">click object to inspect · drag to orbit · scroll to zoom</div>
+  <div id="hover-tooltip" class="panel hidden"></div>
+
+  <div id="hint">hover to preview · click to inspect · drag to orbit · scroll to zoom</div>
 
   <canvas id="canvas"></canvas>
   <script type="module" src="/src/poc.js"></script>

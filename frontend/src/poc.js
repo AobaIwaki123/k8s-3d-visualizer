@@ -3,16 +3,26 @@ import { initScene, fitCamera }     from './scene/SceneSetup.js'
 import { loadModels }               from './loaders/GlbLoader.js'
 import { placePocObjects }          from './objects/ObjectPlacer.js'
 import { buildConnectionLines }     from './connections/ConnectionLine.js'
+import { initLabelRenderer }        from './labels/LabelRenderer.js'
+import { attachLabel }              from './labels/ObjectLabel.js'
+import { setupHoverHandler }        from './interaction/HoverHandler.js'
 
 async function main() {
   const { scene, camera, renderer, controls, startLoop } = initScene('canvas')
+  const { updateSize, render: renderLabels } = initLabelRenderer(document.body)
 
   const models = await loadModels()
   const { pods, services, namespaceZones } = placePocObjects(models)
 
   namespaceZones.forEach(z => scene.add(z))
-  pods.forEach(p => scene.add(p.mesh))
-  services.forEach(s => scene.add(s.mesh))
+  pods.forEach(p => {
+    scene.add(p.mesh)
+    attachLabel(p.mesh, p.meta.name, 'pod')
+  })
+  services.forEach(s => {
+    scene.add(s.mesh)
+    attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
+  })
 
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
 
@@ -29,8 +39,38 @@ async function main() {
     `${pods.length} pods · ${services.length} services · 2 namespaces`
 
   setupClickInspector(renderer, camera, pods, services)
+  setupHoverHandler({
+    renderer,
+    camera,
+    objects: [...pods.map(p => p.mesh), ...services.map(s => s.mesh)],
+    onEnter: showTooltip,
+    onLeave: hideTooltip,
+  })
 
-  startLoop(() => {})
+  window.addEventListener('resize', updateSize)
+
+  startLoop(() => { renderLabels(scene, camera) })
+}
+
+// ---- hover tooltip ----
+
+const _tooltip = () => document.getElementById('hover-tooltip')
+let _mouseX = 0, _mouseY = 0
+
+window.addEventListener('mousemove', (e) => { _mouseX = e.clientX; _mouseY = e.clientY })
+
+function showTooltip(meta) {
+  const el = _tooltip()
+  el.textContent = meta.type === 'pod'
+    ? `${meta.name}  (${meta.phase})`
+    : `${meta.name}  [Service]`
+  el.style.left = `${_mouseX + 14}px`
+  el.style.top  = `${_mouseY - 8}px`
+  el.classList.remove('hidden')
+}
+
+function hideTooltip() {
+  _tooltip().classList.add('hidden')
 }
 
 // PRE: pods, services の各 mesh.userData.meta が設定済みであること
