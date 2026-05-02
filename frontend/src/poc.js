@@ -34,11 +34,11 @@ async function main() {
     s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
   })
 
-  // レイヤーの初期化
+  // レイヤーの初期化（一旦オプトアウト：必要に応じて戻せます）
   const layers = [
-    new IngressLayer(scene, clusterData, models),
-    new MonitoringLayer(scene, clusterData, pods),
-    new StorageLayer(scene, clusterData, pods)
+    // new IngressLayer(scene, clusterData, models),
+    // new MonitoringLayer(scene, clusterData, pods),
+    // new StorageLayer(scene, clusterData, pods)
   ]
 
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])

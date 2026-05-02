@@ -64,15 +64,12 @@ export function placeClusterObjects(data, models) {
     nsMap.get(p.namespace).push(p)
   })
 
-  // 1. 通常の Namespace と インフラ系を分離
-  const infraNamespaces = ['cloudflare-tunnel-ingress-controller', 'rook-ceph', 'observability']
-  const sortedNamespaces = Array.from(nsMap.keys())
-    .filter(ns => !infraNamespaces.includes(ns))
-    .sort()
+  // 1. 全ての Namespace を同じルールでソートして並べる（特別扱いを解除）
+  const sortedNamespaces = Array.from(nsMap.keys()).sort()
 
   let currentX = 0
 
-  // 2. 標準的なワークロードの配置
+  // 2. ワークロードの配置
   sortedNamespaces.forEach(nsName => {
     const nsPods = nsMap.get(nsName)
     const color = stringToColor(nsName)
@@ -96,18 +93,6 @@ export function placeClusterObjects(data, models) {
     currentX += (colsInNs * SPACING) + NS_GAP
   })
 
-  // 3. Rook-Ceph の特別配置（地下センター）
-  if (nsMap.has('rook-ceph')) {
-    const cephPods = nsMap.get('rook-ceph')
-    const startX = (currentX - NS_GAP) / 2 - 2 // クラスターの中央付近
-    cephPods.forEach((def, idx) => {
-      const pos = new THREE.Vector3(startX + (idx % 6) * SPACING, -3, Math.floor(idx / 6) * SPACING)
-      posMap.set(def.name, pos)
-      const mesh = createPodMesh(def, models, pos)
-      pods.push({ mesh, meta: mesh.userData.meta })
-    })
-  }
-
   return { pods, services, namespaceZones }
 }
 
@@ -117,7 +102,10 @@ function createPodMesh(def, models, pos) {
   const mesh = models[modelKey].clone()
   mesh.position.copy(pos)
   mesh.userData.meta = { ...def, type: 'pod' }
-  PodDecorator.decorate(mesh, mesh.userData.meta)
+  
+  // デコレーター適用をオプトアウト
+  // PodDecorator.decorate(mesh, mesh.userData.meta)
+  
   return mesh
 }
 
