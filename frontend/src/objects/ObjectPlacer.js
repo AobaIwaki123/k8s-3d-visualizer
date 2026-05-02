@@ -1,33 +1,101 @@
-const POC_PODS = [
-  { name: 'pod-a', phase: 'Running',  position: [0.0, 0, 0] },
-  { name: 'pod-b', phase: 'Running',  position: [0.6, 0, 0] },
-  { name: 'pod-c', phase: 'Running',  position: [1.2, 0, 0] },
-  { name: 'pod-d', phase: 'Pending',  position: [1.8, 0, 0] },
+import * as THREE from 'three'
+
+const SPACING = 0.7
+const COLS = 4
+const SERVICE_Y = 4.5
+
+const NAMESPACES = [
+  {
+    name: 'default',
+    startX: -3.5,
+    zoneColor: 0x4488ff,
+    pods: [
+      { name: 'frontend-7d9f2', phase: 'Running' },
+      { name: 'frontend-k8s12', phase: 'Running' },
+      { name: 'backend-9x1ab',  phase: 'Pending' },
+      { name: 'worker-2m8cd',   phase: 'Failed'  },
+    ],
+    services: [
+      { name: 'svc-frontend', targets: ['frontend-7d9f2', 'frontend-k8s12'] },
+      { name: 'svc-backend',  targets: ['backend-9x1ab', 'worker-2m8cd'] },
+    ],
+  },
+  {
+    name: 'monitoring',
+    startX: 0.7,
+    zoneColor: 0x44ff88,
+    pods: [
+      { name: 'prometheus-0',   phase: 'Running' },
+      { name: 'grafana-1',      phase: 'Running' },
+      { name: 'alertmanager-0', phase: 'Pending' },
+    ],
+    services: [
+      { name: 'svc-prometheus', targets: ['prometheus-0', 'grafana-1', 'alertmanager-0'] },
+    ],
+  },
 ]
 
-const POC_SERVICES = [
-  { name: 'svc-a', position: [0.9, 4.0, 0], targets: ['pod-a', 'pod-b'] },
-]
+function podPosition(ns, idx) {
+  return new THREE.Vector3(ns.startX + (idx % COLS) * SPACING, 0, Math.floor(idx / COLS) * SPACING)
+}
 
-// IN:  models — loadModels() の返り値
-// OUT: { pods: { mesh: Object3D, meta: { name, phase } }[], services: { mesh: Object3D, meta: { name, targets } }[] }
-//      scene.add() は呼び出し元の責務 — このモジュールをシーンに依存させないため
+function servicePosition(posMap, targets) {
+  const positions = targets.map(t => posMap.get(t)).filter(Boolean)
+  if (!positions.length) return new THREE.Vector3(0, SERVICE_Y, 0)
+  const avg = positions.reduce((acc, p) => acc.add(p), new THREE.Vector3()).divideScalar(positions.length)
+  return new THREE.Vector3(avg.x, SERVICE_Y, avg.z)
+}
+
+function buildZonePlane(ns, podCount) {
+  const cols = Math.min(podCount, COLS)
+  const rows = Math.ceil(podCount / COLS)
+  const geo = new THREE.PlaneGeometry(
+    (cols - 1) * SPACING + 0.9,
+    (rows - 1) * SPACING + 0.9,
+  )
+  const mat = new THREE.MeshBasicMaterial({
+    color: ns.zoneColor, transparent: true, opacity: 0.07,
+    side: THREE.DoubleSide, depthWrite: false,
+  })
+  const mesh = new THREE.Mesh(geo, mat)
+  mesh.rotation.x = -Math.PI / 2
+  mesh.position.set(
+    ns.startX + ((cols - 1) * SPACING) / 2,
+    0.01,
+    ((rows - 1) * SPACING) / 2,
+  )
+  return mesh
+}
+
+// OUT: { pods, services, namespaceZones }
+//      scene.add() は呼び出し元の責務
 export function placePocObjects(models) {
-  const pods = POC_PODS.map(({ name, phase, position }) => {
-    // clone() しないと同一インスタンスを複数箇所に配置することになり、最後の position だけが反映される
-    const mesh = models[`pod-${phase.toLowerCase()}`].clone()
-    mesh.position.set(...position)
-    // Raycaster のヒット結果は mesh のみなので、userData に持たせることでクリック時に O(1) でメタを取得できる
-    mesh.userData.meta = { name, phase }
-    return { mesh, meta: { name, phase } }
-  })
+  const pods = []
+  const services = []
+  const namespaceZones = []
+  const posMap = new Map()
 
-  const services = POC_SERVICES.map(({ name, position, targets }) => {
-    const mesh = models['service-hex'].clone()
-    mesh.position.set(...position)
-    mesh.userData.meta = { name, targets }
-    return { mesh, meta: { name, targets } }
-  })
+  for (const ns of NAMESPACES) {
+    ns.pods.forEach((def, idx) => {
+      const pos = podPosition(ns, idx)
+      posMap.set(def.name, pos)
 
-  return { pods, services }
+      const mesh = models[`pod-${def.phase.toLowerCase()}`].clone()
+      mesh.position.copy(pos)
+      mesh.userData.meta = { type: 'pod', name: def.name, namespace: ns.name, phase: def.phase }
+      pods.push({ mesh, meta: { name: def.name, namespace: ns.name, phase: def.phase } })
+    })
+
+    for (const def of ns.services) {
+      const pos = servicePosition(posMap, def.targets)
+      const mesh = models['service-hex'].clone()
+      mesh.position.copy(pos)
+      mesh.userData.meta = { type: 'service', name: def.name, namespace: ns.name, targets: def.targets }
+      services.push({ mesh, meta: { name: def.name, namespace: ns.name, targets: def.targets } })
+    }
+
+    namespaceZones.push(buildZonePlane(ns, ns.pods.length))
+  }
+
+  return { pods, services, namespaceZones }
 }

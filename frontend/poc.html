@@ -4,12 +4,118 @@
   <meta charset="UTF-8" />
   <title>k8s visualizer PoC</title>
   <style>
-    * { margin: 0; padding: 0; }
-    body { background: #0a0a0f; overflow: hidden; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0f; overflow: hidden; font-family: 'SF Mono', 'Fira Code', monospace; }
     canvas { display: block; width: 100vw; height: 100vh; }
+
+    /* Topbar */
+    #topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 44px;
+      background: rgba(8, 8, 18, 0.88);
+      border-bottom: 1px solid rgba(68, 136, 255, 0.2);
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 18px; z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+    .topbar-title { color: #8ab4ff; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; }
+    .topbar-status { color: #ffaa44; font-size: 12px; }
+    #stats { color: #445566; font-size: 12px; margin-left: auto; }
+
+    /* Shared panel style */
+    .panel {
+      position: fixed; z-index: 20;
+      background: rgba(8, 8, 18, 0.88);
+      border: 1px solid rgba(68, 136, 255, 0.2);
+      border-radius: 8px; padding: 14px;
+      backdrop-filter: blur(8px); color: #ccd;
+    }
+    .panel.hidden { display: none; }
+
+    /* Detail panel */
+    #detail { top: 56px; right: 14px; width: 248px; }
+    .detail-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    #detail-title {
+      font-size: 11px; font-weight: 600; color: #8ab4ff;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    #detail-close {
+      background: none; border: none; color: #445566; cursor: pointer;
+      font-size: 18px; line-height: 1; padding: 0 2px;
+    }
+    #detail-close:hover { color: #aac; }
+    .meta-row {
+      display: flex; gap: 8px; padding: 5px 0;
+      border-bottom: 1px solid rgba(68, 136, 255, 0.08);
+      font-size: 12px;
+    }
+    .meta-row:last-child { border-bottom: none; }
+    .meta-key { color: #5577aa; min-width: 78px; flex-shrink: 0; }
+    .meta-val { color: #cde; word-break: break-all; line-height: 1.5; }
+
+    /* Namespace legend */
+    #legend { bottom: 20px; left: 14px; min-width: 160px; }
+    .legend-title {
+      font-size: 10px; font-weight: 600; color: #445566;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: #99aacc; padding: 3px 0;
+    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; opacity: 0.85; }
+
+    /* Phase legend */
+    #phase-legend { bottom: 20px; left: 190px; min-width: 150px; }
+    .phase-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: #99aacc; padding: 3px 0;
+    }
+    .phase-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Hint */
+    #hint {
+      position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: #223344; z-index: 20; white-space: nowrap;
+    }
   </style>
 </head>
 <body>
+  <div id="topbar">
+    <span class="topbar-title">⬡ k8s 3D Visualizer</span>
+    <span class="topbar-status">● mock</span>
+    <span id="stats"></span>
+  </div>
+
+  <div id="detail" class="panel hidden">
+    <div class="detail-header">
+      <span id="detail-title">Object</span>
+      <button id="detail-close">×</button>
+    </div>
+    <div id="detail-content"></div>
+  </div>
+
+  <div id="legend" class="panel">
+    <div class="legend-title">Namespaces</div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#4488ff"></span>default
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background:#44ff88"></span>monitoring
+    </div>
+  </div>
+
+  <div id="phase-legend" class="panel">
+    <div class="legend-title">Phase</div>
+    <div class="phase-item"><span class="phase-dot" style="background:#00ff88"></span>Running</div>
+    <div class="phase-item"><span class="phase-dot" style="background:#ffaa00"></span>Pending</div>
+    <div class="phase-item"><span class="phase-dot" style="background:#ff4444"></span>Failed</div>
+  </div>
+
+  <div id="hint">click object to inspect · drag to orbit · scroll to zoom</div>
+
   <canvas id="canvas"></canvas>
   <script type="module" src="/src/poc.js"></script>
 </body>
