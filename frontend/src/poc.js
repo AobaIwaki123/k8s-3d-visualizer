@@ -105,7 +105,7 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
         if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
       }
 
-      // Ceph Pod の配置
+      // Ceph Pod の配置（座標移動）
       const COLS = 6; const SPACING = 1.4
       const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
       const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
@@ -115,17 +115,25 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
       })
 
       // ストレージパイプライン（接続線）の生成
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.3 })
+      // PVC を持っている Pod から、移動後の Ceph Pod 群のいずれか（インデックスを循環させて割り当て）へ線を引く
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.35 })
+      let cephIdx = 0
       pods.forEach(p => {
         if (p.mesh.visible && p.meta.pvcNames?.length > 0 && p.meta.namespace !== 'rook-ceph') {
           const from = p.mesh.position.clone()
-          const to = new THREE.Vector3(from.x, -3, from.z)
+          // 接続先となる Ceph Pod を選択（実機が複数ある場合は循環）
+          const targetCeph = cephPods[cephIdx % cephPods.length]
+          const to = targetCeph.mesh.position.clone()
+
           const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
           const line = new THREE.Line(geometry, lineMat)
           scene.add(line)
           storageLines.push(line)
+
+          cephIdx++
         }
       })
+
     } catch (err) {
       console.error('Error in repositionCephAndPipes:', err)
     }
