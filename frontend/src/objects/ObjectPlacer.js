@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { PodDecorator } from './PodDecorator.js'
 
 const SPACING = 1.4
 const COLS = 4

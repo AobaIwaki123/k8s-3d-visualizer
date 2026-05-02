@@ -7,6 +7,11 @@ import { initLabelRenderer }        from './labels/LabelRenderer.js'
 import { attachLabel }              from './labels/ObjectLabel.js'
 import { setupHoverHandler }        from './interaction/HoverHandler.js'
 
+// レイヤーのインポート
+import { IngressLayer }             from './layers/IngressLayer.js'
+import { MonitoringLayer }          from './layers/MonitoringLayer.js'
+import { StorageLayer }             from './layers/StorageLayer.js'
+
 async function main() {
   const { scene, camera, renderer, controls, startLoop } = initScene('canvas')
   const { updateSize, render: renderLabels } = initLabelRenderer(document.body)
@@ -64,18 +69,25 @@ async function main() {
   })
 
   // フィルタリングUIの構築
-  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls)
+  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers)
 
   window.addEventListener('resize', updateSize)
 
-  startLoop(() => { renderLabels(scene, camera) })
+  // 毎フレームのループ処理をレイヤーに伝播
+  startLoop((time) => {
+    layers.forEach(l => l.update?.(time))
+    renderLabels(scene, camera)
+  })
 }
 
-function setupNamespaceFilter(zones, pods, services, connections, camera, controls) {
+function setupNamespaceFilter(zones, pods, services, connections, camera, controls, layers) {
   const list = document.getElementById('ns-filter-list')
   const namespaces = zones.map(z => z.userData.namespace).sort()
 
   const updateVisibility = (activeNs) => {
+    // 各レイヤーにフィルタリング状態を通知
+    layers.forEach(l => l.setNamespaceFilter?.(activeNs))
+
     // 1. 表示・非表示の切り替え
     zones.forEach(z => {
       const ns = z.userData.namespace
@@ -209,16 +221,6 @@ function renderMeta(meta) {
         <span class="meta-val">${Array.isArray(v) ? v.join('<br>') : v}</span>
       </div>`)
     .join('')
-}
-
-main()
- v}</span>
-      </div>`)
-    .join('')
-}
-
-main()
-   .join('')
 }
 
 main()
