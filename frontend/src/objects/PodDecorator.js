@@ -9,7 +9,7 @@ export class PodDecorator {
   static decorate(group, meta) {
     if (!group || !meta) return
 
-    const { name, restartCount, creationTimestamp, labels } = meta
+    const { name, labels } = meta
     const nameLower = name.toLowerCase()
 
     // 1. 役割別のスケーリング
@@ -35,21 +35,11 @@ export class PodDecorator {
       group.scale.set(1.0, 1.4, 1.0)
     }
 
-    // 2. リソース/状態の表現
+    // 2. マテリアルをクローンする — 個別の Pod ごとに見た目を変え、他へ影響させないため
+    // GLB に焼き込まれたフェーズ色（Running=緑、Pending=オレンジ、Failed=赤）はそのまま使用
     group.traverse(child => {
       if (child.isMesh) {
-        // マテリアルをクローンする — 個別の Pod ごとに見た目を変え、他へ影響させないため
         child.material = child.material.clone()
-
-        // 以前の実装やモデル初期値の残骸（シアン色など）を確実にリセット
-        child.material.emissive.set(0x000000)
-        child.material.emissiveIntensity = 0
-
-        // restartCount がある場合はマゼンタ色の発光を付与（Failedの赤と区別）
-        if (restartCount > 0) {
-          child.material.emissive.set(0xff00ff)
-          child.material.emissiveIntensity = Math.min(restartCount * 0.1, 0.4)
-        }
       }
     })
   }

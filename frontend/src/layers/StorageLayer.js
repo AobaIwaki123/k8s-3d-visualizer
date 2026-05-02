@@ -77,7 +77,7 @@ export class StorageLayer {
     })
 
     // ストレージパイプライン（ノード対応接続線）の生成
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.5 })
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x4466dd, transparent: true, opacity: 0.5 })
     this.pods.forEach(p => {
       // イングレスコントローラーなどは除外（ノイズ軽減）
       const isAppPod = !p.meta.isStorage && (p.meta.namespace !== 'cloudflare-tunnel-ingress-controller')

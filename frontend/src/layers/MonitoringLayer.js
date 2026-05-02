@@ -48,7 +48,7 @@ export class MonitoringLayer {
 
   _getColorByType(type) {
     switch (type) {
-      case 'beyla': return 0x00ffff // 鋭いシアン (eBPF)
+      case 'beyla': return 0xaaff00 // 黄緑 (eBPF)
       case 'prometheus': return 0xffaa00 // オレンジ (Metrics)
       case 'loki': return 0xaa00ff // パープル (Logs)
       default: return 0x00ff00
