@@ -114,18 +114,18 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
         p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
       })
 
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.35 })
-      let cephIdx = 0
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6 })
       pods.forEach(p => {
-        if (p.mesh.visible && p.meta.pvcNames?.length > 0 && !p.meta.isStorage) {
+        const isAppPod = !p.meta.isStorage && !p.meta.isIngress && !p.meta.isMonitoring
+        if (p.mesh.visible && isAppPod) {
+          // Pod の位置 (Y=0 または現在の Y) から、地下層 (Y=-3) へ垂直に降りる線
           const from = p.mesh.position.clone()
-          const targetCeph = cephPods[cephIdx % cephPods.length]
-          const to = targetCeph.mesh.position.clone()
+          const to = from.clone().setY(-3) 
+
           const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
           const line = new THREE.Line(geometry, lineMat)
           scene.add(line)
           storageLines.push(line)
-          cephIdx++
         }
       })
     } catch (err) {
@@ -172,7 +172,8 @@ zones.forEach(z => {
       } else {
         const nsPods = pods.filter(p => p.meta.namespace === activeNs).map(p => p.mesh)
         const nsSvcs = services.filter(s => s.meta.namespace === activeNs).map(s => s.mesh)
-        fitCamera(camera, controls, [...nsPods, ...nsSvcs])
+        const cephMeshes = pods.filter(p => p.meta.isStorage).map(p => p.mesh)
+        fitCamera(camera, controls, [...nsPods, ...nsSvcs, ...cephMeshes])
       }
     } catch (err) {
       console.error('Error in updateVisibility:', err)

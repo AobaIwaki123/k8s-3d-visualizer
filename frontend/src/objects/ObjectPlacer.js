@@ -3,6 +3,8 @@ import { PodDecorator } from './PodDecorator.js'
 
 const SPACING = 1.4
 const COLS = 4
+
+export const STORAGE_NAMESPACES = new Set(['rook-ceph'])
 const SERVICE_Y = 4.5
 const NS_GAP = 6.0 // 名前空間同士の間隔
 
@@ -96,23 +98,22 @@ export function placeClusterObjects(data, models) {
   return { pods, services, namespaceZones }
 }
 
+const STORAGE_NAMESPACES = new Set(['rook-ceph', 'rook-ceph-system'])
+
 function createPodMesh(def, models, pos) {
   const phase = def.phase.toLowerCase()
   const modelKey = `pod-${['running', 'pending', 'failed'].includes(phase) ? phase : 'running'}`
   const mesh = models[modelKey].clone()
-  
-  // rook-ceph の場合は初期位置を地下に設定
+
+  const isStorage = STORAGE_NAMESPACES.has(def.namespace)
   const initialPos = pos.clone()
-  if (def.namespace === 'rook-ceph') {
+  if (isStorage) {
     initialPos.y = -3
   }
-  
+
   mesh.position.copy(initialPos)
-  mesh.userData.meta = { ...def, type: 'pod' }
-  
-  // デコレーター適用をオプトアウト（必要に応じて再開可能）
-  // PodDecorator.decorate(mesh, mesh.userData.meta)
-  
+  mesh.userData.meta = { ...def, type: 'pod', isStorage }
+
   return mesh
 }
 

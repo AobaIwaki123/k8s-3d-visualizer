@@ -20,6 +20,8 @@ export class StorageLayer {
   }
 
   init() {
+    this.storagePods = []
+
     // 1. Ceph Bedrock: isStorage: true の Pod を地下（Y=-3）に配置
     const storageMaterial = new THREE.MeshStandardMaterial({
       color: 0x555555,
@@ -30,46 +32,22 @@ export class StorageLayer {
 
     this.pods.forEach(p => {
       if (p.meta.isStorage) {
-        // 地下に配置
         p.mesh.position.y = -3
-        
-        // 重厚なマテリアルに変更
+
         p.mesh.traverse(child => {
           if (child.isMesh) {
             child.material = storageMaterial
           }
         })
 
-        // Storage Pod はこのレイヤーのグループで管理する（可視性連動のため）
-        this.group.add(p.mesh)
+        // グループに移さない — poc.js と二重管理を避けるためシーン直下で管理
+        this.storagePods.push(p)
         this.storageMeshes.push(p.mesh)
       }
     })
 
-    // 2. Storage Pipeline: PVC を持つ Pod から Ceph 層へ垂直ライン
-    const pipelineMaterial = new THREE.LineBasicMaterial({
-      color: 0x00ffff,
-      transparent: true,
-      opacity: 0.4
-    })
-
-    this.pods.forEach(p => {
-      // isStorage 自体は Pipeline を引かない（Ceph 層そのものなので）
-      if (!p.meta.isStorage && p.meta.pvcNames && p.meta.pvcNames.length > 0) {
-        const from = p.mesh.position.clone()
-        // Pod の底面あたりから開始
-        from.y -= 0.2 
-        
-        const to = new THREE.Vector3(from.x, -3, from.z)
-        
-        const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
-        const line = new THREE.Line(geometry, pipelineMaterial)
-        
-        line.userData.namespace = p.meta.namespace
-        this.group.add(line)
-        this.pipelines.push(line)
-      }
-    })
+    // Storage Pipeline は Ceph Pod の動的移動に追従する必要があるため
+    // poc.js の repositionCephAndPipes で一元管理する（ここでは描画しない）
 
     // 3. 地下空間の演出: 暗く重厚なプレート
     // クラスターの広がりに合わせてサイズ調整（仮で 100x100）
@@ -102,23 +80,12 @@ export class StorageLayer {
    * @param {string} activeNs 
    */
   setNamespaceFilter(activeNs) {
+    // パイプラインは選択中 NS のものだけ表示
     this.pipelines.forEach(pipe => {
-      // 既存の実装が pipelines.push({ line, pod }) 形式の場合と line 形式の場合があるため
-      const pod = pipe.pod || { meta: { namespace: pipe.userData?.namespace } }
-      const nsMatch = (activeNs === 'all' || pod.meta.namespace === activeNs)
       const line = pipe.line || pipe
-      line.visible = nsMatch
+      line.visible = (activeNs === 'all' || line.userData.namespace === activeNs)
     })
-
-    // Rook-Ceph 自体はインフラなので、ALLの時、または rook-ceph が選択されている時に表示
-    const showInfra = (activeNs === 'all' || activeNs === 'rook-ceph')
-    
-    this.storagePods.forEach(p => {
-      p.mesh.visible = this.isVisible && showInfra
-      if (p.label && p.label.element) {
-        p.label.element.style.display = (this.isVisible && showInfra) ? '' : 'none'
-      }
-    })
+    // ストレージ Pod の可視性は poc.js の isStorageZone チェックに委譲
   }
 
   /**
