@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const SPACING = 0.7
+const SPACING = 1.4
 const COLS = 4
 const SERVICE_Y = 4.5
 
@@ -22,7 +22,7 @@ const NAMESPACES = [
   },
   {
     name: 'monitoring',
-    startX: 0.7,
+    startX: 2.8,
     zoneColor: 0x44ff88,
     pods: [
       { name: 'prometheus-0',   phase: 'Running' },

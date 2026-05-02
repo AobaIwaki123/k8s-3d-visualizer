@@ -23,7 +23,8 @@ export function attachLabel(object, text, kind, opts = {}) {
 
   const nameEl = document.createElement('span')
   nameEl.className = 'label-name'
-  nameEl.textContent = text
+  nameEl.textContent = text.length > 12 ? text.slice(0, 11) + '…' : text
+  nameEl.title = text
   el.appendChild(nameEl)
 
   if (kind === 'pod') {
