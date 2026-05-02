@@ -14,6 +14,7 @@ export class StorageLayer {
 
     this.storageMeshes = []
     this.pipelines = []
+    this.isVisible = true
 
     this.init()
   }

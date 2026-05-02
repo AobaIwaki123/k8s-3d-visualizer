@@ -85,84 +85,93 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
   const list = document.getElementById('ns-filter-list')
   const namespaces = zones.map(z => z.userData.namespace).sort()
 
-  const updateVisibility = (activeNs) => {
-    // 各レイヤーにフィルタリング状態を通知
-    layers.forEach(l => l.setNamespaceFilter?.(activeNs))
+  // Ceph とパイプラインの位置を動的に更新する内部関数
+  const repositionCephAndPipes = (activeNs) => {
+    try {
+      const cephPods = pods.filter(p => p.meta.namespace === 'rook-ceph')
+      if (cephPods.length === 0) return
 
-    // 1. 表示・非表示の切り替え
-    zones.forEach(z => {
-      const ns = z.userData.namespace
-      // rook-ceph は常に（土台として）表示し続ける
-      const visible = (activeNs === 'all' || activeNs === ns || ns === 'rook-ceph')
-      
-      z.visible = visible
-      pods.filter(p => p.meta.namespace === ns).forEach(p => {
-        p.mesh.visible = visible
-        if (p.label) p.label.element.style.display = visible ? '' : 'none'
-      })
-      services.filter(s => s.meta.namespace === ns).forEach(s => {
-        s.mesh.visible = visible
-        if (s.label) s.label.element.style.display = visible ? '' : 'none'
-      })
-      connections.filter(c => c.userData.namespace === ns).forEach(c => {
-        c.visible = visible
-      })
-    })
+      // 前回のラインを削除
+      storageLines.forEach(l => scene.remove(l))
+      storageLines.length = 0
 
-    // 2. Rook-Ceph と接続線を移動させる
-    repositionCephAndPipes(activeNs, zones, pods, storageLines, scene)
+      let targetX = 0, targetZ = 0
+      if (activeNs === 'all') {
+        const box = new THREE.Box3(); zones.forEach(z => box.expandByObject(z))
+        const center = new THREE.Vector3(); box.getCenter(center)
+        targetX = center.x; targetZ = center.z
+      } else {
+        const zone = zones.find(z => z.userData.namespace === activeNs)
+        if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
+      }
 
-    // 3. カメラのフォーカス
-    if (activeNs === 'all') {
-      const visibleMeshes = pods.filter(p => p.mesh.visible).map(p => p.mesh)
-      fitCamera(camera, controls, visibleMeshes)
-    } else {
-      const nsPods = pods.filter(p => p.meta.namespace === activeNs).map(p => p.mesh)
-      const nsSvcs = services.filter(s => s.meta.namespace === activeNs).map(s => s.mesh)
-      fitCamera(camera, controls, [...nsPods, ...nsSvcs])
+      // Ceph Pod の配置
+      const COLS = 6; const SPACING = 1.4
+      const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
+      const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
+
+      cephPods.forEach((p, idx) => {
+        p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
+      })
+
+      // ストレージパイプライン（接続線）の生成
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.3 })
+      pods.forEach(p => {
+        if (p.mesh.visible && p.meta.pvcNames?.length > 0 && p.meta.namespace !== 'rook-ceph') {
+          const from = p.mesh.position.clone()
+          const to = new THREE.Vector3(from.x, -3, from.z)
+          const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
+          const line = new THREE.Line(geometry, lineMat)
+          scene.add(line)
+          storageLines.push(line)
+        }
+      })
+    } catch (err) {
+      console.error('Error in repositionCephAndPipes:', err)
     }
   }
 
-  // Ceph とパイプラインの位置を動的に更新
-  const repositionCephAndPipes = (activeNs, zones, pods, storageLines, scene) => {
-    const cephPods = pods.filter(p => p.meta.namespace === 'rook-ceph')
-    if (cephPods.length === 0) return
+  const updateVisibility = (activeNs) => {
+    try {
+      // 各レイヤーにフィルタリング状態を通知
+      layers.forEach(l => {
+        try { l.setNamespaceFilter?.(activeNs) } catch (e) { console.error('Layer error:', e) }
+      })
 
-    // 前回のラインを削除
-    storageLines.forEach(l => scene.remove(l))
-    storageLines.length = 0
+      // 1. 表示・非表示の切り替え
+      zones.forEach(z => {
+        const ns = z.userData.namespace
+        const visible = (activeNs === 'all' || activeNs === ns || ns === 'rook-ceph')
+        
+        z.visible = visible
+        pods.filter(p => p.meta.namespace === ns).forEach(p => {
+          p.mesh.visible = visible
+          if (p.label) p.label.element.style.display = visible ? '' : 'none'
+        })
+        services.filter(s => s.meta.namespace === ns).forEach(s => {
+          s.mesh.visible = visible
+          if (s.label) s.label.element.style.display = visible ? '' : 'none'
+        })
+        connections.filter(c => c.userData.namespace === ns).forEach(c => {
+          c.visible = visible
+        })
+      })
 
-    let targetX = 0, targetZ = 0
-    if (activeNs === 'all') {
-      const box = new THREE.Box3(); zones.forEach(z => box.expandByObject(z))
-      const center = new THREE.Vector3(); box.getCenter(center)
-      targetX = center.x; targetZ = center.z
-    } else {
-      const zone = zones.find(z => z.userData.namespace === activeNs)
-      if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
-    }
+      // 2. Rook-Ceph と接続線を移動させる
+      repositionCephAndPipes(activeNs)
 
-    // Ceph Pod の配置
-    const COLS = 6; const SPACING = 1.4
-    const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
-    const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
-
-    cephPods.forEach((p, idx) => {
-      p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
-    })
-
-    // ストレージパイプライン（接続線）の生成
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.3 })
-    pods.forEach(p => {
-      if (p.mesh.visible && p.meta.pvcNames?.length > 0 && p.meta.namespace !== 'rook-ceph') {
-        const from = p.mesh.position.clone()
-        const to = new THREE.Vector3(from.x, -3, from.z)
-        const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
-        const line = new THREE.Line(geometry, lineMat)
-        scene.add(line)
-        storageLines.push(line)
+      // 3. カメラのフォーカス
+      if (activeNs === 'all') {
+        const visibleMeshes = pods.filter(p => p.mesh.visible).map(p => p.mesh)
+        fitCamera(camera, controls, visibleMeshes)
+      } else {
+        const nsPods = pods.filter(p => p.meta.namespace === activeNs).map(p => p.mesh)
+        const nsSvcs = services.filter(s => s.meta.namespace === activeNs).map(s => s.mesh)
+        fitCamera(camera, controls, [...nsPods, ...nsSvcs])
       }
-    })
+    } catch (err) {
+      console.error('Error in updateVisibility:', err)
+    }
   }
 
   // "All" オプションの追加
@@ -180,7 +189,6 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     `
     
     item.onclick = () => {
-      // 選択状態の見た目更新
       Array.from(list.children).forEach(child => child.style.background = '')
       item.style.background = 'rgba(68, 136, 255, 0.2)'
       updateVisibility(isAll ? 'all' : id)
@@ -199,9 +207,13 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     list.appendChild(item)
   })
 
-  // デフォルトで最初の Namespace (通常は 'default') を選択
+  // デフォルトで最初の Namespace を選択
   const defaultNs = namespaces.includes('default') ? 'default' : namespaces[0]
-  const defaultItem = Array.from(list.children).find(el => el.textContent.trim() === defaultNs)
+  const items = Array.from(list.children)
+  const defaultItem = items.find(el => {
+    const labelSpan = el.querySelector('span:last-child')
+    return labelSpan && labelSpan.textContent === defaultNs
+  })
   if (defaultItem) defaultItem.click()
 }
 
