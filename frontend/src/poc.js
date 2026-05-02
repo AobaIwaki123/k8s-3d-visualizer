@@ -80,7 +80,7 @@ async function main() {
   })
 }
 
-function setupNamespaceFilter(zones, pods, services, connections, camera, controls, layers) {
+function setupNamespaceFilter(zones, pods, services, connections, camera, controls, layers, storageLines, scene) {
   const list = document.getElementById('ns-filter-list')
   const namespaces = zones.map(z => z.userData.namespace).sort()
 
@@ -108,8 +108,8 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
       })
     })
 
-    // 2. Rook-Ceph を選択中の Namespace の真下に移動させる
-    repositionCeph(activeNs, zones, pods)
+    // 2. Rook-Ceph と接続線を移動させる
+    repositionCephAndPipes(activeNs, zones, pods, storageLines, scene)
 
     // 3. カメラのフォーカス
     if (activeNs === 'all') {
@@ -122,38 +122,45 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     }
   }
 
-  // Ceph の位置を動的に計算して移動
-  const repositionCeph = (activeNs, zones, pods) => {
+  // Ceph とパイプラインの位置を動的に更新
+  const repositionCephAndPipes = (activeNs, zones, pods, storageLines, scene) => {
     const cephPods = pods.filter(p => p.meta.namespace === 'rook-ceph')
     if (cephPods.length === 0) return
 
+    // 前回のラインを削除
+    storageLines.forEach(l => scene.remove(l))
+    storageLines.length = 0
+
     let targetX = 0, targetZ = 0
     if (activeNs === 'all') {
-      // 全体の中心を求める
-      const box = new THREE.Box3()
-      zones.forEach(z => box.expandByObject(z))
-      const center = new THREE.Vector3()
-      box.getCenter(center)
+      const box = new THREE.Box3(); zones.forEach(z => box.expandByObject(z))
+      const center = new THREE.Vector3(); box.getCenter(center)
       targetX = center.x; targetZ = center.z
     } else {
-      // 選択された Zone の中心を求める
       const zone = zones.find(z => z.userData.namespace === activeNs)
-      if (zone) {
-        targetX = zone.position.x; targetZ = zone.position.z
-      }
+      if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
     }
 
-    // Ceph Pod を地下にグリッド状に配置（ターゲット中心に合わせる）
+    // Ceph Pod の配置
     const COLS = 6; const SPACING = 1.4
     const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
     const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
 
     cephPods.forEach((p, idx) => {
-      p.mesh.position.set(
-        startX + (idx % COLS) * SPACING,
-        -3,
-        startZ + Math.floor(idx / COLS) * SPACING
-      )
+      p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
+    })
+
+    // ストレージパイプライン（接続線）の生成
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.3 })
+    pods.forEach(p => {
+      if (p.mesh.visible && p.meta.pvcNames?.length > 0 && p.meta.namespace !== 'rook-ceph') {
+        const from = p.mesh.position.clone()
+        const to = new THREE.Vector3(from.x, -3, from.z)
+        const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
+        const line = new THREE.Line(geometry, lineMat)
+        scene.add(line)
+        storageLines.push(line)
+      }
     })
   }
 
@@ -259,6 +266,12 @@ function renderMeta(meta) {
       <div class="meta-row">
         <span class="meta-key">${k}</span>
         <span class="meta-val">${Array.isArray(v) ? v.join('<br>') : v}</span>
+      </div>`)
+    .join('')
+}
+
+main()
+v.join('<br>') : v}</span>
       </div>`)
     .join('')
 }
