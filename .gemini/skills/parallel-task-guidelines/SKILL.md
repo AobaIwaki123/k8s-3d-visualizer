@@ -1,8 +1,11 @@
+---
+name: parallel-task-guidelines
+description: Guidelines for creating and assigning parallel tasks to multiple agents. Use when Gemini CLI needs to draft instructions for sub-agents or separate task documents to ensure isolation and clear requirements.
+---
+
 # 並列タスクドキュメント作成ガイドライン
 
-並列タスクを Claude に割り当てるドキュメントを書く際に守るべきルール。
-
----
+並列タスクをエージェントに割り当てるドキュメントを書く際に守るべきルール。
 
 ## Rule 1: タスクはディレクトリで分割し、ファイルを渡すだけで実装できるようにする
 
@@ -15,8 +18,6 @@
 - `## 依存ライブラリ` — 使ってよい import 元を限定
 - `## export するインターフェース` — 他タスクとの結合点を型で固定
 - `## 完了条件` — 実装完了の判定基準
-
----
 
 ## Rule 2: 実装者は必ずブランチを切り、PR を作成する
 
@@ -31,8 +32,6 @@ PR タイトル: [Task X] <実装内容の一行要約>
 PR 作成後に URL を報告すること
 ```
 
----
-
 ## Rule 3: 環境操作（npm install 等）は指示がない限り行わない
 
 **WHY:** 実行環境はエージェントが知らない制約（オフライン・CI・権限制限など）を持つ場合がある。指示なしの環境操作はユーザーの意図しない副作用を生む。
@@ -43,8 +42,6 @@ PR 作成後に URL を報告すること
 - 実装（ファイル編集）: 実施する
 - `npm install` / `pip install` / `docker build` 等: **指示があるときのみ実施する**
 - `npm run dev` / テスト実行: **指示があるときのみ実施する**
-
---- 
 
 ## Rule 4: 勝手に実装に入らない（調査・設計ドキュメント作成のみ）
 
