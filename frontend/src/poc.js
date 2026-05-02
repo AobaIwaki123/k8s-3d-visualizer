@@ -116,13 +116,17 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
         p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
       })
 
-      // ストレージパイプライン（接続線）の生成
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6 })
+      // ストレージパイプライン（ノード対応接続線）の生成
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.5 })
       pods.forEach(p => {
         const isAppPod = !p.meta.isStorage && (p.meta.namespace !== 'cloudflare-tunnel-ingress-controller')
         if (p.mesh.visible && isAppPod) {
           const from = p.mesh.position.clone()
-          const to = from.clone().setY(-3) // 垂直
+          
+          // この Pod と同じ Node で動いている Ceph Pod を探す（なければ最初の Ceph へ）
+          const targetCeph = cephPods.find(c => c.meta.nodeName === p.meta.nodeName) || cephPods[0]
+          const to = targetCeph.mesh.position.clone()
+
           const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
           const line = new THREE.Line(geometry, lineMat)
           scene.add(line)
