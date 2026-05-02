@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { initScene, fitCamera }     from './scene/SceneSetup.js'
 import { loadModels }               from './loaders/GlbLoader.js'
-import { placePocObjects }          from './objects/ObjectPlacer.js'
+import { placeClusterObjects }      from './objects/ObjectPlacer.js'
 import { buildConnectionLines }     from './connections/ConnectionLine.js'
 import { initLabelRenderer }        from './labels/LabelRenderer.js'
 import { attachLabel }              from './labels/ObjectLabel.js'
@@ -12,16 +12,21 @@ async function main() {
   const { updateSize, render: renderLabels } = initLabelRenderer(document.body)
 
   const models = await loadModels()
-  const { pods, services, namespaceZones } = placePocObjects(models)
+  
+  // 実データのロード
+  const response = await fetch('/cluster-state.json')
+  const clusterData = await response.json()
+
+  const { pods, services, namespaceZones } = placeClusterObjects(clusterData, models)
 
   namespaceZones.forEach(z => scene.add(z))
   pods.forEach(p => {
     scene.add(p.mesh)
-    attachLabel(p.mesh, p.meta.name, 'pod')
+    p.label = attachLabel(p.mesh, p.meta.name, 'pod')
   })
   services.forEach(s => {
     scene.add(s.mesh)
-    attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
+    s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
   })
 
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
@@ -30,13 +35,17 @@ async function main() {
   for (const svc of services) {
     for (const podName of svc.meta.targets) {
       const pod = pods.find(p => p.meta.name === podName)
-      if (pod) connections.push({ from: svc.mesh.position, to: pod.mesh.position })
+      if (pod) {
+        const line = buildConnectionLines([{ from: svc.mesh.position, to: pod.mesh.position }])[0]
+        line.userData.namespace = svc.meta.namespace
+        scene.add(line)
+        connections.push(line)
+      }
     }
   }
-  buildConnectionLines(connections).forEach(l => scene.add(l))
 
   document.getElementById('stats').textContent =
-    `${pods.length} pods · ${services.length} services · 2 namespaces`
+    `${pods.length} pods · ${services.length} services · ${namespaceZones.length} namespaces`
 
   setupClickInspector(renderer, camera, pods, services)
   setupHoverHandler({
@@ -47,9 +56,86 @@ async function main() {
     onLeave: hideTooltip,
   })
 
+  // フィルタリングUIの構築
+  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls)
+
   window.addEventListener('resize', updateSize)
 
   startLoop(() => { renderLabels(scene, camera) })
+}
+
+function setupNamespaceFilter(zones, pods, services, connections, camera, controls) {
+  const list = document.getElementById('ns-filter-list')
+  const namespaces = zones.map(z => z.userData.namespace).sort()
+
+  const updateVisibility = (activeNs) => {
+    // 1. 表示・非表示の切り替え
+    zones.forEach(z => {
+      const ns = z.userData.namespace
+      const visible = (activeNs === 'all' || activeNs === ns)
+      
+      z.visible = visible
+      pods.filter(p => p.meta.namespace === ns).forEach(p => {
+        p.mesh.visible = visible
+        p.label.element.style.display = visible ? '' : 'none'
+      })
+      services.filter(s => s.meta.namespace === ns).forEach(s => {
+        s.mesh.visible = visible
+        s.label.element.style.display = visible ? '' : 'none'
+      })
+      connections.filter(c => c.userData.namespace === ns).forEach(c => {
+        c.visible = visible
+      })
+    })
+
+    // 2. カメラのフォーカス
+    if (activeNs === 'all') {
+      fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
+    } else {
+      const nsPods = pods.filter(p => p.meta.namespace === activeNs).map(p => p.mesh)
+      const nsSvcs = services.filter(s => s.meta.namespace === activeNs).map(s => s.mesh)
+      fitCamera(camera, controls, [...nsPods, ...nsSvcs])
+    }
+  }
+
+  // "All" オプションの追加
+  const createItem = (id, label, color, isAll = false) => {
+    const item = document.createElement('div')
+    item.className = 'legend-item'
+    item.style.cursor = 'pointer'
+    item.style.padding = '4px 8px'
+    item.style.borderRadius = '4px'
+    item.style.marginBottom = '2px'
+    
+    item.innerHTML = `
+      <span class="legend-dot" style="background:${color}; width:12px; height:12px;"></span>
+      <span style="flex-grow:1">${label}</span>
+    `
+    
+    item.onclick = () => {
+      // 選択状態の見た目更新
+      Array.from(list.children).forEach(child => child.style.background = '')
+      item.style.background = 'rgba(68, 136, 255, 0.2)'
+      updateVisibility(isAll ? 'all' : id)
+    }
+    return item
+  }
+
+  // 初期構築
+  const allItem = createItem('all', 'ALL NAMESPACES', '#ffffff', true)
+  list.appendChild(allItem)
+
+  namespaces.forEach(ns => {
+    const zone = zones.find(z => z.userData.namespace === ns)
+    const color = `#${zone.material.color.getHexString()}`
+    const item = createItem(ns, ns, color)
+    list.appendChild(item)
+  })
+
+  // デフォルトで最初の Namespace (通常は 'default') を選択
+  const defaultNs = namespaces.includes('default') ? 'default' : namespaces[0]
+  const defaultItem = Array.from(list.children).find(el => el.textContent.trim() === defaultNs)
+  if (defaultItem) defaultItem.click()
 }
 
 // ---- hover tooltip ----

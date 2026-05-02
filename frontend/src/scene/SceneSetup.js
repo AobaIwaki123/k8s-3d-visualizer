@@ -10,10 +10,15 @@ export function fitCamera(camera, controls, objects) {
   box.getBoundingSphere(sphere)
 
   const fov = camera.fov * (Math.PI / 180)
-  const dist = (sphere.radius / Math.sin(fov / 2)) * 1.3  // 1.3 — bounding sphere 周囲の余白係数
+  const dist = (sphere.radius / Math.sin(fov / 2)) * 1.1
 
   controls.target.copy(sphere.center)
-  camera.position.set(sphere.center.x, sphere.center.y + sphere.radius * 0.4, sphere.center.z + dist)
+  
+  // 斜め上からのアングル (45度方向) に変更
+  // X, Y, Z すべてにオフセットを持たせることで俯瞰的な視点を作る
+  const offset = new THREE.Vector3(0.8, 0.6, 1.0).normalize().multiplyScalar(dist)
+  camera.position.copy(sphere.center).add(offset)
+  
   controls.update()
 }
 
