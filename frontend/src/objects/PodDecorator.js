@@ -41,7 +41,7 @@ export class PodDecorator {
     const BASE_TIME = new Date('2026-05-02T13:28:11.889Z').getTime()
     const created = new Date(creationTimestamp).getTime()
     const ageHours = (BASE_TIME - created) / (1000 * 60 * 60)
-    const isNew = ageHours >= 0 && ageHours < 48 // 48時間以内を「新しい」と定義
+    const isNew = ageHours >= 0 && ageHours < 1 // 1時間以内を「新しい」と定義（以前は48時間で広すぎた）
 
     group.traverse(child => {
       if (child.isMesh) {
@@ -51,19 +51,19 @@ export class PodDecorator {
         // restartCount がある場合はマゼンタ色の発光を付与（Failedの赤と区別）
         if (restartCount > 0) {
           child.material.emissive = new THREE.Color(0xff00ff)
-          child.material.emissiveIntensity = Math.min(restartCount * 0.2, 0.8)
+          child.material.emissiveIntensity = Math.min(restartCount * 0.1, 0.4)
         }
 
-        // 新しい Pod は青白く発光させる
+        // 新しい Pod は青白く発光させる（ステータス色を邪魔しない程度に薄く）
         if (isNew) {
           const freshColor = new THREE.Color(0x00ffff)
           if (restartCount === 0) {
             child.material.emissive = freshColor
-            child.material.emissiveIntensity = 0.6
+            child.material.emissiveIntensity = 0.2
           } else {
             // 両方の場合は色を混ぜる
             child.material.emissive.lerp(freshColor, 0.5)
-            child.material.emissiveIntensity = Math.min(child.material.emissiveIntensity + 0.3, 1.0)
+            child.material.emissiveIntensity = 0.3
           }
         }
       }

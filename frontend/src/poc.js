@@ -12,6 +12,13 @@ import { IngressLayer }             from './layers/IngressLayer.js'
 import { MonitoringLayer }          from './layers/MonitoringLayer.js'
 import { StorageLayer }             from './layers/StorageLayer.js'
 
+// レイヤーの有効化設定 (Feature Flags)
+const LAYER_CONFIG = {
+  INGRESS: true,
+  MONITORING: true,
+  STORAGE: true
+}
+
 async function main() {
   const { scene, camera, renderer, controls, startLoop } = initScene('canvas')
   const { updateSize, render: renderLabels } = initLabelRenderer(document.body)
@@ -34,12 +41,11 @@ async function main() {
     s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
   })
 
-  // レイヤーの初期化（オプトアウト中：演出を戻す場合はコメントを外す）
-  const layers = [
-    // new IngressLayer(scene, clusterData, models),
-    // new MonitoringLayer(scene, clusterData, pods),
-    // new StorageLayer(scene, clusterData, pods)
-  ]
+  // レイヤーの初期化
+  const layers = []
+  if (LAYER_CONFIG.INGRESS)    layers.push(new IngressLayer(scene, clusterData, models))
+  if (LAYER_CONFIG.MONITORING) layers.push(new MonitoringLayer(scene, clusterData, pods))
+  if (LAYER_CONFIG.STORAGE)    layers.push(new StorageLayer(scene, clusterData, pods, namespaceZones))
 
   fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
 
@@ -69,8 +75,7 @@ async function main() {
   })
 
   // フィルタリングUIの構築
-  const storageLines = [] // ストレージ接続線の管理用
-  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers, storageLines, scene)
+  setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers)
 
   window.addEventListener('resize', updateSize)
 
@@ -81,73 +86,21 @@ async function main() {
   })
 }
 
-function setupNamespaceFilter(zones, pods, services, connections, camera, controls, layers, storageLines, scene) {
+function setupNamespaceFilter(zones, pods, services, connections, camera, controls, layers) {
   const list = document.getElementById('ns-filter-list')
   const namespaces = zones.map(z => z.userData.namespace).sort()
 
-  // Ceph とパイプラインの位置を動的に更新する内部関数
-  const repositionCephAndPipes = (activeNs) => {
-    try {
-      const cephPods = pods.filter(p => p.meta.isStorage)
-      if (cephPods.length === 0) return
-
-      // 前回のラインを削除
-      storageLines.forEach(l => scene.remove(l))
-      storageLines.length = 0
-
-      let targetX = 0, targetZ = 0
-      if (activeNs === 'all') {
-        const box = new THREE.Box3()
-        pods.filter(p => !p.meta.isStorage).forEach(p => box.expandByPoint(p.mesh.position))
-        const center = new THREE.Vector3()
-        if (box.isEmpty()) center.set(0, 0, 0); else box.getCenter(center)
-        targetX = center.x; targetZ = center.z
-      } else {
-        const zone = zones.find(z => z.userData.namespace === activeNs)
-        if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
-      }
-
-      // Ceph Pod の配置
-      const COLS = 6; const SPACING = 1.4
-      const startX = targetX - ((Math.min(cephPods.length, COLS) - 1) * SPACING) / 2
-      const startZ = targetZ - ((Math.ceil(cephPods.length / COLS) - 1) * SPACING) / 2
-
-      cephPods.forEach((p, idx) => {
-        p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
-      })
-
-      // ストレージパイプライン（ノード対応接続線）の生成
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.5 })
-      pods.forEach(p => {
-        const isAppPod = !p.meta.isStorage && (p.meta.namespace !== 'cloudflare-tunnel-ingress-controller')
-        if (p.mesh.visible && isAppPod) {
-          const from = p.mesh.position.clone()
-          
-          // この Pod と同じ Node で動いている Ceph Pod を探す（なければ最初の Ceph へ）
-          const targetCeph = cephPods.find(c => c.meta.nodeName === p.meta.nodeName) || cephPods[0]
-          const to = targetCeph.mesh.position.clone()
-
-          const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
-          const line = new THREE.Line(geometry, lineMat)
-          scene.add(line)
-          storageLines.push(line)
-        }
-      })
-    } catch (err) {
-      console.error('Error in repositionCephAndPipes:', err)
-    }
-  }
-
   const updateVisibility = (activeNs) => {
     try {
+      // 1. 各レイヤーへの通知
       layers.forEach(l => {
         try { l.setNamespaceFilter?.(activeNs) } catch (e) { console.error('Layer error:', e) }
       })
 
-      // 1. 表示・非表示の切り替え
+      // 2. 基本オブジェクトの表示・非表示の切り替え
       zones.forEach(z => {
         const ns = z.userData.namespace
-        // ストレージ関連の Zone は常に表示（または適宜調整）
+        // ストレージ関連の Zone は常に表示（地下基盤として）
         const isStorageZone = pods.some(p => p.meta.namespace === ns && p.meta.isStorage)
         const visible = (activeNs === 'all' || activeNs === ns || isStorageZone)
         
@@ -165,9 +118,6 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
         })
       })
 
-      // 2. Rook-Ceph と接続線を移動させる
-      repositionCephAndPipes(activeNs)
-
       // 3. カメラのフォーカス
       const visibleMeshes = []
       pods.filter(p => p.mesh.visible).forEach(p => visibleMeshes.push(p.mesh))
@@ -179,7 +129,7 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     }
   }
 
-  // "All" オプションの追加
+  // UI項目の生成
   const createItem = (id, label, color, isAll = false) => {
     const item = document.createElement('div')
     item.className = 'legend-item'
@@ -212,14 +162,8 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     list.appendChild(item)
   })
 
-  // デフォルトで最初の Namespace を選択
-  const defaultNs = namespaces.includes('default') ? 'default' : namespaces[0]
-  const items = Array.from(list.children)
-  const defaultItem = items.find(el => {
-    const labelSpan = el.querySelector('span:last-child')
-    return labelSpan && labelSpan.textContent === defaultNs
-  })
-  if (defaultItem) defaultItem.click()
+  // デフォルトで ALL を選択
+  allItem.click()
 }
 
 // ---- hover tooltip ----
@@ -243,7 +187,7 @@ function hideTooltip() {
   _tooltip().classList.add('hidden')
 }
 
-// PRE: pods, services の各 mesh.userData.meta が設定済みであること
+// クリックインスペクター
 function setupClickInspector(renderer, camera, pods, services) {
   const raycaster = new THREE.Raycaster()
   const pointer   = new THREE.Vector2()
@@ -261,7 +205,6 @@ function setupClickInspector(renderer, camera, pods, services) {
     if (!hits.length) { detail.classList.add('hidden'); return }
 
     let obj = hits[0].object
-    // raycaster は GLB の葉ノードをヒットする — userData.meta は clone の root に付くため親を辿る
     while (obj && !obj.userData.meta) obj = obj.parent
     if (!obj?.userData.meta) { detail.classList.add('hidden'); return }
 
@@ -276,7 +219,6 @@ function setupClickInspector(renderer, camera, pods, services) {
   })
 }
 
-// IN: meta.type は detail-title 側で描画済みなため除外
 function renderMeta(meta) {
   return Object.entries(meta)
     .filter(([k]) => k !== 'type')

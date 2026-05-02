@@ -1,15 +1,27 @@
 import * as THREE from 'three'
 import { PodDecorator } from './PodDecorator.js'
 
+// 配置・間隔の設定
 const SPACING = 1.4
 const COLS = 4
 const SERVICE_Y = 4.5
 const NS_GAP = 6.0 // 名前空間同士の間隔
 
-// ストレージと判定する名前空間
-const STORAGE_NAMESPACES = new Set(['rook-ceph', 'rook-ceph-system'])
+// 仕様定数 (Feature Flags)
+export const FEATURES = {
+  USE_POD_DECORATOR: true, // Podの見た目を詳細化するかどうか
+}
 
-// 文字列からハッシュ形式で色を生成
+// 役割判定用の設定
+export const CLUSTER_CONFIG = {
+  STORAGE_NAMESPACES: new Set(['rook-ceph', 'rook-ceph-system']),
+  MONITORING_NAMESPACES: new Set(['monitoring', 'beyla']),
+  INGRESS_NAMESPACES: new Set(['ingress-nginx', 'cloudflare-tunnel-ingress-controller'])
+}
+
+/**
+ * 文字列からハッシュ形式で色を生成
+ */
 function stringToColor(str) {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
@@ -24,7 +36,7 @@ function podPosition(startX, idx) {
 
 function servicePosition(posMap, targets) {
   const positions = targets.map(t => posMap.get(t)).filter(Boolean)
-  if (!positions.length) return null // ターゲットが見つからないServiceは配置しない
+  if (!positions.length) return null
   const avg = positions.reduce((acc, p) => acc.add(p), new THREE.Vector3()).divideScalar(positions.length)
   return new THREE.Vector3(avg.x, SERVICE_Y, avg.z)
 }
@@ -60,19 +72,15 @@ export function placeClusterObjects(data, models) {
   const namespaceZones = []
   const posMap = new Map()
 
-  // Namespace ごとに Pod をグループ化
   const nsMap = new Map()
   data.pods.forEach(p => {
     if (!nsMap.has(p.namespace)) nsMap.set(p.namespace, [])
     nsMap.get(p.namespace).push(p)
   })
 
-  // 1. 全ての Namespace を同じルールでソートして並べる（特別扱いを解除）
   const sortedNamespaces = Array.from(nsMap.keys()).sort()
-
   let currentX = 0
 
-  // 2. ワークロードの配置
   sortedNamespaces.forEach(nsName => {
     const nsPods = nsMap.get(nsName)
     const color = stringToColor(nsName)
@@ -104,17 +112,27 @@ function createPodMesh(def, models, pos) {
   const modelKey = `pod-${['running', 'pending', 'failed'].includes(phase) ? phase : 'running'}`
   const mesh = models[modelKey].clone()
 
-  const isStorage = STORAGE_NAMESPACES.has(def.namespace)
+  const isStorage = CLUSTER_CONFIG.STORAGE_NAMESPACES.has(def.namespace)
+  const isMonitoring = CLUSTER_CONFIG.MONITORING_NAMESPACES.has(def.namespace)
+  const isIngress = CLUSTER_CONFIG.INGRESS_NAMESPACES.has(def.namespace)
+
   const initialPos = pos.clone()
   if (isStorage) {
     initialPos.y = -3
   }
 
   mesh.position.copy(initialPos)
-  mesh.userData.meta = { ...def, type: 'pod', isStorage }
+  mesh.userData.meta = { 
+    ...def, 
+    type: 'pod', 
+    isStorage,
+    isMonitoring,
+    isIngress
+  }
 
-  // デコレーター適用をオプトアウト（必要に応じて再開可能）
-  // PodDecorator.decorate(mesh, mesh.userData.meta)
+  if (FEATURES.USE_POD_DECORATOR) {
+    PodDecorator.decorate(mesh, mesh.userData.meta)
+  }
 
   return mesh
 }

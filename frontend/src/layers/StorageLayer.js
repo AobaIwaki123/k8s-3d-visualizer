@@ -6,86 +6,119 @@ import * as THREE from 'three'
  * PVC を介したデータ保存の繋がりを垂直方向の「パイプ」として表現する。
  */
 export class StorageLayer {
-  constructor(scene, clusterData, pods) {
+  constructor(scene, clusterData, pods, zones) {
     this.scene = scene
+    this.clusterData = clusterData
     this.pods = pods
+    this.zones = zones
     this.group = new THREE.Group()
     this.scene.add(this.group)
 
-    this.storageMeshes = []
-    this.pipelines = []
+    this.storageLines = []
     this.isVisible = true
+    this.activeNs = 'all'
 
     this.init()
   }
 
   init() {
-    this.storagePods = []
-
-    // 1. Ceph Bedrock: isStorage: true の Pod を地下（Y=-3）に配置
-    const storageMaterial = new THREE.MeshStandardMaterial({
-      color: 0x555555,
-      metalness: 0.9,
-      roughness: 0.1,
-      emissive: 0x222222
-    })
-
-    this.pods.forEach(p => {
-      if (p.meta.isStorage) {
-        p.mesh.position.y = -3
-
-        p.mesh.traverse(child => {
-          if (child.isMesh) {
-            child.material = storageMaterial
-          }
-        })
-
-        // グループに移さない — poc.js と二重管理を避けるためシーン直下で管理
-        this.storagePods.push(p)
-        this.storageMeshes.push(p.mesh)
-      }
-    })
-
-    // Storage Pipeline は Ceph Pod の動的移動に追従する必要があるため
-    // poc.js の repositionCephAndPipes で一元管理する（ここでは描画しない）
-
-    // 3. 地下空間の演出: 暗く重厚なプレート
-    // クラスターの広がりに合わせてサイズ調整（仮で 100x100）
-    const plateGeo = new THREE.PlaneGeometry(100, 100)
+    this.cephPods = this.pods.filter(p => p.meta.isStorage)
+    
+    // 地下空間の演出: 暗く重厚なプレート
+    const plateGeo = new THREE.PlaneGeometry(200, 200)
     const plateMat = new THREE.MeshStandardMaterial({
       color: 0x0a0a0a,
       transparent: true,
       opacity: 0.9,
       side: THREE.DoubleSide,
-      depthWrite: false // 背景として扱う
+      depthWrite: false
     })
     const plate = new THREE.Mesh(plateGeo, plateMat)
     plate.rotation.x = -Math.PI / 2
-    plate.position.y = -3.1 // Ceph Pods のわずかに下
+    plate.position.y = -3.1
     
     this.group.add(plate)
     this.bedrockPlate = plate
+
+    // 初期配置の実行
+    this.updateLayout('all')
+  }
+
+  /**
+   * Ceph とパイプラインの位置を動的に更新する
+   */
+  updateLayout(activeNs) {
+    this.activeNs = activeNs
+    if (this.cephPods.length === 0) return
+
+    // 前回のラインを削除
+    this.storageLines.forEach(l => this.group.remove(l))
+    this.storageLines.length = 0
+
+    let targetX = 0, targetZ = 0
+    if (activeNs === 'all') {
+      const box = new THREE.Box3()
+      this.pods.filter(p => !p.meta.isStorage).forEach(p => box.expandByPoint(p.mesh.position))
+      const center = new THREE.Vector3()
+      if (box.isEmpty()) center.set(0, 0, 0); else box.getCenter(center)
+      targetX = center.x; targetZ = center.z
+    } else {
+      const zone = this.zones.find(z => z.userData.namespace === activeNs)
+      if (zone) { targetX = zone.position.x; targetZ = zone.position.z }
+    }
+
+    // Ceph Pod の配置
+    const COLS = 6; const SPACING = 1.4
+    const startX = targetX - ((Math.min(this.cephPods.length, COLS) - 1) * SPACING) / 2
+    const startZ = targetZ - ((Math.ceil(this.cephPods.length / COLS) - 1) * SPACING) / 2
+
+    this.cephPods.forEach((p, idx) => {
+      p.mesh.position.set(startX + (idx % COLS) * SPACING, -3, startZ + Math.floor(idx / COLS) * SPACING)
+    })
+
+    // ストレージパイプライン（ノード対応接続線）の生成
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.5 })
+    this.pods.forEach(p => {
+      // イングレスコントローラーなどは除外（ノイズ軽減）
+      const isAppPod = !p.meta.isStorage && (p.meta.namespace !== 'cloudflare-tunnel-ingress-controller')
+      
+      // 現在表示されているPodに対してのみラインを引く
+      const isVisibleInNs = (activeNs === 'all' || p.meta.namespace === activeNs)
+      
+      if (isAppPod && isVisibleInNs) {
+        const from = p.mesh.position.clone()
+        
+        // この Pod と同じ Node で動いている Ceph Pod を探す（なければ最初の Ceph へ）
+        const targetCeph = this.cephPods.find(c => c.meta.nodeName === p.meta.nodeName) || this.cephPods[0]
+        if (!targetCeph) return
+
+        const to = targetCeph.mesh.position.clone()
+
+        const geometry = new THREE.BufferGeometry().setFromPoints([from, to])
+        const line = new THREE.Line(geometry, lineMat)
+        this.group.add(line)
+        this.storageLines.push(line)
+      }
+    })
   }
 
   /**
    * レイヤー全体の表示・非表示を切り替える
-   * @param {boolean} visible 
    */
   setVisibility(visible) {
+    this.isVisible = visible
     this.group.visible = visible
   }
 
   /**
    * 名前空間フィルタリングの適用
-   * @param {string} activeNs 
    */
   setNamespaceFilter(activeNs) {
-    // パイプラインは選択中 NS のものだけ表示
-    this.pipelines.forEach(pipe => {
-      const line = pipe.line || pipe
-      line.visible = (activeNs === 'all' || line.userData.namespace === activeNs)
-    })
-    // ストレージ Pod の可視性は poc.js の isStorageZone チェックに委譲
+    this.updateLayout(activeNs)
+  }
+
+  update(time) {
+    // パルス演出などが必要な場合はここに追加
   }
 
   /**
@@ -93,7 +126,6 @@ export class StorageLayer {
    */
   destroy() {
     this.scene.remove(this.group)
-    
     this.group.traverse(child => {
       if (child.geometry) child.geometry.dispose()
       if (child.material) {
@@ -104,10 +136,6 @@ export class StorageLayer {
         }
       }
     })
-
-    // storage meshes を元のシーンに戻す必要はない（destroy 時はシーン全体が破棄される想定か、
-    // あるいは完全に消し去る）
-    this.storageMeshes = []
-    this.pipelines = []
+    this.storageLines = []
   }
 }
