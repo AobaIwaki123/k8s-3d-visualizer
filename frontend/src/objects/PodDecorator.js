@@ -36,13 +36,6 @@ export class PodDecorator {
     }
 
     // 2. リソース/状態の表現
-    // 作成からの経過時間を計算
-    // データ内の最新タイムスタンプ（2026-05-02）を基準にする
-    const BASE_TIME = new Date('2026-05-02T13:28:11.889Z').getTime()
-    const created = new Date(creationTimestamp).getTime()
-    const ageHours = (BASE_TIME - created) / (1000 * 60 * 60)
-    const isNew = ageHours >= 0 && ageHours < 1 // 1時間以内を「新しい」と定義（以前は48時間で広すぎた）
-
     group.traverse(child => {
       if (child.isMesh) {
         // マテリアルをクローンする — 個別の Pod ごとに見た目を変え、他へ影響させないため
@@ -52,19 +45,6 @@ export class PodDecorator {
         if (restartCount > 0) {
           child.material.emissive = new THREE.Color(0xff00ff)
           child.material.emissiveIntensity = Math.min(restartCount * 0.1, 0.4)
-        }
-
-        // 新しい Pod は青白く発光させる（ステータス色を邪魔しない程度に薄く）
-        if (isNew) {
-          const freshColor = new THREE.Color(0x00ffff)
-          if (restartCount === 0) {
-            child.material.emissive = freshColor
-            child.material.emissiveIntensity = 0.2
-          } else {
-            // 両方の場合は色を混ぜる
-            child.material.emissive.lerp(freshColor, 0.5)
-            child.material.emissiveIntensity = 0.3
-          }
         }
       }
     })
