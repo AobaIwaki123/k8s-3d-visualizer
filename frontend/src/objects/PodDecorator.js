@@ -41,9 +41,13 @@ export class PodDecorator {
         // マテリアルをクローンする — 個別の Pod ごとに見た目を変え、他へ影響させないため
         child.material = child.material.clone()
 
+        // 以前の実装やモデル初期値の残骸（シアン色など）を確実にリセット
+        child.material.emissive.set(0x000000)
+        child.material.emissiveIntensity = 0
+
         // restartCount がある場合はマゼンタ色の発光を付与（Failedの赤と区別）
         if (restartCount > 0) {
-          child.material.emissive = new THREE.Color(0xff00ff)
+          child.material.emissive.set(0xff00ff)
           child.material.emissiveIntensity = Math.min(restartCount * 0.1, 0.4)
         }
       }
