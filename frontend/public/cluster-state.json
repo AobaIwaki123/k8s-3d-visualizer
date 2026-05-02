@@ -1,0 +1,3670 @@
+{
+  "timestamp": "2026-05-02T12:06:21.707Z",
+  "nodes": [
+    {
+      "name": "k8s-worker-1",
+      "labels": {
+        "beta.kubernetes.io/arch": "amd64",
+        "beta.kubernetes.io/os": "linux",
+        "kubernetes.io/arch": "amd64",
+        "kubernetes.io/hostname": "k8s-worker-1",
+        "kubernetes.io/os": "linux"
+      },
+      "status": "Ready",
+      "capacity": {
+        "cpu": "4",
+        "ephemeral-storage": "63887992Ki",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8131116Ki",
+        "pods": "110"
+      },
+      "allocatable": {
+        "cpu": "4",
+        "ephemeral-storage": "58879173330",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8028716Ki",
+        "pods": "110"
+      }
+    },
+    {
+      "name": "k8s-worker-2",
+      "labels": {
+        "beta.kubernetes.io/arch": "amd64",
+        "beta.kubernetes.io/os": "linux",
+        "kubernetes.io/arch": "amd64",
+        "kubernetes.io/hostname": "k8s-worker-2",
+        "kubernetes.io/os": "linux"
+      },
+      "status": "Ready",
+      "capacity": {
+        "cpu": "4",
+        "ephemeral-storage": "63887992Ki",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8131116Ki",
+        "pods": "110"
+      },
+      "allocatable": {
+        "cpu": "4",
+        "ephemeral-storage": "58879173330",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8028716Ki",
+        "pods": "110"
+      }
+    },
+    {
+      "name": "k8s-worker-3",
+      "labels": {
+        "beta.kubernetes.io/arch": "amd64",
+        "beta.kubernetes.io/os": "linux",
+        "kubernetes.io/arch": "amd64",
+        "kubernetes.io/hostname": "k8s-worker-3",
+        "kubernetes.io/os": "linux"
+      },
+      "status": "Ready",
+      "capacity": {
+        "cpu": "4",
+        "ephemeral-storage": "63887992Ki",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8131116Ki",
+        "pods": "110"
+      },
+      "allocatable": {
+        "cpu": "4",
+        "ephemeral-storage": "58879173330",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8028716Ki",
+        "pods": "110"
+      }
+    },
+    {
+      "name": "k8s-worker-4",
+      "labels": {
+        "beta.kubernetes.io/arch": "amd64",
+        "beta.kubernetes.io/os": "linux",
+        "kubernetes.io/arch": "amd64",
+        "kubernetes.io/hostname": "k8s-worker-4",
+        "kubernetes.io/os": "linux"
+      },
+      "status": "Ready",
+      "capacity": {
+        "cpu": "4",
+        "ephemeral-storage": "63887992Ki",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8131116Ki",
+        "pods": "110"
+      },
+      "allocatable": {
+        "cpu": "4",
+        "ephemeral-storage": "58879173330",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "8028716Ki",
+        "pods": "110"
+      }
+    }
+  ],
+  "pods": [
+    {
+      "name": "argocd-application-controller-0",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-application-controller",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "argocd-application-controller-996c96879",
+        "statefulset.kubernetes.io/pod-name": "argocd-application-controller-0"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "argocd-application-controller"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T14:07:30Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "argocd-applicationset-controller-77bd7778c9-jjn2j",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-applicationset-controller",
+        "pod-template-hash": "77bd7778c9"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "argocd-applicationset-controller-77bd7778c9"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-04T10:56:01Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "argocd-dex-server-798cbff4c7-9zr5r",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-dex-server",
+        "pod-template-hash": "798cbff4c7"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "argocd-dex-server-798cbff4c7"
+      },
+      "restartCount": 2,
+      "creationTimestamp": "2025-10-18T11:28:18Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "argocd-notifications-controller-644f66f7df-t98xp",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-notifications-controller",
+        "pod-template-hash": "644f66f7df"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "argocd-notifications-controller-644f66f7df"
+      },
+      "restartCount": 3,
+      "creationTimestamp": "2025-10-11T11:38:19Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "argocd-redis-6684c6947f-47jjc",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-redis",
+        "pod-template-hash": "6684c6947f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "argocd-redis-6684c6947f"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-04T10:56:01Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "argocd-repo-server-6fccc5759b-rp8gm",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-repo-server",
+        "pod-template-hash": "6fccc5759b"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "argocd-repo-server-6fccc5759b"
+      },
+      "restartCount": 5,
+      "creationTimestamp": "2025-09-11T08:39:04Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "argocd-server-7f79849676-lx4qr",
+      "namespace": "argocd",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/name": "argocd-server",
+        "pod-template-hash": "7f79849676"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "argocd-server-7f79849676"
+      },
+      "restartCount": 4,
+      "creationTimestamp": "2025-10-18T10:52:21Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "cert-manager-cainjector-686546c9f7-4tftg",
+      "namespace": "cert-manager",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "cainjector",
+        "app.kubernetes.io/component": "cainjector",
+        "app.kubernetes.io/instance": "cert-manager",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "cainjector",
+        "app.kubernetes.io/version": "v1.17.1",
+        "helm.sh/chart": "cert-manager-v1.17.1",
+        "pod-template-hash": "686546c9f7"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "cert-manager-cainjector-686546c9f7"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:43Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "cert-manager-d6746cf45-sxfvm",
+      "namespace": "cert-manager",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "cert-manager",
+        "app.kubernetes.io/component": "controller",
+        "app.kubernetes.io/instance": "cert-manager",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "cert-manager",
+        "app.kubernetes.io/version": "v1.17.1",
+        "helm.sh/chart": "cert-manager-v1.17.1",
+        "pod-template-hash": "d6746cf45"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "cert-manager-d6746cf45"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-16T02:37:46Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "cert-manager-webhook-5f79cd6f4b-prlvg",
+      "namespace": "cert-manager",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "webhook",
+        "app.kubernetes.io/component": "webhook",
+        "app.kubernetes.io/instance": "cert-manager",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "webhook",
+        "app.kubernetes.io/version": "v1.17.1",
+        "helm.sh/chart": "cert-manager-v1.17.1",
+        "pod-template-hash": "5f79cd6f4b"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "cert-manager-webhook-5f79cd6f4b"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-16T02:37:46Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "cloudflare-tunnel-ingress-controller-5575dfdc67-l7x4t",
+      "namespace": "cloudflare-tunnel-ingress-controller",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "cloudflare-tunnel-ingress-controller",
+        "app.kubernetes.io/name": "cloudflare-tunnel-ingress-controller",
+        "pod-template-hash": "5575dfdc67"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "cloudflare-tunnel-ingress-controller-5575dfdc67"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T12:41:34Z",
+      "isMonitoring": false,
+      "isIngress": true
+    },
+    {
+      "name": "controlled-cloudflared-connector-676894969c-gw9ps",
+      "namespace": "cloudflare-tunnel-ingress-controller",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app": "controlled-cloudflared-connector",
+        "pod-template-hash": "676894969c",
+        "strrl.dev/cloudflare-tunnel-ingress-controller": "controlled-cloudflared-connector"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "controlled-cloudflared-connector-676894969c"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T12:04:52Z",
+      "isMonitoring": false,
+      "isIngress": true
+    },
+    {
+      "name": "victoria-metrics-0",
+      "namespace": "default",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "victoria-metrics",
+        "app.kubernetes.io/component": "database",
+        "app.kubernetes.io/name": "victoria-metrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "apps.kubernetes.io/pod-index": "0",
+        "component": "database",
+        "controller-revision-hash": "victoria-metrics-6598c666cf",
+        "statefulset.kubernetes.io/pod-name": "victoria-metrics-0"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "victoria-metrics"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-19T13:06:38Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-799bc7b78-c6vwm",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "journee",
+        "pod-template-hash": "799bc7b78"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-799bc7b78"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-12T06:58:15Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-799bc7b78-cpbp9",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "journee",
+        "pod-template-hash": "799bc7b78"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-799bc7b78"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-12T06:58:23Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-799bc7b78-zb27d",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "journee",
+        "pod-template-hash": "799bc7b78"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-799bc7b78"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:37Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-79c33a-6c867d846b-gln6m",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "journee-79c33a",
+        "pod-template-hash": "6c867d846b"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-79c33a-6c867d846b"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-12T03:22:57Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-79c33a-6c867d846b-lmfx9",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "journee-79c33a",
+        "pod-template-hash": "6c867d846b"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-79c33a-6c867d846b"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:42Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-79c33a-6c867d846b-xgxfj",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "journee-79c33a",
+        "pod-template-hash": "6c867d846b"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-79c33a-6c867d846b"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-12T03:22:48Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-f0debe-b89bffc8f-5nnlz",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "journee-f0debe",
+        "pod-template-hash": "b89bffc8f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-f0debe-b89bffc8f"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-14T06:57:46Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-f0debe-b89bffc8f-sgmgd",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "journee-f0debe",
+        "pod-template-hash": "b89bffc8f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-f0debe-b89bffc8f"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-14T06:57:37Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "journee-f0debe-b89bffc8f-xhbsn",
+      "namespace": "journee",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "journee-f0debe",
+        "pod-template-hash": "b89bffc8f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "journee-f0debe-b89bffc8f"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:47Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "coredns-5bdff775d9-cxbnz",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "k8s-app": "kube-dns",
+        "pod-template-hash": "5bdff775d9"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "coredns-5bdff775d9"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T12:01:51Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "coredns-5bdff775d9-djvh8",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "k8s-app": "kube-dns",
+        "pod-template-hash": "5bdff775d9"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "coredns-5bdff775d9"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T12:01:51Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "konnectivity-agent-5frc8",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "84c7d88bdc",
+        "k8s-app": "konnectivity-agent",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "konnectivity-agent"
+      },
+      "restartCount": 8,
+      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "konnectivity-agent-l2g59",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "84c7d88bdc",
+        "k8s-app": "konnectivity-agent",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "konnectivity-agent"
+      },
+      "restartCount": 9,
+      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "konnectivity-agent-lmzn7",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "84c7d88bdc",
+        "k8s-app": "konnectivity-agent",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "konnectivity-agent"
+      },
+      "restartCount": 7,
+      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "konnectivity-agent-qsqqt",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "84c7d88bdc",
+        "k8s-app": "konnectivity-agent",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "konnectivity-agent"
+      },
+      "restartCount": 5,
+      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-proxy-2p9p2",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "74fdd94cdf",
+        "k8s-app": "kube-proxy",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-proxy"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T14:53:39Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-proxy-7fqhn",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "74fdd94cdf",
+        "k8s-app": "kube-proxy",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-proxy"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T14:53:41Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-proxy-8mbl6",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "74fdd94cdf",
+        "k8s-app": "kube-proxy",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-proxy"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T14:53:43Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-proxy-wxpzq",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "74fdd94cdf",
+        "k8s-app": "kube-proxy",
+        "pod-template-generation": "2"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-proxy"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-30T14:53:40Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-router-498sr",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "66f7f5f4f5",
+        "k8s-app": "kube-router",
+        "pod-template-generation": "4",
+        "tier": "node"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-router"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T14:07:37Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-router-9kc5n",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "66f7f5f4f5",
+        "k8s-app": "kube-router",
+        "pod-template-generation": "4",
+        "tier": "node"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-router"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:41:41Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-router-mmvz8",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "66f7f5f4f5",
+        "k8s-app": "kube-router",
+        "pod-template-generation": "4",
+        "tier": "node"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-router"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:41:53Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "kube-router-rwpzf",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "controller-revision-hash": "66f7f5f4f5",
+        "k8s-app": "kube-router",
+        "pod-template-generation": "4",
+        "tier": "node"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-router"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T14:07:29Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "metrics-server-7db8586f5-dqql5",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "k8s-app": "metrics-server",
+        "pod-template-hash": "7db8586f5"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "metrics-server-7db8586f5"
+      },
+      "restartCount": 4,
+      "creationTimestamp": "2025-10-18T11:28:18Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "reflector-9b6dbc77f-hsbqk",
+      "namespace": "kube-system",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "reflector",
+        "app.kubernetes.io/name": "reflector",
+        "pod-template-hash": "9b6dbc77f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "reflector-9b6dbc77f"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-04-28T21:35:27Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "alertmanager-kube-prometheus-stack-alertmanager-0",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "alertmanager": "kube-prometheus-stack-alertmanager",
+        "app.kubernetes.io/instance": "kube-prometheus-stack-alertmanager",
+        "app.kubernetes.io/managed-by": "prometheus-operator",
+        "app.kubernetes.io/name": "alertmanager",
+        "app.kubernetes.io/version": "0.29.0",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "alertmanager-kube-prometheus-stack-alertmanager-66864bcd46",
+        "statefulset.kubernetes.io/pod-name": "alertmanager-kube-prometheus-stack-alertmanager-0"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "alertmanager-kube-prometheus-stack-alertmanager"
+      },
+      "restartCount": 2,
+      "creationTimestamp": "2025-12-26T07:07:15Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "beyla-48xmv",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app": "beyla",
+        "controller-revision-hash": "779446cdb7",
+        "pod-template-generation": "10"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "beyla"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T08:41:03Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "beyla-6zpbp",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "beyla",
+        "controller-revision-hash": "779446cdb7",
+        "pod-template-generation": "10"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "beyla"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T08:40:24Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "beyla-bcc4q",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "beyla",
+        "controller-revision-hash": "779446cdb7",
+        "pod-template-generation": "10"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "beyla"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T08:40:46Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "beyla-pnh5k",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "beyla",
+        "controller-revision-hash": "779446cdb7",
+        "pod-template-generation": "10"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "beyla"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T08:40:34Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-grafana-5974d499c8-bqh7h",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/name": "grafana",
+        "app.kubernetes.io/version": "12.3.0",
+        "helm.sh/chart": "grafana-10.3.1",
+        "pod-template-hash": "5974d499c8"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "kube-prometheus-stack-grafana-5974d499c8"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-03-17T12:47:37Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-kube-state-metrics-7846957b5b-g7zhr",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "metrics",
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "kube-state-metrics",
+        "app.kubernetes.io/part-of": "kube-state-metrics",
+        "app.kubernetes.io/version": "2.17.0",
+        "helm.sh/chart": "kube-state-metrics-7.0.0",
+        "pod-template-hash": "7846957b5b",
+        "release": "kube-prometheus-stack"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "kube-prometheus-stack-kube-state-metrics-7846957b5b"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:43Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-operator-7c6d9948fb-rdm8r",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "kube-prometheus-stack-operator",
+        "app.kubernetes.io/component": "prometheus-operator",
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "kube-prometheus-stack-prometheus-operator",
+        "app.kubernetes.io/part-of": "kube-prometheus-stack",
+        "app.kubernetes.io/version": "80.4.1",
+        "chart": "kube-prometheus-stack-80.4.1",
+        "heritage": "Helm",
+        "pod-template-hash": "7c6d9948fb",
+        "release": "kube-prometheus-stack"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "kube-prometheus-stack-operator-7c6d9948fb"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:48Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-prometheus-node-exporter-4547c",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "metrics",
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "prometheus-node-exporter",
+        "app.kubernetes.io/part-of": "prometheus-node-exporter",
+        "app.kubernetes.io/version": "1.10.2",
+        "controller-revision-hash": "5d4cb44676",
+        "helm.sh/chart": "prometheus-node-exporter-4.49.2",
+        "jobLabel": "node-exporter",
+        "pod-template-generation": "1",
+        "release": "kube-prometheus-stack"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-prometheus-stack-prometheus-node-exporter"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-prometheus-node-exporter-brhws",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "metrics",
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "prometheus-node-exporter",
+        "app.kubernetes.io/part-of": "prometheus-node-exporter",
+        "app.kubernetes.io/version": "1.10.2",
+        "controller-revision-hash": "5d4cb44676",
+        "helm.sh/chart": "prometheus-node-exporter-4.49.2",
+        "jobLabel": "node-exporter",
+        "pod-template-generation": "1",
+        "release": "kube-prometheus-stack"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-prometheus-stack-prometheus-node-exporter"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-prometheus-node-exporter-ljg9r",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "metrics",
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "prometheus-node-exporter",
+        "app.kubernetes.io/part-of": "prometheus-node-exporter",
+        "app.kubernetes.io/version": "1.10.2",
+        "controller-revision-hash": "5d4cb44676",
+        "helm.sh/chart": "prometheus-node-exporter-4.49.2",
+        "jobLabel": "node-exporter",
+        "pod-template-generation": "1",
+        "release": "kube-prometheus-stack"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-prometheus-stack-prometheus-node-exporter"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "kube-prometheus-stack-prometheus-node-exporter-p2xml",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "metrics",
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "prometheus-node-exporter",
+        "app.kubernetes.io/part-of": "prometheus-node-exporter",
+        "app.kubernetes.io/version": "1.10.2",
+        "controller-revision-hash": "5d4cb44676",
+        "helm.sh/chart": "prometheus-node-exporter-4.49.2",
+        "jobLabel": "node-exporter",
+        "pod-template-generation": "1",
+        "release": "kube-prometheus-stack"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "kube-prometheus-stack-prometheus-node-exporter"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "loki-0",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "single-binary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki",
+        "app.kubernetes.io/part-of": "memberlist",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "loki-678c6f44fd",
+        "statefulset.kubernetes.io/pod-name": "loki-0"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "loki"
+      },
+      "restartCount": 10010,
+      "creationTimestamp": "2026-03-17T14:25:03Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "loki-canary-2zr75",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "canary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki",
+        "controller-revision-hash": "c59b4fb47",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "loki-canary"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "loki-canary-6n5wp",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "canary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki",
+        "controller-revision-hash": "c59b4fb47",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "loki-canary"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "loki-canary-lqqqz",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "canary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki",
+        "controller-revision-hash": "c59b4fb47",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "loki-canary"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "loki-canary-xsc2f",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "canary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki",
+        "controller-revision-hash": "c59b4fb47",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "loki-canary"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "otel-collector-collector-b85c9f65d-2jrpd",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "opentelemetry-collector",
+        "app.kubernetes.io/instance": "observability.otel-collector",
+        "app.kubernetes.io/managed-by": "opentelemetry-operator",
+        "app.kubernetes.io/name": "otel-collector-collector",
+        "app.kubernetes.io/part-of": "opentelemetry",
+        "app.kubernetes.io/version": "latest",
+        "pod-template-hash": "b85c9f65d"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "otel-collector-collector-b85c9f65d"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:43Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "otel-collector-collector-b85c9f65d-qj2kr",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "opentelemetry-collector",
+        "app.kubernetes.io/instance": "observability.otel-collector",
+        "app.kubernetes.io/managed-by": "opentelemetry-operator",
+        "app.kubernetes.io/name": "otel-collector-collector",
+        "app.kubernetes.io/part-of": "opentelemetry",
+        "app.kubernetes.io/version": "latest",
+        "pod-template-hash": "b85c9f65d"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "otel-collector-collector-b85c9f65d"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:16:59Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "prometheus-kube-prometheus-stack-prometheus-0",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "kube-prometheus-stack-prometheus",
+        "app.kubernetes.io/managed-by": "prometheus-operator",
+        "app.kubernetes.io/name": "prometheus",
+        "app.kubernetes.io/version": "3.8.0",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "prometheus-kube-prometheus-stack-prometheus-56f4854cdd",
+        "operator.prometheus.io/name": "kube-prometheus-stack-prometheus",
+        "operator.prometheus.io/shard": "0",
+        "prometheus": "kube-prometheus-stack-prometheus",
+        "statefulset.kubernetes.io/pod-name": "prometheus-kube-prometheus-stack-prometheus-0"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "prometheus-kube-prometheus-stack-prometheus"
+      },
+      "restartCount": 9,
+      "creationTimestamp": "2025-12-26T07:07:23Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "promtail-drfmz",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "promtail",
+        "app.kubernetes.io/name": "promtail",
+        "controller-revision-hash": "b7b5df9df",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "promtail"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:12:53Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "promtail-dsf8q",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "promtail",
+        "app.kubernetes.io/name": "promtail",
+        "controller-revision-hash": "b7b5df9df",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "promtail"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:12:53Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "promtail-mfgqf",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "promtail",
+        "app.kubernetes.io/name": "promtail",
+        "controller-revision-hash": "b7b5df9df",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "promtail"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:12:54Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "promtail-r89xj",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "promtail",
+        "app.kubernetes.io/name": "promtail",
+        "controller-revision-hash": "b7b5df9df",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "promtail"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-26T07:12:53Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "tempo-0",
+      "namespace": "observability",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/instance": "tempo",
+        "app.kubernetes.io/name": "tempo",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "tempo-5f747b8fdc",
+        "statefulset.kubernetes.io/pod-name": "tempo-0"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "tempo"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T14:08:33Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "opentelemetry-operator-7b8cccd969-7m7dh",
+      "namespace": "opentelemetry-operator-system",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app.kubernetes.io/component": "controller-manager",
+        "app.kubernetes.io/instance": "opentelemetry-operator",
+        "app.kubernetes.io/managed-by": "Helm",
+        "app.kubernetes.io/name": "opentelemetry-operator",
+        "app.kubernetes.io/part-of": "opentelemetry-operator",
+        "app.kubernetes.io/version": "0.139.0",
+        "helm.sh/chart": "opentelemetry-operator-0.100.0",
+        "pod-template-hash": "7b8cccd969"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "opentelemetry-operator-7b8cccd969"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:38Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "penlight-7f759b5dc-pgbdh",
+      "namespace": "penlight-dev",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "penlight",
+        "pod-template-hash": "7f759b5dc"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "penlight-7f759b5dc"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:38Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "penlight-fb98d5cdf-vcrmt",
+      "namespace": "penlight",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "penlight",
+        "pod-template-hash": "fb98d5cdf"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "penlight-fb98d5cdf"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:42Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "portfolio-5c8b65d777-7nc57",
+      "namespace": "portfolio",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "portfolio",
+        "pod-template-hash": "5c8b65d777"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "portfolio-5c8b65d777"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2025-12-18T13:06:45Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "portfolio-5c8b65d777-x2zlz",
+      "namespace": "portfolio",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "portfolio",
+        "pod-template-hash": "5c8b65d777"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "portfolio-5c8b65d777"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:37Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-cephfsplugin-7n5rr",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-cephfsplugin",
+        "contains": "csi-cephfsplugin-metrics",
+        "controller-revision-hash": "794c88c6bb",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-cephfsplugin"
+      },
+      "restartCount": 24,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-cephfsplugin-lh5jj",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-cephfsplugin",
+        "contains": "csi-cephfsplugin-metrics",
+        "controller-revision-hash": "794c88c6bb",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-cephfsplugin"
+      },
+      "restartCount": 29,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-cephfsplugin-provisioner-64f7c86fdc-bsxml",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-cephfsplugin-provisioner",
+        "contains": "csi-cephfsplugin-metrics",
+        "pod-template-hash": "64f7c86fdc"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "csi-cephfsplugin-provisioner-64f7c86fdc"
+      },
+      "restartCount": 20,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-cephfsplugin-provisioner-64f7c86fdc-qnknj",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-cephfsplugin-provisioner",
+        "contains": "csi-cephfsplugin-metrics",
+        "pod-template-hash": "64f7c86fdc"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "csi-cephfsplugin-provisioner-64f7c86fdc"
+      },
+      "restartCount": 12,
+      "creationTimestamp": "2025-10-18T11:28:18Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-cephfsplugin-qsfjd",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-cephfsplugin",
+        "contains": "csi-cephfsplugin-metrics",
+        "controller-revision-hash": "794c88c6bb",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-cephfsplugin"
+      },
+      "restartCount": 16,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-cephfsplugin-tv5hf",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-cephfsplugin",
+        "contains": "csi-cephfsplugin-metrics",
+        "controller-revision-hash": "794c88c6bb",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-cephfsplugin"
+      },
+      "restartCount": 31,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-rbdplugin-c5flj",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-rbdplugin",
+        "contains": "csi-rbdplugin-metrics",
+        "controller-revision-hash": "665f768c45",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-rbdplugin"
+      },
+      "restartCount": 16,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-rbdplugin-jb5k5",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-rbdplugin",
+        "contains": "csi-rbdplugin-metrics",
+        "controller-revision-hash": "665f768c45",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-rbdplugin"
+      },
+      "restartCount": 29,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-rbdplugin-p56n8",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-rbdplugin",
+        "contains": "csi-rbdplugin-metrics",
+        "controller-revision-hash": "665f768c45",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-rbdplugin"
+      },
+      "restartCount": 25,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-rbdplugin-provisioner-7cc8b8c98f-2fd8s",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-rbdplugin-provisioner",
+        "contains": "csi-rbdplugin-metrics",
+        "pod-template-hash": "7cc8b8c98f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "csi-rbdplugin-provisioner-7cc8b8c98f"
+      },
+      "restartCount": 37,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-rbdplugin-provisioner-7cc8b8c98f-rz4ft",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-rbdplugin-provisioner",
+        "contains": "csi-rbdplugin-metrics",
+        "pod-template-hash": "7cc8b8c98f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "csi-rbdplugin-provisioner-7cc8b8c98f"
+      },
+      "restartCount": 6,
+      "creationTimestamp": "2025-12-04T10:56:01Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "csi-rbdplugin-vmqrt",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app": "csi-rbdplugin",
+        "contains": "csi-rbdplugin-metrics",
+        "controller-revision-hash": "665f768c45",
+        "pod-template-generation": "1"
+      },
+      "owner": {
+        "kind": "DaemonSet",
+        "name": "csi-rbdplugin"
+      },
+      "restartCount": 30,
+      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "rook-ceph-operator-7dfddd4676-7fr7r",
+      "namespace": "rook-ceph",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "rook-ceph-operator",
+        "helm.sh/chart": "rook-ceph-v1.16.5",
+        "pod-template-hash": "7dfddd4676"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "rook-ceph-operator-7dfddd4676"
+      },
+      "restartCount": 2,
+      "creationTimestamp": "2025-12-03T10:41:28Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "stg-dummy-exporter-644848d784-92qtm",
+      "namespace": "smart-home-staging",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "dummy-exporter",
+        "pod-template-hash": "644848d784"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "stg-dummy-exporter-644848d784"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-20T03:36:02Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "stg-grafana-6868759594-tnd7k",
+      "namespace": "smart-home-staging",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "grafana",
+        "app.kubernetes.io/component": "visualization",
+        "app.kubernetes.io/name": "grafana",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "visualization",
+        "pod-template-hash": "6868759594"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "stg-grafana-6868759594"
+      },
+      "restartCount": 2,
+      "creationTimestamp": "2026-02-20T16:43:54Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "stg-victoriametrics-768d9d8579-x4p5j",
+      "namespace": "smart-home-staging",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "victoriametrics",
+        "app.kubernetes.io/component": "metrics-storage",
+        "app.kubernetes.io/name": "victoriametrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "metrics-storage",
+        "pod-template-hash": "768d9d8579"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "stg-victoriametrics-768d9d8579"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-20T01:26:50Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "prod-grafana-5ff598b57f-2lbjb",
+      "namespace": "smart-home",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "grafana",
+        "app.kubernetes.io/component": "visualization",
+        "app.kubernetes.io/name": "grafana",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "visualization",
+        "pod-template-hash": "5ff598b57f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "prod-grafana-5ff598b57f"
+      },
+      "restartCount": 2,
+      "creationTimestamp": "2026-02-20T16:45:27Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "prod-switchbot-exporter-58bdcc65cb-sfh67",
+      "namespace": "smart-home",
+      "nodeName": "k8s-worker-4",
+      "phase": "Running",
+      "labels": {
+        "app": "switchbot-exporter",
+        "pod-template-hash": "58bdcc65cb"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "prod-switchbot-exporter-58bdcc65cb"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-20T01:26:12Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "prod-victoriametrics-65669bfd45-fhjjd",
+      "namespace": "smart-home",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "victoriametrics",
+        "app.kubernetes.io/component": "metrics-storage",
+        "app.kubernetes.io/name": "victoriametrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "metrics-storage",
+        "pod-template-hash": "65669bfd45"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "prod-victoriametrics-65669bfd45"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:47Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "operator-575fcd5d9f-sg5rh",
+      "namespace": "tailscale",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "operator",
+        "pod-template-hash": "575fcd5d9f"
+      },
+      "owner": {
+        "kind": "ReplicaSet",
+        "name": "operator-575fcd5d9f"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T12:47:48Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "ts-prod-grafana-n7gxq-0",
+      "namespace": "tailscale",
+      "nodeName": "k8s-worker-3",
+      "phase": "Running",
+      "labels": {
+        "app": "a2a7d8a9-104b-4f91-84b2-d27c8ecfe526",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "ts-prod-grafana-n7gxq-78c79d4cc",
+        "statefulset.kubernetes.io/pod-name": "ts-prod-grafana-n7gxq-0",
+        "tailscale.com/managed": "true",
+        "tailscale.com/parent-resource": "prod-grafana",
+        "tailscale.com/parent-resource-ns": "smart-home",
+        "tailscale.com/parent-resource-type": "svc"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "ts-prod-grafana-n7gxq"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-20T03:06:18Z",
+      "isMonitoring": true,
+      "isIngress": false
+    },
+    {
+      "name": "ts-stg-dummy-exporter-bpvt5-0",
+      "namespace": "tailscale",
+      "nodeName": "k8s-worker-2",
+      "phase": "Running",
+      "labels": {
+        "app": "e4e8afd9-96bc-4c64-b006-8c6e94470ec5",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "ts-stg-dummy-exporter-bpvt5-c455c4b74",
+        "statefulset.kubernetes.io/pod-name": "ts-stg-dummy-exporter-bpvt5-0",
+        "tailscale.com/managed": "true",
+        "tailscale.com/parent-resource": "stg-dummy-exporter",
+        "tailscale.com/parent-resource-ns": "smart-home-staging",
+        "tailscale.com/parent-resource-type": "svc"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "ts-stg-dummy-exporter-bpvt5"
+      },
+      "restartCount": 1,
+      "creationTimestamp": "2026-02-20T03:20:28Z",
+      "isMonitoring": false,
+      "isIngress": false
+    },
+    {
+      "name": "ts-stg-grafana-sd6bb-0",
+      "namespace": "tailscale",
+      "nodeName": "k8s-worker-1",
+      "phase": "Running",
+      "labels": {
+        "app": "56b41671-64bd-4e99-9967-d21d709022a2",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "ts-stg-grafana-sd6bb-fddb7d74",
+        "statefulset.kubernetes.io/pod-name": "ts-stg-grafana-sd6bb-0",
+        "tailscale.com/managed": "true",
+        "tailscale.com/parent-resource": "stg-grafana",
+        "tailscale.com/parent-resource-ns": "smart-home-staging",
+        "tailscale.com/parent-resource-type": "svc"
+      },
+      "owner": {
+        "kind": "StatefulSet",
+        "name": "ts-stg-grafana-sd6bb"
+      },
+      "restartCount": 0,
+      "creationTimestamp": "2026-03-17T14:07:30Z",
+      "isMonitoring": true,
+      "isIngress": false
+    }
+  ],
+  "services": [
+    {
+      "name": "argocd-applicationset-controller",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.111.231.19",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-applicationset-controller"
+      },
+      "ports": [
+        {
+          "port": 7000,
+          "targetPort": "webhook",
+          "protocol": "TCP"
+        },
+        {
+          "port": 8080,
+          "targetPort": "metrics",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-dex-server",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.104.37.255",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-dex-server"
+      },
+      "ports": [
+        {
+          "port": 5556,
+          "targetPort": 5556,
+          "protocol": "TCP"
+        },
+        {
+          "port": 5557,
+          "targetPort": 5557,
+          "protocol": "TCP"
+        },
+        {
+          "port": 5558,
+          "targetPort": 5558,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-metrics",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.106.48.57",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-application-controller"
+      },
+      "ports": [
+        {
+          "port": 8082,
+          "targetPort": 8082,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-notifications-controller-metrics",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.106.43.226",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-notifications-controller"
+      },
+      "ports": [
+        {
+          "port": 9001,
+          "targetPort": 9001,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-redis",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.111.132.143",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-redis"
+      },
+      "ports": [
+        {
+          "port": 6379,
+          "targetPort": 6379,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-repo-server",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.105.225.172",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-repo-server"
+      },
+      "ports": [
+        {
+          "port": 8081,
+          "targetPort": 8081,
+          "protocol": "TCP"
+        },
+        {
+          "port": 8084,
+          "targetPort": 8084,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-server",
+      "namespace": "argocd",
+      "type": "NodePort",
+      "clusterIP": "10.108.3.58",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-server"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 8080,
+          "protocol": "TCP"
+        },
+        {
+          "port": 443,
+          "targetPort": 8080,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "argocd-server-metrics",
+      "namespace": "argocd",
+      "type": "ClusterIP",
+      "clusterIP": "10.100.244.58",
+      "selector": {
+        "app.kubernetes.io/name": "argocd-server"
+      },
+      "ports": [
+        {
+          "port": 8083,
+          "targetPort": 8083,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "cert-manager",
+      "namespace": "cert-manager",
+      "type": "ClusterIP",
+      "clusterIP": "10.100.148.89",
+      "selector": {
+        "app.kubernetes.io/component": "controller",
+        "app.kubernetes.io/instance": "cert-manager",
+        "app.kubernetes.io/name": "cert-manager"
+      },
+      "ports": [
+        {
+          "port": 9402,
+          "targetPort": 9402,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "cert-manager-cainjector",
+      "namespace": "cert-manager",
+      "type": "ClusterIP",
+      "clusterIP": "10.108.137.21",
+      "selector": {
+        "app.kubernetes.io/component": "cainjector",
+        "app.kubernetes.io/instance": "cert-manager",
+        "app.kubernetes.io/name": "cainjector"
+      },
+      "ports": [
+        {
+          "port": 9402,
+          "targetPort": 9402,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "cert-manager-webhook",
+      "namespace": "cert-manager",
+      "type": "ClusterIP",
+      "clusterIP": "10.98.229.91",
+      "selector": {
+        "app.kubernetes.io/component": "webhook",
+        "app.kubernetes.io/instance": "cert-manager",
+        "app.kubernetes.io/name": "webhook"
+      },
+      "ports": [
+        {
+          "port": 443,
+          "targetPort": "https",
+          "protocol": "TCP"
+        },
+        {
+          "port": 9402,
+          "targetPort": "http-metrics",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "controlled-cloudflared-connector-headless",
+      "namespace": "cloudflare-tunnel-ingress-controller",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app": "controlled-cloudflared-connector",
+        "strrl.dev/cloudflare-tunnel-ingress-controller": "controlled-cloudflared-connector"
+      },
+      "ports": [
+        {
+          "port": 44483,
+          "targetPort": 44483,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "journee",
+      "namespace": "default",
+      "type": "ClusterIP",
+      "clusterIP": "10.101.173.81",
+      "selector": {
+        "app": "journee"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 3000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kubernetes",
+      "namespace": "default",
+      "type": "ClusterIP",
+      "clusterIP": "10.96.0.1",
+      "selector": {},
+      "ports": [
+        {
+          "port": 443,
+          "targetPort": 6443,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "victoria-metrics",
+      "namespace": "default",
+      "type": "ClusterIP",
+      "clusterIP": "10.98.5.208",
+      "selector": {
+        "app": "victoria-metrics",
+        "app.kubernetes.io/component": "database",
+        "app.kubernetes.io/name": "victoria-metrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "database"
+      },
+      "ports": [
+        {
+          "port": 8428,
+          "targetPort": 8428,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "victoria-metrics-headless",
+      "namespace": "default",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app": "victoria-metrics",
+        "app.kubernetes.io/component": "database",
+        "app.kubernetes.io/name": "victoria-metrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "database"
+      },
+      "ports": [
+        {
+          "port": 8428,
+          "targetPort": 8428,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "journee",
+      "namespace": "journee",
+      "type": "ClusterIP",
+      "clusterIP": "10.111.146.164",
+      "selector": {
+        "app": "journee"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 3000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "journee-79c33a",
+      "namespace": "journee",
+      "type": "ClusterIP",
+      "clusterIP": "10.97.245.164",
+      "selector": {
+        "app": "journee-79c33a"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 3000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "journee-f0debe",
+      "namespace": "journee",
+      "type": "ClusterIP",
+      "clusterIP": "10.108.173.134",
+      "selector": {
+        "app": "journee-f0debe"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 3000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-dns",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "10.96.0.10",
+      "selector": {
+        "k8s-app": "kube-dns"
+      },
+      "ports": [
+        {
+          "port": 53,
+          "targetPort": 53,
+          "protocol": "UDP"
+        },
+        {
+          "port": 53,
+          "targetPort": 53,
+          "protocol": "TCP"
+        },
+        {
+          "port": 9153,
+          "targetPort": 9153,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-coredns",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "k8s-app": "kube-dns"
+      },
+      "ports": [
+        {
+          "port": 9153,
+          "targetPort": 9153,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-kube-controller-manager",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "component": "kube-controller-manager"
+      },
+      "ports": [
+        {
+          "port": 10257,
+          "targetPort": 10257,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-kube-etcd",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "component": "etcd"
+      },
+      "ports": [
+        {
+          "port": 2381,
+          "targetPort": 2381,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-kube-proxy",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "k8s-app": "kube-proxy"
+      },
+      "ports": [
+        {
+          "port": 10249,
+          "targetPort": 10249,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-kube-scheduler",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "component": "kube-scheduler"
+      },
+      "ports": [
+        {
+          "port": 10259,
+          "targetPort": 10259,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-kubelet",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {},
+      "ports": [
+        {
+          "port": 10250,
+          "targetPort": 10250,
+          "protocol": "TCP"
+        },
+        {
+          "port": 10255,
+          "targetPort": 10255,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4194,
+          "targetPort": 4194,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "metrics-server",
+      "namespace": "kube-system",
+      "type": "ClusterIP",
+      "clusterIP": "10.111.243.242",
+      "selector": {
+        "k8s-app": "metrics-server"
+      },
+      "ports": [
+        {
+          "port": 443,
+          "targetPort": "https",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "alertmanager-operated",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app.kubernetes.io/name": "alertmanager"
+      },
+      "ports": [
+        {
+          "port": 9093,
+          "targetPort": "http-web",
+          "protocol": "TCP"
+        },
+        {
+          "port": 9094,
+          "targetPort": "mesh-tcp",
+          "protocol": "TCP"
+        },
+        {
+          "port": 9094,
+          "targetPort": "mesh-udp",
+          "protocol": "UDP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-alertmanager",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.107.224.48",
+      "selector": {
+        "alertmanager": "kube-prometheus-stack-alertmanager",
+        "app.kubernetes.io/name": "alertmanager"
+      },
+      "ports": [
+        {
+          "port": 9093,
+          "targetPort": 9093,
+          "protocol": "TCP"
+        },
+        {
+          "port": 8080,
+          "targetPort": "reloader-web",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-grafana",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.101.101.128",
+      "selector": {
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/name": "grafana"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": "grafana",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-kube-state-metrics",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.105.91.44",
+      "selector": {
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/name": "kube-state-metrics"
+      },
+      "ports": [
+        {
+          "port": 8080,
+          "targetPort": "http",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-operator",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.101.69.93",
+      "selector": {
+        "app": "kube-prometheus-stack-operator",
+        "release": "kube-prometheus-stack"
+      },
+      "ports": [
+        {
+          "port": 443,
+          "targetPort": "https",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-prometheus",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.109.83.250",
+      "selector": {
+        "app.kubernetes.io/name": "prometheus",
+        "operator.prometheus.io/name": "kube-prometheus-stack-prometheus"
+      },
+      "ports": [
+        {
+          "port": 9090,
+          "targetPort": 9090,
+          "protocol": "TCP"
+        },
+        {
+          "port": 8080,
+          "targetPort": "reloader-web",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "kube-prometheus-stack-prometheus-node-exporter",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.96.255.226",
+      "selector": {
+        "app.kubernetes.io/instance": "kube-prometheus-stack",
+        "app.kubernetes.io/name": "prometheus-node-exporter"
+      },
+      "ports": [
+        {
+          "port": 9100,
+          "targetPort": 9100,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "loki",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.110.46.2",
+      "selector": {
+        "app.kubernetes.io/component": "single-binary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki"
+      },
+      "ports": [
+        {
+          "port": 3100,
+          "targetPort": "http-metrics",
+          "protocol": "TCP"
+        },
+        {
+          "port": 9095,
+          "targetPort": "grpc",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "loki-canary",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.101.229.201",
+      "selector": {
+        "app.kubernetes.io/component": "canary",
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki"
+      },
+      "ports": [
+        {
+          "port": 3500,
+          "targetPort": "http-metrics",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "loki-headless",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki"
+      },
+      "ports": [
+        {
+          "port": 3100,
+          "targetPort": "http-metrics",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "loki-memberlist",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app.kubernetes.io/instance": "loki",
+        "app.kubernetes.io/name": "loki",
+        "app.kubernetes.io/part-of": "memberlist"
+      },
+      "ports": [
+        {
+          "port": 7946,
+          "targetPort": "http-memberlist",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "otel-collector-collector",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.109.87.145",
+      "selector": {
+        "app.kubernetes.io/component": "opentelemetry-collector",
+        "app.kubernetes.io/instance": "observability.otel-collector",
+        "app.kubernetes.io/managed-by": "opentelemetry-operator",
+        "app.kubernetes.io/part-of": "opentelemetry"
+      },
+      "ports": [
+        {
+          "port": 8888,
+          "targetPort": 8888,
+          "protocol": "TCP"
+        },
+        {
+          "port": 8889,
+          "targetPort": 8889,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4317,
+          "targetPort": 4317,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4318,
+          "targetPort": 4318,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "otel-collector-collector-headless",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app.kubernetes.io/component": "opentelemetry-collector",
+        "app.kubernetes.io/instance": "observability.otel-collector",
+        "app.kubernetes.io/managed-by": "opentelemetry-operator",
+        "app.kubernetes.io/part-of": "opentelemetry"
+      },
+      "ports": [
+        {
+          "port": 8888,
+          "targetPort": 8888,
+          "protocol": "TCP"
+        },
+        {
+          "port": 8889,
+          "targetPort": 8889,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4317,
+          "targetPort": 4317,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4318,
+          "targetPort": 4318,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "otel-collector-collector-monitoring",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.106.90.215",
+      "selector": {
+        "app.kubernetes.io/component": "opentelemetry-collector",
+        "app.kubernetes.io/instance": "observability.otel-collector",
+        "app.kubernetes.io/managed-by": "opentelemetry-operator",
+        "app.kubernetes.io/part-of": "opentelemetry"
+      },
+      "ports": [
+        {
+          "port": 8888,
+          "targetPort": 8888,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "otel-collector-prometheus",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.98.154.145",
+      "selector": {
+        "app.kubernetes.io/name": "otel-collector-collector"
+      },
+      "ports": [
+        {
+          "port": 8889,
+          "targetPort": 8889,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "prometheus-operated",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app.kubernetes.io/name": "prometheus"
+      },
+      "ports": [
+        {
+          "port": 9090,
+          "targetPort": "http-web",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "promtail-metrics",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app.kubernetes.io/instance": "promtail",
+        "app.kubernetes.io/name": "promtail"
+      },
+      "ports": [
+        {
+          "port": 3101,
+          "targetPort": "http-metrics",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "tempo",
+      "namespace": "observability",
+      "type": "ClusterIP",
+      "clusterIP": "10.110.211.102",
+      "selector": {
+        "app.kubernetes.io/instance": "tempo",
+        "app.kubernetes.io/name": "tempo"
+      },
+      "ports": [
+        {
+          "port": 6831,
+          "targetPort": 6831,
+          "protocol": "UDP"
+        },
+        {
+          "port": 6832,
+          "targetPort": 6832,
+          "protocol": "UDP"
+        },
+        {
+          "port": 3200,
+          "targetPort": 3200,
+          "protocol": "TCP"
+        },
+        {
+          "port": 14268,
+          "targetPort": 14268,
+          "protocol": "TCP"
+        },
+        {
+          "port": 14250,
+          "targetPort": 14250,
+          "protocol": "TCP"
+        },
+        {
+          "port": 9411,
+          "targetPort": 9411,
+          "protocol": "TCP"
+        },
+        {
+          "port": 55680,
+          "targetPort": 55680,
+          "protocol": "TCP"
+        },
+        {
+          "port": 55681,
+          "targetPort": 55681,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4317,
+          "targetPort": 4317,
+          "protocol": "TCP"
+        },
+        {
+          "port": 4318,
+          "targetPort": 4318,
+          "protocol": "TCP"
+        },
+        {
+          "port": 55678,
+          "targetPort": 55678,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "opentelemetry-operator",
+      "namespace": "opentelemetry-operator-system",
+      "type": "ClusterIP",
+      "clusterIP": "10.109.242.249",
+      "selector": {
+        "app.kubernetes.io/component": "controller-manager",
+        "app.kubernetes.io/name": "opentelemetry-operator"
+      },
+      "ports": [
+        {
+          "port": 8443,
+          "targetPort": "https",
+          "protocol": "TCP"
+        },
+        {
+          "port": 8080,
+          "targetPort": "metrics",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "opentelemetry-operator-webhook",
+      "namespace": "opentelemetry-operator-system",
+      "type": "ClusterIP",
+      "clusterIP": "10.100.54.178",
+      "selector": {
+        "app.kubernetes.io/component": "controller-manager",
+        "app.kubernetes.io/name": "opentelemetry-operator"
+      },
+      "ports": [
+        {
+          "port": 443,
+          "targetPort": "webhook-server",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "penlight",
+      "namespace": "penlight-dev",
+      "type": "ClusterIP",
+      "clusterIP": "10.101.235.190",
+      "selector": {
+        "app": "penlight"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 3000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "penlight",
+      "namespace": "penlight",
+      "type": "ClusterIP",
+      "clusterIP": "10.109.191.228",
+      "selector": {
+        "app": "penlight"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 3000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "portfolio",
+      "namespace": "portfolio",
+      "type": "ClusterIP",
+      "clusterIP": "10.103.134.207",
+      "selector": {
+        "app": "portfolio"
+      },
+      "ports": [
+        {
+          "port": 80,
+          "targetPort": 80,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "stg-dummy-exporter",
+      "namespace": "smart-home-staging",
+      "type": "LoadBalancer",
+      "clusterIP": "10.101.174.91",
+      "selector": {
+        "app": "dummy-exporter"
+      },
+      "ports": [
+        {
+          "port": 9100,
+          "targetPort": 9100,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "stg-grafana",
+      "namespace": "smart-home-staging",
+      "type": "LoadBalancer",
+      "clusterIP": "10.96.21.188",
+      "selector": {
+        "app": "grafana",
+        "app.kubernetes.io/component": "visualization",
+        "app.kubernetes.io/name": "grafana",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "visualization"
+      },
+      "ports": [
+        {
+          "port": 3000,
+          "targetPort": "http",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "stg-victoriametrics",
+      "namespace": "smart-home-staging",
+      "type": "ClusterIP",
+      "clusterIP": "10.100.45.37",
+      "selector": {
+        "app": "victoriametrics",
+        "app.kubernetes.io/component": "metrics-storage",
+        "app.kubernetes.io/name": "victoriametrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "metrics-storage"
+      },
+      "ports": [
+        {
+          "port": 8428,
+          "targetPort": "http",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "prod-grafana",
+      "namespace": "smart-home",
+      "type": "LoadBalancer",
+      "clusterIP": "10.110.96.200",
+      "selector": {
+        "app": "grafana",
+        "app.kubernetes.io/component": "visualization",
+        "app.kubernetes.io/name": "grafana",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "visualization"
+      },
+      "ports": [
+        {
+          "port": 3000,
+          "targetPort": "http",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "prod-switchbot-exporter",
+      "namespace": "smart-home",
+      "type": "ClusterIP",
+      "clusterIP": "10.97.233.140",
+      "selector": {
+        "app": "switchbot-exporter"
+      },
+      "ports": [
+        {
+          "port": 8000,
+          "targetPort": 8000,
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "prod-victoriametrics",
+      "namespace": "smart-home",
+      "type": "ClusterIP",
+      "clusterIP": "10.98.109.213",
+      "selector": {
+        "app": "victoriametrics",
+        "app.kubernetes.io/component": "metrics-storage",
+        "app.kubernetes.io/name": "victoriametrics",
+        "app.kubernetes.io/part-of": "smart-home-monitoring",
+        "component": "metrics-storage"
+      },
+      "ports": [
+        {
+          "port": 8428,
+          "targetPort": "http",
+          "protocol": "TCP"
+        }
+      ]
+    },
+    {
+      "name": "ts-prod-grafana-n7gxq",
+      "namespace": "tailscale",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app": "a2a7d8a9-104b-4f91-84b2-d27c8ecfe526"
+      }
+    },
+    {
+      "name": "ts-stg-dummy-exporter-bpvt5",
+      "namespace": "tailscale",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app": "e4e8afd9-96bc-4c64-b006-8c6e94470ec5"
+      }
+    },
+    {
+      "name": "ts-stg-grafana-sd6bb",
+      "namespace": "tailscale",
+      "type": "ClusterIP",
+      "clusterIP": "None",
+      "selector": {
+        "app": "56b41671-64bd-4e99-9967-d21d709022a2"
+      }
+    }
+  ],
+  "ingresses": [
+    {
+      "name": "argocd-ingress",
+      "namespace": "argocd",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "argocd.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "argocd-server"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "journee-79c33a",
+      "namespace": "journee",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "journee-79c33a.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "journee-79c33a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "journee-f0debe",
+      "namespace": "journee",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "journee-f0debe.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "journee-f0debe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "journee-ingress",
+      "namespace": "journee",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "journee.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "journee"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "grafana-ingress",
+      "namespace": "observability",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "grafana.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "kube-prometheus-stack-grafana"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "penlight-ingress",
+      "namespace": "penlight-dev",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "penlight-dev.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "penlight"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "penlight-ingress",
+      "namespace": "penlight",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "penlight.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "penlight"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "portfolio-ingress",
+      "namespace": "portfolio",
+      "class": "cloudflare-tunnel",
+      "hosts": [
+        {
+          "host": "portfolio.aooba.net",
+          "paths": [
+            {
+              "path": "/",
+              "serviceName": "portfolio"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "relationships": {
+    "serviceToPods": [
+      {
+        "name": "argocd-applicationset-controller",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-applicationset-controller-77bd7778c9-jjn2j"
+        ]
+      },
+      {
+        "name": "argocd-dex-server",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-dex-server-798cbff4c7-9zr5r"
+        ]
+      },
+      {
+        "name": "argocd-metrics",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-application-controller-0"
+        ]
+      },
+      {
+        "name": "argocd-notifications-controller-metrics",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-notifications-controller-644f66f7df-t98xp"
+        ]
+      },
+      {
+        "name": "argocd-redis",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-redis-6684c6947f-47jjc"
+        ]
+      },
+      {
+        "name": "argocd-repo-server",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-repo-server-6fccc5759b-rp8gm"
+        ]
+      },
+      {
+        "name": "argocd-server",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-server-7f79849676-lx4qr"
+        ]
+      },
+      {
+        "name": "argocd-server-metrics",
+        "namespace": "argocd",
+        "pods": [
+          "argocd-server-7f79849676-lx4qr"
+        ]
+      },
+      {
+        "name": "cert-manager",
+        "namespace": "cert-manager",
+        "pods": [
+          "cert-manager-d6746cf45-sxfvm"
+        ]
+      },
+      {
+        "name": "cert-manager-cainjector",
+        "namespace": "cert-manager",
+        "pods": [
+          "cert-manager-cainjector-686546c9f7-4tftg"
+        ]
+      },
+      {
+        "name": "cert-manager-webhook",
+        "namespace": "cert-manager",
+        "pods": [
+          "cert-manager-webhook-5f79cd6f4b-prlvg"
+        ]
+      },
+      {
+        "name": "controlled-cloudflared-connector-headless",
+        "namespace": "cloudflare-tunnel-ingress-controller",
+        "pods": [
+          "controlled-cloudflared-connector-676894969c-gw9ps"
+        ]
+      },
+      {
+        "name": "journee",
+        "namespace": "default",
+        "pods": []
+      },
+      {
+        "name": "kubernetes",
+        "pods": []
+      },
+      {
+        "name": "victoria-metrics",
+        "namespace": "default",
+        "pods": [
+          "victoria-metrics-0"
+        ]
+      },
+      {
+        "name": "victoria-metrics-headless",
+        "namespace": "default",
+        "pods": [
+          "victoria-metrics-0"
+        ]
+      },
+      {
+        "name": "journee",
+        "namespace": "journee",
+        "pods": [
+          "journee-799bc7b78-c6vwm",
+          "journee-799bc7b78-cpbp9",
+          "journee-799bc7b78-zb27d"
+        ]
+      },
+      {
+        "name": "journee-79c33a",
+        "namespace": "journee",
+        "pods": [
+          "journee-79c33a-6c867d846b-gln6m",
+          "journee-79c33a-6c867d846b-lmfx9",
+          "journee-79c33a-6c867d846b-xgxfj"
+        ]
+      },
+      {
+        "name": "journee-f0debe",
+        "namespace": "journee",
+        "pods": [
+          "journee-f0debe-b89bffc8f-5nnlz",
+          "journee-f0debe-b89bffc8f-sgmgd",
+          "journee-f0debe-b89bffc8f-xhbsn"
+        ]
+      },
+      {
+        "name": "kube-dns",
+        "namespace": "kube-system",
+        "pods": [
+          "coredns-5bdff775d9-cxbnz",
+          "coredns-5bdff775d9-djvh8"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-coredns",
+        "namespace": "kube-system",
+        "pods": [
+          "coredns-5bdff775d9-cxbnz",
+          "coredns-5bdff775d9-djvh8"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-kube-controller-manager",
+        "namespace": "kube-system",
+        "pods": []
+      },
+      {
+        "name": "kube-prometheus-stack-kube-etcd",
+        "namespace": "kube-system",
+        "pods": []
+      },
+      {
+        "name": "kube-prometheus-stack-kube-proxy",
+        "namespace": "kube-system",
+        "pods": [
+          "kube-proxy-2p9p2",
+          "kube-proxy-7fqhn",
+          "kube-proxy-8mbl6",
+          "kube-proxy-wxpzq"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-kube-scheduler",
+        "namespace": "kube-system",
+        "pods": []
+      },
+      {
+        "name": "kube-prometheus-stack-kubelet",
+        "pods": []
+      },
+      {
+        "name": "metrics-server",
+        "namespace": "kube-system",
+        "pods": [
+          "metrics-server-7db8586f5-dqql5"
+        ]
+      },
+      {
+        "name": "alertmanager-operated",
+        "namespace": "observability",
+        "pods": [
+          "alertmanager-kube-prometheus-stack-alertmanager-0"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-alertmanager",
+        "namespace": "observability",
+        "pods": [
+          "alertmanager-kube-prometheus-stack-alertmanager-0"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-grafana",
+        "namespace": "observability",
+        "pods": [
+          "kube-prometheus-stack-grafana-5974d499c8-bqh7h"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-kube-state-metrics",
+        "namespace": "observability",
+        "pods": [
+          "kube-prometheus-stack-kube-state-metrics-7846957b5b-g7zhr"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-operator",
+        "namespace": "observability",
+        "pods": [
+          "kube-prometheus-stack-operator-7c6d9948fb-rdm8r"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-prometheus",
+        "namespace": "observability",
+        "pods": [
+          "prometheus-kube-prometheus-stack-prometheus-0"
+        ]
+      },
+      {
+        "name": "kube-prometheus-stack-prometheus-node-exporter",
+        "namespace": "observability",
+        "pods": [
+          "kube-prometheus-stack-prometheus-node-exporter-4547c",
+          "kube-prometheus-stack-prometheus-node-exporter-brhws",
+          "kube-prometheus-stack-prometheus-node-exporter-ljg9r",
+          "kube-prometheus-stack-prometheus-node-exporter-p2xml"
+        ]
+      },
+      {
+        "name": "loki",
+        "namespace": "observability",
+        "pods": [
+          "loki-0"
+        ]
+      },
+      {
+        "name": "loki-canary",
+        "namespace": "observability",
+        "pods": [
+          "loki-canary-2zr75",
+          "loki-canary-6n5wp",
+          "loki-canary-lqqqz",
+          "loki-canary-xsc2f"
+        ]
+      },
+      {
+        "name": "loki-headless",
+        "namespace": "observability",
+        "pods": [
+          "loki-0",
+          "loki-canary-2zr75",
+          "loki-canary-6n5wp",
+          "loki-canary-lqqqz",
+          "loki-canary-xsc2f"
+        ]
+      },
+      {
+        "name": "loki-memberlist",
+        "namespace": "observability",
+        "pods": [
+          "loki-0"
+        ]
+      },
+      {
+        "name": "otel-collector-collector",
+        "namespace": "observability",
+        "pods": [
+          "otel-collector-collector-b85c9f65d-2jrpd",
+          "otel-collector-collector-b85c9f65d-qj2kr"
+        ]
+      },
+      {
+        "name": "otel-collector-collector-headless",
+        "namespace": "observability",
+        "pods": [
+          "otel-collector-collector-b85c9f65d-2jrpd",
+          "otel-collector-collector-b85c9f65d-qj2kr"
+        ]
+      },
+      {
+        "name": "otel-collector-collector-monitoring",
+        "namespace": "observability",
+        "pods": [
+          "otel-collector-collector-b85c9f65d-2jrpd",
+          "otel-collector-collector-b85c9f65d-qj2kr"
+        ]
+      },
+      {
+        "name": "otel-collector-prometheus",
+        "namespace": "observability",
+        "pods": [
+          "otel-collector-collector-b85c9f65d-2jrpd",
+          "otel-collector-collector-b85c9f65d-qj2kr"
+        ]
+      },
+      {
+        "name": "prometheus-operated",
+        "namespace": "observability",
+        "pods": [
+          "prometheus-kube-prometheus-stack-prometheus-0"
+        ]
+      },
+      {
+        "name": "promtail-metrics",
+        "namespace": "observability",
+        "pods": [
+          "promtail-drfmz",
+          "promtail-dsf8q",
+          "promtail-mfgqf",
+          "promtail-r89xj"
+        ]
+      },
+      {
+        "name": "tempo",
+        "namespace": "observability",
+        "pods": [
+          "tempo-0"
+        ]
+      },
+      {
+        "name": "opentelemetry-operator",
+        "namespace": "opentelemetry-operator-system",
+        "pods": [
+          "opentelemetry-operator-7b8cccd969-7m7dh"
+        ]
+      },
+      {
+        "name": "opentelemetry-operator-webhook",
+        "namespace": "opentelemetry-operator-system",
+        "pods": [
+          "opentelemetry-operator-7b8cccd969-7m7dh"
+        ]
+      },
+      {
+        "name": "penlight",
+        "namespace": "penlight-dev",
+        "pods": [
+          "penlight-7f759b5dc-pgbdh"
+        ]
+      },
+      {
+        "name": "penlight",
+        "namespace": "penlight",
+        "pods": [
+          "penlight-fb98d5cdf-vcrmt"
+        ]
+      },
+      {
+        "name": "portfolio",
+        "namespace": "portfolio",
+        "pods": [
+          "portfolio-5c8b65d777-7nc57",
+          "portfolio-5c8b65d777-x2zlz"
+        ]
+      },
+      {
+        "name": "stg-dummy-exporter",
+        "namespace": "smart-home-staging",
+        "pods": [
+          "stg-dummy-exporter-644848d784-92qtm"
+        ]
+      },
+      {
+        "name": "stg-grafana",
+        "namespace": "smart-home-staging",
+        "pods": [
+          "stg-grafana-6868759594-tnd7k"
+        ]
+      },
+      {
+        "name": "stg-victoriametrics",
+        "namespace": "smart-home-staging",
+        "pods": [
+          "stg-victoriametrics-768d9d8579-x4p5j"
+        ]
+      },
+      {
+        "name": "prod-grafana",
+        "namespace": "smart-home",
+        "pods": [
+          "prod-grafana-5ff598b57f-2lbjb"
+        ]
+      },
+      {
+        "name": "prod-switchbot-exporter",
+        "namespace": "smart-home",
+        "pods": [
+          "prod-switchbot-exporter-58bdcc65cb-sfh67"
+        ]
+      },
+      {
+        "name": "prod-victoriametrics",
+        "namespace": "smart-home",
+        "pods": [
+          "prod-victoriametrics-65669bfd45-fhjjd"
+        ]
+      },
+      {
+        "name": "ts-prod-grafana-n7gxq",
+        "namespace": "tailscale",
+        "pods": [
+          "ts-prod-grafana-n7gxq-0"
+        ]
+      },
+      {
+        "name": "ts-stg-dummy-exporter-bpvt5",
+        "namespace": "tailscale",
+        "pods": [
+          "ts-stg-dummy-exporter-bpvt5-0"
+        ]
+      },
+      {
+        "name": "ts-stg-grafana-sd6bb",
+        "namespace": "tailscale",
+        "pods": [
+          "ts-stg-grafana-sd6bb-0"
+        ]
+      }
+    ]
+  }
+}
