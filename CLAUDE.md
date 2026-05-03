@@ -17,8 +17,8 @@ cd frontend && npm run dev      # http://localhost:5173
 cd backend && npm run dev       # http://localhost:3001
 
 # Docker Build & Push (GHCR)
-docker build -t ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:latest ./backend
-docker build -t ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:latest ./frontend
+docker build --platform linux/amd64 -t ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:latest ./backend
+docker build --platform linux/amd64 -t ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:latest ./frontend
 docker push ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:latest
 docker push ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:latest
 ```
