@@ -19,12 +19,46 @@
       position: fixed; top: 0; left: 0; right: 0; height: 48px;
       background: rgba(8, 8, 18, 0.88);
       border-bottom: 1px solid rgba(68, 136, 255, 0.2);
-      display: flex; align-items: center; gap: 16px;
+      display: flex; align-items: center; gap: 14px;
       padding: 0 18px; z-index: 20;
       backdrop-filter: blur(8px);
     }
     .topbar-title { color: #8ab4ff; font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
-    .topbar-status { color: #ffaa44; font-size: 14px; }
+
+    /* Connection badge */
+    #conn-badge {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+      padding: 3px 8px; border-radius: 4px;
+      border: 1px solid transparent; white-space: nowrap;
+    }
+    #conn-badge.state-connecting  { color: #ffaa44; border-color: rgba(255,170,68,0.35); background: rgba(255,170,68,0.08); }
+    #conn-badge.state-live        { color: #00ff88; border-color: rgba(0,255,136,0.35); background: rgba(0,255,136,0.08); }
+    #conn-badge.state-static      { color: #aaaaaa; border-color: rgba(170,170,170,0.3); background: rgba(170,170,170,0.06); }
+    #conn-badge.state-error       { color: #ff4444; border-color: rgba(255,68,68,0.35); background: rgba(255,68,68,0.08); }
+
+    /* Last event */
+    #last-event-wrap {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #445566;
+    }
+    #last-event-time  { color: #557799; }
+    #last-event-type  { color: #6688aa; }
+    #last-event-name  { color: #99aabb; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #last-event-age   { color: #334455; }
+
+    /* Verify button */
+    #verify-btn {
+      font-family: inherit; font-size: 12px;
+      background: none; border: 1px solid rgba(68,136,255,0.3);
+      color: #4488ff; border-radius: 4px; padding: 3px 10px;
+      cursor: pointer; white-space: nowrap;
+    }
+    #verify-btn:hover { background: rgba(68,136,255,0.12); }
+    #verify-btn:disabled { opacity: 0.4; cursor: default; }
+    #verify-result { font-size: 12px; white-space: nowrap; }
+    #verify-result.ok  { color: #00ff88; }
+    #verify-result.err { color: #ff4444; }
+
     #stats { color: #556677; font-size: 14px; margin-left: auto; }
 
     /* Shared panel style */
@@ -117,7 +151,15 @@
 <body>
   <div id="topbar">
     <span class="topbar-title">⬡ k8s 3D Visualizer</span>
-    <span class="topbar-status">● mock</span>
+    <span id="conn-badge" class="state-connecting">● CONNECTING</span>
+    <div id="last-event-wrap">
+      <span id="last-event-time">—</span>
+      <span id="last-event-type"></span>
+      <span id="last-event-name"></span>
+      <span id="last-event-age"></span>
+    </div>
+    <button id="verify-btn">verify</button>
+    <span id="verify-result"></span>
     <span id="stats"></span>
   </div>
 
