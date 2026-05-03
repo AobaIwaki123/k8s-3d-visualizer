@@ -5,6 +5,7 @@
 Claude Blender Connectorで生成した3Dモデルを活用し、Pod・Node・Serviceの状態をリアルタイムで描画する。
 
 お手持ちのk8sクラスタに配置するだけで自動でクラスタ情報を収集し描画してくれます。
+
 サンプルページはこちら → [https://k8s-visualizer.aooba.net/](https://k8s-visualizer.aooba.net/)
 
 ![alt text](docs/assets/screenshot.png)
