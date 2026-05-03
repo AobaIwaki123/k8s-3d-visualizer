@@ -4,6 +4,8 @@
 
 Claude Blender Connectorで生成した3Dモデルを活用し、Pod・Node・Serviceの状態をリアルタイムで描画する。
 
+![alt text](docs/assets/screenshot.png)
+
 ## ドキュメント一覧
 
 | # | ファイル | 内容 |
