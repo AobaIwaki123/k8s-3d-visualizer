@@ -14,8 +14,6 @@ spec:
         app: backend
     spec:
       serviceAccountName: k8s-visualizer
-      imagePullSecrets:
-        - name: ghcr-pull-secret
       containers:
         - name: backend
           image: ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:latest

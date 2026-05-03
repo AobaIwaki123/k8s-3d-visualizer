@@ -13,8 +13,6 @@ spec:
       labels:
         app: frontend
     spec:
-      imagePullSecrets:
-        - name: ghcr-pull-secret
       containers:
         - name: frontend
           image: ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:latest
