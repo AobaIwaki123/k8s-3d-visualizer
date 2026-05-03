@@ -12,7 +12,22 @@
       overflow: hidden;
       font-family: 'SF Mono', 'Fira Code', monospace;
     }
-    canvas { display: block; width: 100vw; height: 100vh; }
+    #canvas { display: block; width: 100vw; height: 100vh; }
+
+    /* Logo container */
+    #logo-container {
+      position: fixed;
+      top: 40px; /* Slightly down from the very top */
+      right: 0;
+      width: 200px; /* Increased size */
+      height: 200px;
+      z-index: 100;
+      pointer-events: none;
+    }
+    #logo-canvas {
+      width: 100%;
+      height: 100%;
+    }
 
     /* Topbar */
     #topbar {
@@ -186,6 +201,10 @@
   </div>
 
   <div id="hover-tooltip" class="panel hidden"></div>
+
+  <div id="logo-container">
+    <canvas id="logo-canvas"></canvas>
+  </div>
 
   <div id="hint">hover to preview · click to inspect · drag to orbit · scroll to zoom</div>
 

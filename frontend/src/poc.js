@@ -6,6 +6,7 @@ import { buildConnectionLines }     from './connections/ConnectionLine.js'
 import { initLabelRenderer }        from './labels/LabelRenderer.js'
 import { attachLabel }              from './labels/ObjectLabel.js'
 import { setupHoverHandler }        from './interaction/HoverHandler.js'
+import { initLogo }                 from './ui/LogoRenderer.js'
 
 import { IngressLayer }             from './layers/IngressLayer.js'
 import { MonitoringLayer }          from './layers/MonitoringLayer.js'
@@ -26,10 +27,11 @@ const PHASE_CLASSES = {
 
 // ---- Mutable scene build state ----
 
-let currentBuild = null
-let currentData  = null
-let hoverDispose = null
-let clickDispose = null
+let currentBuild    = null
+let currentData     = null
+let hoverDispose    = null
+let clickDispose    = null
+let activeNamespace = 'all'   // namespace filter を rebuildScene 越しに保持
 
 // ---- Connection status UI ----
 
@@ -105,6 +107,7 @@ async function main() {
 
   const models = await loadModels()
   setupVerifyButton()
+  initLogo('logo-canvas')
 
   // ---- WebSocket with static-JSON fallback ----
 
@@ -245,6 +248,7 @@ async function main() {
     const exists = currentData.pods.some(p => p.name === payload.name && p.namespace === payload.namespace)
     if (!exists) {
       currentData.pods.push(payload)
+      currentData.relationships.serviceToPods = recomputeServiceToPods(currentData.services, currentData.pods)
       rebuildScene(currentData)
     }
   }
@@ -255,7 +259,10 @@ async function main() {
     currentData.pods = currentData.pods.filter(
       p => !(p.name === payload.name && p.namespace === payload.namespace)
     )
-    if (currentData.pods.length !== before) rebuildScene(currentData)
+    if (currentData.pods.length !== before) {
+      currentData.relationships.serviceToPods = recomputeServiceToPods(currentData.services, currentData.pods)
+      rebuildScene(currentData)
+    }
   }
 
   // ---- Render loop ----
@@ -281,6 +288,23 @@ function clearBuild(scene) {
   b.pods.forEach(p => scene.remove(p.mesh))
 
   currentBuild = null
+}
+
+// ---- Service→Pod 関係の再計算（pod ADDED/DELETED 後に呼ぶ）----
+
+function recomputeServiceToPods(services, pods) {
+  return services.map(svc => {
+    if (!svc.selector || Object.keys(svc.selector).length === 0) {
+      return { name: svc.name, namespace: svc.namespace, pods: [] }
+    }
+    const matched = pods
+      .filter(p => {
+        if (p.namespace !== svc.namespace) return false
+        return Object.entries(svc.selector).every(([k, v]) => p.labels?.[k] === v)
+      })
+      .map(p => p.name)
+    return { name: svc.name, namespace: svc.namespace, pods: matched }
+  })
 }
 
 // ---- Pod model swap on phase change ----
@@ -325,6 +349,7 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
   const namespaces = zones.map(z => z.userData.namespace).sort()
 
   const updateVisibility = (activeNs) => {
+    activeNamespace = activeNs   // rebuildScene 越しに選択状態を保持
     layers.forEach(l => {
       try { l.setNamespaceFilter?.(activeNs) } catch (e) { console.error('Layer error:', e) }
     })
@@ -370,16 +395,24 @@ function setupNamespaceFilter(zones, pods, services, connections, camera, contro
     return item
   }
 
+  const itemMap = new Map()
+
   const allItem = createItem('all', 'ALL NAMESPACES', '#ffffff', true)
   list.appendChild(allItem)
+  itemMap.set('all', allItem)
 
   namespaces.forEach(ns => {
     const zone = zones.find(z => z.userData.namespace === ns)
     const color = `#${zone.material.color.getHexString()}`
-    list.appendChild(createItem(ns, ns, color))
+    const item = createItem(ns, ns, color)
+    list.appendChild(item)
+    itemMap.set(ns, item)
   })
 
-  allItem.click()
+  // 前回の選択を復元。namespace がなくなっていれば ALL に戻す
+  const toRestore = itemMap.has(activeNamespace) ? activeNamespace : 'all'
+  if (toRestore !== activeNamespace) activeNamespace = 'all'
+  itemMap.get(toRestore).click()
 }
 
 // ---- Hover tooltip ----

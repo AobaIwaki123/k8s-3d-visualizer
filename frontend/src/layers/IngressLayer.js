@@ -121,6 +121,12 @@ export class IngressLayer {
 
   setNamespaceFilter(activeNs) {
     this.activeNs = activeNs
+
+    // ポータルリングは Ingress namespace が選択されているか ALL のときのみ表示
+    const ingressNamespaces = new Set(this.ingressPods.map(p => p.userData.meta.namespace))
+    const showIngress = activeNs === 'all' || ingressNamespaces.has(activeNs)
+    if (this.portal) this.portal.visible = showIngress
+
     this.group.children.forEach(obj => {
       if (obj === this.portal) return
       const ns = obj.userData?.namespace
