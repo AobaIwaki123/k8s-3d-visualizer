@@ -16,7 +16,7 @@ export async function initLogo(canvasId) {
   // No background to keep it transparent
   
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000)
-  camera.position.set(0, 0, 5)
+  camera.position.set(0, 0, 7)
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
