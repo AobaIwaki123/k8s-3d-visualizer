@@ -113,7 +113,8 @@ async function main() {
 
   setConnBadge('connecting')
 
-  const ws = new WebSocket(`ws://${location.host}/ws`)
+  const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
+  const ws = new WebSocket(`${protocol}//${location.host}/ws`)
   let wsConnected = false
 
   const fallbackTimeout = setTimeout(async () => {
