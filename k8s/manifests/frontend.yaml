@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:v20260504-01
+          image: ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:v20260504-02
           ports:
             - containerPort: 80
           resources:

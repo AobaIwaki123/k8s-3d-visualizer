@@ -16,7 +16,7 @@ spec:
       serviceAccountName: k8s-visualizer
       containers:
         - name: backend
-          image: ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:v20260504-01
+          image: ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:v20260504-02
           ports:
             - containerPort: 3001
           env:
