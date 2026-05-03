@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Status
 
 PoC 進行中。GLB アセット生成済み。Three.js PoC を `frontend/` で実装中。
-All specs are in `docs/`. K8s manifests in `k8s/` are ready to apply.
+ArgoCD による自動デプロイ構成済み（`k8s/argocd`）。
 
 ## Commands
 
@@ -16,10 +16,11 @@ cd frontend && npm run dev      # http://localhost:5173
 # Backend
 cd backend && npm run dev       # http://localhost:3001
 
-# Deploy
-kubectl apply -f k8s/
-docker build -t k8s-visualizer-backend:latest ./backend
-docker build -t k8s-visualizer-frontend:latest ./frontend
+# Docker Build & Push (GHCR)
+docker build -t ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:latest ./backend
+docker build -t ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:latest ./frontend
+docker push ghcr.io/aobaiwaki123/k8s-3d-visualizer-backend:latest
+docker push ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:latest
 ```
 
 ## Architecture Decisions
@@ -28,25 +29,19 @@ docker build -t k8s-visualizer-frontend:latest ./frontend
 - WHY: Single-user personal tool. Framework overhead not justified.
 - WHY NOT React: Three.js manages its own render loop; reconciler fights it.
 
-### Zustand (not Redux/Context) for state
-- WHY: Minimal boilerplate; store shape is flat (`nodes`, `pods`, `services`, `namespaces`, `selectedObject`).
-- WHY NOT Context: Re-render scope is too coarse for frequent WebSocket updates.
+### GitOps via ArgoCD
+- WHY: Automated sync with the repository. Manifests in `k8s/manifests`.
+- WHY NOT manual kubectl: Inconsistent cluster state and lack of history.
 
-### Fastify (not Express) for backend
-- WHY: Lower overhead for WebSocket + REST on a home cluster.
+### GHCR (GitHub Container Registry)
+- WHY: Seamless integration with GitHub repository and ArgoCD.
+- imagePullSecrets: `ghcr-pull-secret` (automatically managed/external).
 
-### WebSocket for real-time + REST for detail
-- WHY: WebSocket streams ADDED/MODIFIED/DELETED events efficiently. REST is only called on click (detail panel).
-- WHY NOT polling: Kubernetes Watch API is push-based; polling wastes resources and adds latency.
-
-### NodePort (not Ingress) for cluster access
-- WHY: Home LAN only. No external exposure, no TLS needed. NodePort `:30080` is sufficient.
-
-### Read-only RBAC ServiceAccount
-- WHY NOT write permissions: Visualizer never mutates cluster state. Least-privilege by design. See `k8s/rbac.yaml`.
+### 3D Logo (Candy Tune Logo)
+- WHY: Visual branding. Rendered in a separate top-right overlay scene to avoid main camera interference.
 
 ### GLB models via Blender MCP (not procedural geometry)
-- WHY: Richer visual fidelity for Pod/Service objects. Assets in `frontend/src/assets/models/`.
+- WHY: Richer visual fidelity for Pod/Service objects. Assets in `frontend/public/models/`.
 - WHY NOT for Pods at scale: Use `InstancedMesh` when Pod count exceeds ~100 to maintain 60 fps.
 - k8s Node has no rendered GLB. Three.js holds Node data only; spatial grouping is handled by Pod placement logic.
 

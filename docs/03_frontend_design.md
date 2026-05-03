@@ -10,11 +10,20 @@ frontend/
 │   │   ├── IngressLayer.js    # 外部流入
 │   │   ├── MonitoringLayer.js # 監視網
 │   │   └── StorageLayer.js    # ストレージ基盤
-│   ├── objects/
-│   │   ├── ObjectPlacer.js    # 初期配置ロジック
-│   │   └── PodDecorator.js    # Podの個別装飾（スケール/発光）
-│   ├── scene/
-│   │   └── SceneSetup.js      # シーン・カメラ・レンダラー初期化
+├── ui/
+│   └── LogoRenderer.js    # 右上ロゴの独立描画
+├── scene/
+│   └── SceneSetup.js      # シーン・カメラ・レンダラー初期化
+...
+## 特殊コンポーネント
+
+### 3D ロゴ (LogoRenderer.js)
+メインの可視化シーンに干渉しないよう、独立したレンダラー、シーン、カメラを持つ。
+- **配置**: 右上に絶対座標で固定。
+- **背景**: 透過（alpha: true）。
+- **アニメーション**: 常に Y 軸を中心にゆっくりと回転。
+- **ライティング**: GLB の色を再現するため `SRGBColorSpace` を使用し、`HemisphereLight` 等で多角的に照らす。
+
 │   ├── interaction/
 │   │   └── HoverHandler.js    # マウスオーバー処理
 │   └── labels/

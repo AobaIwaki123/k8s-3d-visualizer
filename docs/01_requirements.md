@@ -47,4 +47,3 @@ Podの状態や役割に応じて、以下の視覚的変化を付与する。
 
 - **Status**: Running (緑), Pending (黄), Failed (赤)
 - **Role**: DB系は横に太く、API系は縦に細長いモデルスケール
-- **Warning**: `restartCount > 0` の場合にマゼンタ色で発光
