@@ -127,7 +127,7 @@
         "name": "argocd-application-controller"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T14:07:30Z",
+      "createdAt": "2026-03-17T14:07:30Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -145,7 +145,7 @@
         "name": "argocd-applicationset-controller-77bd7778c9"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-04T10:56:01Z",
+      "createdAt": "2025-12-04T10:56:01Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -163,7 +163,7 @@
         "name": "argocd-dex-server-798cbff4c7"
       },
       "restartCount": 2,
-      "creationTimestamp": "2025-10-18T11:28:18Z",
+      "createdAt": "2025-10-18T11:28:18Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -181,7 +181,7 @@
         "name": "argocd-notifications-controller-644f66f7df"
       },
       "restartCount": 3,
-      "creationTimestamp": "2025-10-11T11:38:19Z",
+      "createdAt": "2025-10-11T11:38:19Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -199,7 +199,7 @@
         "name": "argocd-redis-6684c6947f"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-04T10:56:01Z",
+      "createdAt": "2025-12-04T10:56:01Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -217,7 +217,7 @@
         "name": "argocd-repo-server-6fccc5759b"
       },
       "restartCount": 5,
-      "creationTimestamp": "2025-09-11T08:39:04Z",
+      "createdAt": "2025-09-11T08:39:04Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -235,7 +235,7 @@
         "name": "argocd-server-7f79849676"
       },
       "restartCount": 4,
-      "creationTimestamp": "2025-10-18T10:52:21Z",
+      "createdAt": "2025-10-18T10:52:21Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -259,7 +259,7 @@
         "name": "cert-manager-cainjector-686546c9f7"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:43Z",
+      "createdAt": "2026-03-17T12:47:43Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -283,7 +283,7 @@
         "name": "cert-manager-d6746cf45"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-16T02:37:46Z",
+      "createdAt": "2025-12-16T02:37:46Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -307,7 +307,7 @@
         "name": "cert-manager-webhook-5f79cd6f4b"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-16T02:37:46Z",
+      "createdAt": "2025-12-16T02:37:46Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -326,7 +326,7 @@
         "name": "cloudflare-tunnel-ingress-controller-5575dfdc67"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T12:41:34Z",
+      "createdAt": "2026-04-30T12:41:34Z",
       "isMonitoring": false,
       "isIngress": true
     },
@@ -345,7 +345,7 @@
         "name": "controlled-cloudflared-connector-676894969c"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T12:04:52Z",
+      "createdAt": "2026-04-30T12:04:52Z",
       "isMonitoring": false,
       "isIngress": true
     },
@@ -369,7 +369,7 @@
         "name": "victoria-metrics"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-19T13:06:38Z",
+      "createdAt": "2026-02-19T13:06:38Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -387,7 +387,7 @@
         "name": "journee-799bc7b78"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-12T06:58:15Z",
+      "createdAt": "2025-12-12T06:58:15Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -405,7 +405,7 @@
         "name": "journee-799bc7b78"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-12T06:58:23Z",
+      "createdAt": "2025-12-12T06:58:23Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -423,7 +423,7 @@
         "name": "journee-799bc7b78"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:37Z",
+      "createdAt": "2026-03-17T12:47:37Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -441,7 +441,7 @@
         "name": "journee-79c33a-6c867d846b"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-12T03:22:57Z",
+      "createdAt": "2025-12-12T03:22:57Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -459,7 +459,7 @@
         "name": "journee-79c33a-6c867d846b"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:42Z",
+      "createdAt": "2026-03-17T12:47:42Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -477,7 +477,7 @@
         "name": "journee-79c33a-6c867d846b"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-12T03:22:48Z",
+      "createdAt": "2025-12-12T03:22:48Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -495,7 +495,7 @@
         "name": "journee-f0debe-b89bffc8f"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-14T06:57:46Z",
+      "createdAt": "2026-02-14T06:57:46Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -513,7 +513,7 @@
         "name": "journee-f0debe-b89bffc8f"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-14T06:57:37Z",
+      "createdAt": "2026-02-14T06:57:37Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -531,7 +531,7 @@
         "name": "journee-f0debe-b89bffc8f"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:47Z",
+      "createdAt": "2026-03-17T12:47:47Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -549,7 +549,7 @@
         "name": "coredns-5bdff775d9"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T12:01:51Z",
+      "createdAt": "2026-04-30T12:01:51Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -567,7 +567,7 @@
         "name": "coredns-5bdff775d9"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T12:01:51Z",
+      "createdAt": "2026-04-30T12:01:51Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -586,7 +586,7 @@
         "name": "konnectivity-agent"
       },
       "restartCount": 8,
-      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "createdAt": "2025-09-11T08:03:44Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -605,7 +605,7 @@
         "name": "konnectivity-agent"
       },
       "restartCount": 9,
-      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "createdAt": "2025-09-11T08:03:44Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -624,7 +624,7 @@
         "name": "konnectivity-agent"
       },
       "restartCount": 7,
-      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "createdAt": "2025-09-11T08:03:44Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -643,7 +643,7 @@
         "name": "konnectivity-agent"
       },
       "restartCount": 5,
-      "creationTimestamp": "2025-09-11T08:03:44Z",
+      "createdAt": "2025-09-11T08:03:44Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -662,7 +662,7 @@
         "name": "kube-proxy"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T14:53:39Z",
+      "createdAt": "2026-04-30T14:53:39Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -681,7 +681,7 @@
         "name": "kube-proxy"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T14:53:41Z",
+      "createdAt": "2026-04-30T14:53:41Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -700,7 +700,7 @@
         "name": "kube-proxy"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T14:53:43Z",
+      "createdAt": "2026-04-30T14:53:43Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -719,7 +719,7 @@
         "name": "kube-proxy"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-30T14:53:40Z",
+      "createdAt": "2026-04-30T14:53:40Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -739,7 +739,7 @@
         "name": "kube-router"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T14:07:37Z",
+      "createdAt": "2026-03-17T14:07:37Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -759,7 +759,7 @@
         "name": "kube-router"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:41:41Z",
+      "createdAt": "2026-03-17T12:41:41Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -779,7 +779,7 @@
         "name": "kube-router"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:41:53Z",
+      "createdAt": "2026-03-17T12:41:53Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -799,7 +799,7 @@
         "name": "kube-router"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T14:07:29Z",
+      "createdAt": "2026-03-17T14:07:29Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -817,7 +817,7 @@
         "name": "metrics-server-7db8586f5"
       },
       "restartCount": 4,
-      "creationTimestamp": "2025-10-18T11:28:18Z",
+      "createdAt": "2025-10-18T11:28:18Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -836,7 +836,7 @@
         "name": "reflector-9b6dbc77f"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-04-28T21:35:27Z",
+      "createdAt": "2026-04-28T21:35:27Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -860,7 +860,7 @@
         "name": "alertmanager-kube-prometheus-stack-alertmanager"
       },
       "restartCount": 2,
-      "creationTimestamp": "2025-12-26T07:07:15Z",
+      "createdAt": "2025-12-26T07:07:15Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -879,7 +879,7 @@
         "name": "beyla"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T08:41:03Z",
+      "createdAt": "2025-12-26T08:41:03Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -898,7 +898,7 @@
         "name": "beyla"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T08:40:24Z",
+      "createdAt": "2025-12-26T08:40:24Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -917,7 +917,7 @@
         "name": "beyla"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T08:40:46Z",
+      "createdAt": "2025-12-26T08:40:46Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -936,7 +936,7 @@
         "name": "beyla"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T08:40:34Z",
+      "createdAt": "2025-12-26T08:40:34Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -957,7 +957,7 @@
         "name": "kube-prometheus-stack-grafana-5974d499c8"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-03-17T12:47:37Z",
+      "createdAt": "2026-03-17T12:47:37Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -982,7 +982,7 @@
         "name": "kube-prometheus-stack-kube-state-metrics-7846957b5b"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:43Z",
+      "createdAt": "2026-03-17T12:47:43Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1009,7 +1009,7 @@
         "name": "kube-prometheus-stack-operator-7c6d9948fb"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:48Z",
+      "createdAt": "2026-03-17T12:47:48Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1036,7 +1036,7 @@
         "name": "kube-prometheus-stack-prometheus-node-exporter"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "createdAt": "2025-12-26T07:07:14Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1063,7 +1063,7 @@
         "name": "kube-prometheus-stack-prometheus-node-exporter"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "createdAt": "2025-12-26T07:07:14Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1090,7 +1090,7 @@
         "name": "kube-prometheus-stack-prometheus-node-exporter"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "createdAt": "2025-12-26T07:07:14Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1117,7 +1117,7 @@
         "name": "kube-prometheus-stack-prometheus-node-exporter"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:07:14Z",
+      "createdAt": "2025-12-26T07:07:14Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1140,7 +1140,7 @@
         "name": "loki"
       },
       "restartCount": 10010,
-      "creationTimestamp": "2026-03-17T14:25:03Z",
+      "createdAt": "2026-03-17T14:25:03Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1161,7 +1161,7 @@
         "name": "loki-canary"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "createdAt": "2025-12-26T07:09:02Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1182,7 +1182,7 @@
         "name": "loki-canary"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "createdAt": "2025-12-26T07:09:02Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1203,7 +1203,7 @@
         "name": "loki-canary"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "createdAt": "2025-12-26T07:09:02Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1224,7 +1224,7 @@
         "name": "loki-canary"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:09:02Z",
+      "createdAt": "2025-12-26T07:09:02Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1247,7 +1247,7 @@
         "name": "otel-collector-collector-b85c9f65d"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:43Z",
+      "createdAt": "2026-03-17T12:47:43Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1270,7 +1270,7 @@
         "name": "otel-collector-collector-b85c9f65d"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:16:59Z",
+      "createdAt": "2025-12-26T07:16:59Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1296,7 +1296,7 @@
         "name": "prometheus-kube-prometheus-stack-prometheus"
       },
       "restartCount": 9,
-      "creationTimestamp": "2025-12-26T07:07:23Z",
+      "createdAt": "2025-12-26T07:07:23Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1316,7 +1316,7 @@
         "name": "promtail"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:12:53Z",
+      "createdAt": "2025-12-26T07:12:53Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1336,7 +1336,7 @@
         "name": "promtail"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:12:53Z",
+      "createdAt": "2025-12-26T07:12:53Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1356,7 +1356,7 @@
         "name": "promtail"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:12:54Z",
+      "createdAt": "2025-12-26T07:12:54Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1376,7 +1376,7 @@
         "name": "promtail"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-26T07:12:53Z",
+      "createdAt": "2025-12-26T07:12:53Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1397,7 +1397,7 @@
         "name": "tempo"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T14:08:33Z",
+      "createdAt": "2026-03-17T14:08:33Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1421,7 +1421,7 @@
         "name": "opentelemetry-operator-7b8cccd969"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:38Z",
+      "createdAt": "2026-03-17T12:47:38Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1439,7 +1439,7 @@
         "name": "penlight-7f759b5dc"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:38Z",
+      "createdAt": "2026-03-17T12:47:38Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1457,7 +1457,7 @@
         "name": "penlight-fb98d5cdf"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:42Z",
+      "createdAt": "2026-03-17T12:47:42Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1475,7 +1475,7 @@
         "name": "portfolio-5c8b65d777"
       },
       "restartCount": 1,
-      "creationTimestamp": "2025-12-18T13:06:45Z",
+      "createdAt": "2025-12-18T13:06:45Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1493,7 +1493,7 @@
         "name": "portfolio-5c8b65d777"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:37Z",
+      "createdAt": "2026-03-17T12:47:37Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1513,7 +1513,7 @@
         "name": "csi-cephfsplugin"
       },
       "restartCount": 24,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1533,7 +1533,7 @@
         "name": "csi-cephfsplugin"
       },
       "restartCount": 29,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1552,7 +1552,7 @@
         "name": "csi-cephfsplugin-provisioner-64f7c86fdc"
       },
       "restartCount": 20,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1571,7 +1571,7 @@
         "name": "csi-cephfsplugin-provisioner-64f7c86fdc"
       },
       "restartCount": 12,
-      "creationTimestamp": "2025-10-18T11:28:18Z",
+      "createdAt": "2025-10-18T11:28:18Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1591,7 +1591,7 @@
         "name": "csi-cephfsplugin"
       },
       "restartCount": 16,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1611,7 +1611,7 @@
         "name": "csi-cephfsplugin"
       },
       "restartCount": 31,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1631,7 +1631,7 @@
         "name": "csi-rbdplugin"
       },
       "restartCount": 16,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1651,7 +1651,7 @@
         "name": "csi-rbdplugin"
       },
       "restartCount": 29,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1671,7 +1671,7 @@
         "name": "csi-rbdplugin"
       },
       "restartCount": 25,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1690,7 +1690,7 @@
         "name": "csi-rbdplugin-provisioner-7cc8b8c98f"
       },
       "restartCount": 37,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1709,7 +1709,7 @@
         "name": "csi-rbdplugin-provisioner-7cc8b8c98f"
       },
       "restartCount": 6,
-      "creationTimestamp": "2025-12-04T10:56:01Z",
+      "createdAt": "2025-12-04T10:56:01Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1729,7 +1729,7 @@
         "name": "csi-rbdplugin"
       },
       "restartCount": 30,
-      "creationTimestamp": "2025-10-18T09:30:34Z",
+      "createdAt": "2025-10-18T09:30:34Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1748,7 +1748,7 @@
         "name": "rook-ceph-operator-7dfddd4676"
       },
       "restartCount": 2,
-      "creationTimestamp": "2025-12-03T10:41:28Z",
+      "createdAt": "2025-12-03T10:41:28Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1766,7 +1766,7 @@
         "name": "stg-dummy-exporter-644848d784"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-20T03:36:02Z",
+      "createdAt": "2026-02-20T03:36:02Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1788,7 +1788,7 @@
         "name": "stg-grafana-6868759594"
       },
       "restartCount": 2,
-      "creationTimestamp": "2026-02-20T16:43:54Z",
+      "createdAt": "2026-02-20T16:43:54Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1810,7 +1810,7 @@
         "name": "stg-victoriametrics-768d9d8579"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-20T01:26:50Z",
+      "createdAt": "2026-02-20T01:26:50Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1832,7 +1832,7 @@
         "name": "prod-grafana-5ff598b57f"
       },
       "restartCount": 2,
-      "creationTimestamp": "2026-02-20T16:45:27Z",
+      "createdAt": "2026-02-20T16:45:27Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1850,7 +1850,7 @@
         "name": "prod-switchbot-exporter-58bdcc65cb"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-20T01:26:12Z",
+      "createdAt": "2026-02-20T01:26:12Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1872,7 +1872,7 @@
         "name": "prod-victoriametrics-65669bfd45"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:47Z",
+      "createdAt": "2026-03-17T12:47:47Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1890,7 +1890,7 @@
         "name": "operator-575fcd5d9f"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T12:47:48Z",
+      "createdAt": "2026-03-17T12:47:48Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1914,7 +1914,7 @@
         "name": "ts-prod-grafana-n7gxq"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-20T03:06:18Z",
+      "createdAt": "2026-02-20T03:06:18Z",
       "isMonitoring": true,
       "isIngress": false
     },
@@ -1938,7 +1938,7 @@
         "name": "ts-stg-dummy-exporter-bpvt5"
       },
       "restartCount": 1,
-      "creationTimestamp": "2026-02-20T03:20:28Z",
+      "createdAt": "2026-02-20T03:20:28Z",
       "isMonitoring": false,
       "isIngress": false
     },
@@ -1962,7 +1962,7 @@
         "name": "ts-stg-grafana-sd6bb"
       },
       "restartCount": 0,
-      "creationTimestamp": "2026-03-17T14:07:30Z",
+      "createdAt": "2026-03-17T14:07:30Z",
       "isMonitoring": true,
       "isIngress": false
     }

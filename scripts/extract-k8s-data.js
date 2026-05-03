@@ -48,9 +48,11 @@ function extract() {
       labels: p.metadata.labels,
       owner: { kind: owner.kind, name: owner.name },
       restartCount: p.status.containerStatuses?.reduce((acc, s) => acc + s.restartCount, 0) || 0,
-      creationTimestamp: p.metadata.creationTimestamp,
+      createdAt: p.metadata.creationTimestamp,
+      ip: p.status.podIP || '',
+      images: p.spec.containers?.map(c => c.image) || [],
       // Heuristic for "roles"
-      isMonitoring: p.metadata.namespace.includes('monitoring') || 
+      isMonitoring: p.metadata.namespace.includes('monitoring') ||
                    /prometheus|loki|grafana|beyla/.test(p.metadata.name),
       isIngress: /cloudflare|tunnel|ingress/.test(p.metadata.name)
     };
