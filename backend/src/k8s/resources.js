@@ -6,11 +6,12 @@ function items(res) {
 
 export function formatPod(p) {
   const owner = p.metadata.ownerReferences?.[0] || {}
+  const phase = p.metadata.deletionTimestamp ? 'Terminating' : (p.status?.phase || 'Unknown')
   return {
     name: p.metadata.name,
     namespace: p.metadata.namespace,
     nodeName: p.spec?.nodeName || '',
-    phase: p.status?.phase || 'Unknown',
+    phase,
     ip: p.status?.podIP || '',
     images: p.spec?.containers?.map(c => c.image) || [],
     labels: p.metadata.labels || {},
@@ -123,11 +124,12 @@ export async function getPodDetail(namespace, name) {
   const res = await coreV1Api.readNamespacedPod(name, namespace)
   const p = res.body || res
   const owner = p.metadata.ownerReferences?.[0] || {}
+  const phase = p.metadata.deletionTimestamp ? 'Terminating' : (p.status?.phase || 'Unknown')
   return {
     name: p.metadata.name,
     namespace: p.metadata.namespace,
     nodeName: p.spec?.nodeName || '',
-    phase: p.status?.phase || 'Unknown',
+    phase,
     ip: p.status?.podIP || '',
     images: p.spec?.containers?.map(c => c.image) || [],
     labels: p.metadata.labels || {},

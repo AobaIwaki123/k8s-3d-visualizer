@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8" />
-  <title>k8s visualizer PoC</title>
+  <title>k8s 3D Visualizer</title>
+  <meta name="description" content="Kubernetesクラスターの状態を3Dで可視化するツールです。Pod、Service、Ingressなどのリソースをリアルタイムに俯瞰できます。" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="k8s 3D Visualizer" />
+  <meta property="og:description"
+    content="Kubernetesクラスターの状態を3Dで可視化するツールです。Pod、Service、Ingressなどのリソースをリアルタイムに監視できます。" />
+  <meta property="og:image" content="/og-image.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="k8s 3D Visualizer" />
+  <meta property="twitter:description"
+    content="Kubernetesクラスターの状態を3Dで可視化するツールです。Pod、Service、Ingressなどのリソースをリアルタイムに俯瞰できます。" />
+  <meta property="twitter:image" content="/og-image.jpg" />
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #06091a;
       background-image: radial-gradient(circle, rgba(68, 136, 255, 0.18) 1px, transparent 1px);
@@ -12,18 +34,26 @@
       overflow: hidden;
       font-family: 'SF Mono', 'Fira Code', monospace;
     }
-    #canvas { display: block; width: 100vw; height: 100vh; }
+
+    #canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
 
     /* Logo container */
     #logo-container {
       position: fixed;
-      top: 40px; /* Slightly down from the very top */
+      top: 40px;
+      /* Slightly down from the very top */
       right: 0;
-      width: 300px; /* Increased size */
+      width: 300px;
+      /* Increased size */
       height: 300px;
       z-index: 100;
       pointer-events: none;
     }
+
     #logo-canvas {
       width: 100%;
       height: 100%;
@@ -31,138 +61,341 @@
 
     /* Topbar */
     #topbar {
-      position: fixed; top: 0; left: 0; right: 0; height: 48px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
       background: rgba(8, 8, 18, 0.88);
       border-bottom: 1px solid rgba(68, 136, 255, 0.2);
-      display: flex; align-items: center; gap: 14px;
-      padding: 0 18px; z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 18px;
+      z-index: 20;
       backdrop-filter: blur(8px);
     }
-    .topbar-title { color: #8ab4ff; font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
+
+    .topbar-title {
+      color: #8ab4ff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
 
     /* Connection badge */
     #conn-badge {
-      font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
-      padding: 3px 8px; border-radius: 4px;
-      border: 1px solid transparent; white-space: nowrap;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      white-space: nowrap;
     }
-    #conn-badge.state-connecting  { color: #ffaa44; border-color: rgba(255,170,68,0.35); background: rgba(255,170,68,0.08); }
-    #conn-badge.state-live        { color: #00ff88; border-color: rgba(0,255,136,0.35); background: rgba(0,255,136,0.08); }
-    #conn-badge.state-static      { color: #aaaaaa; border-color: rgba(170,170,170,0.3); background: rgba(170,170,170,0.06); }
-    #conn-badge.state-error       { color: #ff4444; border-color: rgba(255,68,68,0.35); background: rgba(255,68,68,0.08); }
+
+    #conn-badge.state-connecting {
+      color: #ffaa44;
+      border-color: rgba(255, 170, 68, 0.35);
+      background: rgba(255, 170, 68, 0.08);
+    }
+
+    #conn-badge.state-live {
+      color: #00ff88;
+      border-color: rgba(0, 255, 136, 0.35);
+      background: rgba(0, 255, 136, 0.08);
+    }
+
+    #conn-badge.state-static {
+      color: #aaaaaa;
+      border-color: rgba(170, 170, 170, 0.3);
+      background: rgba(170, 170, 170, 0.06);
+    }
+
+    #conn-badge.state-error {
+      color: #ff4444;
+      border-color: rgba(255, 68, 68, 0.35);
+      background: rgba(255, 68, 68, 0.08);
+    }
 
     /* Last event */
     #last-event-wrap {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: #445566;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #445566;
     }
-    #last-event-time  { color: #557799; }
-    #last-event-type  { color: #6688aa; }
-    #last-event-name  { color: #99aabb; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    #last-event-age   { color: #334455; }
+
+    #last-event-time {
+      color: #557799;
+    }
+
+    #last-event-type {
+      color: #6688aa;
+    }
+
+    #last-event-name {
+      color: #99aabb;
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #last-event-age {
+      color: #334455;
+    }
 
     /* Verify button */
     #verify-btn {
-      font-family: inherit; font-size: 12px;
-      background: none; border: 1px solid rgba(68,136,255,0.3);
-      color: #4488ff; border-radius: 4px; padding: 3px 10px;
-      cursor: pointer; white-space: nowrap;
+      font-family: inherit;
+      font-size: 12px;
+      background: none;
+      border: 1px solid rgba(68, 136, 255, 0.3);
+      color: #4488ff;
+      border-radius: 4px;
+      padding: 3px 10px;
+      cursor: pointer;
+      white-space: nowrap;
     }
-    #verify-btn:hover { background: rgba(68,136,255,0.12); }
-    #verify-btn:disabled { opacity: 0.4; cursor: default; }
-    #verify-result { font-size: 12px; white-space: nowrap; }
-    #verify-result.ok  { color: #00ff88; }
-    #verify-result.err { color: #ff4444; }
 
-    #stats { color: #556677; font-size: 14px; margin-left: auto; }
+    #verify-btn:hover {
+      background: rgba(68, 136, 255, 0.12);
+    }
+
+    #verify-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    #verify-result {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    #verify-result.ok {
+      color: #00ff88;
+    }
+
+    #verify-result.err {
+      color: #ff4444;
+    }
+
+    #stats {
+      color: #556677;
+      font-size: 14px;
+      margin-left: auto;
+    }
 
     /* Shared panel style */
     .panel {
-      position: fixed; z-index: 20;
+      position: fixed;
+      z-index: 20;
       background: rgba(8, 8, 18, 0.88);
       border: 1px solid rgba(68, 136, 255, 0.2);
-      border-radius: 8px; padding: 14px;
-      backdrop-filter: blur(8px); color: #ccd;
+      border-radius: 8px;
+      padding: 14px;
+      backdrop-filter: blur(8px);
+      color: #ccd;
     }
-    .panel.hidden { display: none; }
+
+    .panel.hidden {
+      display: none;
+    }
 
     /* Detail panel */
-    #detail { top: 56px; right: 14px; width: 248px; }
+    #detail {
+      top: 56px;
+      right: 14px;
+      width: 248px;
+    }
+
     .detail-header {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 12px;
     }
+
     #detail-title {
-      font-size: 13px; font-weight: 600; color: #8ab4ff;
-      text-transform: uppercase; letter-spacing: 0.1em;
+      font-size: 13px;
+      font-weight: 600;
+      color: #8ab4ff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
+
     #detail-close {
-      background: none; border: none; color: #445566; cursor: pointer;
-      font-size: 18px; line-height: 1; padding: 0 2px;
+      background: none;
+      border: none;
+      color: #445566;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      padding: 0 2px;
     }
-    #detail-close:hover { color: #aac; }
+
+    #detail-close:hover {
+      color: #aac;
+    }
+
     .meta-row {
-      display: flex; gap: 8px; padding: 5px 0;
+      display: flex;
+      gap: 8px;
+      padding: 5px 0;
       border-bottom: 1px solid rgba(68, 136, 255, 0.08);
       font-size: 13px;
     }
-    .meta-row:last-child { border-bottom: none; }
-    .meta-key { color: #5577aa; min-width: 78px; flex-shrink: 0; }
-    .meta-val { color: #cde; word-break: break-all; line-height: 1.5; }
+
+    .meta-row:last-child {
+      border-bottom: none;
+    }
+
+    .meta-key {
+      color: #5577aa;
+      min-width: 78px;
+      flex-shrink: 0;
+    }
+
+    .meta-val {
+      color: #cde;
+      word-break: break-all;
+      line-height: 1.5;
+    }
 
     /* Namespace legend */
-    #legend { bottom: 20px; left: 14px; min-width: 160px; }
+    #legend {
+      bottom: 20px;
+      left: 14px;
+      min-width: 160px;
+    }
+
     .legend-title {
-      font-size: 12px; font-weight: 600; color: #445566;
-      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #445566;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
     }
+
     .legend-item {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 14px; color: #99aacc; padding: 3px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #99aacc;
+      padding: 3px 0;
     }
-    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; opacity: 0.85; }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
 
     /* Phase legend */
-    #phase-legend { bottom: 20px; left: 190px; min-width: 150px; }
-    .phase-item {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 14px; color: #99aacc; padding: 3px 0;
+    #phase-legend {
+      bottom: 20px;
+      left: 190px;
+      min-width: 150px;
     }
-    .phase-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    .phase-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #99aacc;
+      padding: 3px 0;
+    }
+
+    .phase-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
     /* Hint */
     #hint {
-      position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
-      font-size: 12px; color: #334455; z-index: 20; white-space: nowrap;
+      position: fixed;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #334455;
+      z-index: 20;
+      white-space: nowrap;
     }
 
     /* CSS2D Labels */
     .label {
       background: rgba(8, 8, 18, 0.82);
       border: 1px solid rgba(68, 136, 255, 0.25);
-      border-radius: 5px; padding: 3px 8px;
-      font-size: 13px; white-space: nowrap;
-      line-height: 1.6; text-align: center;
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 13px;
+      white-space: nowrap;
+      line-height: 1.6;
+      text-align: center;
     }
-    .label--pod  { border-color: rgba(0, 255, 136, 0.3); }
-    .label--service { border-color: rgba(68, 136, 255, 0.4); }
-    .label-name  { color: #cde; display: block; }
-    .label-phase { font-size: 12px; display: block; }
-    .label-phase--running     { color: #00ff88; }
-    .label-phase--pending     { color: #ffaa00; }
-    .label-phase--failed      { color: #ff4444; }
-    .label-phase--terminating { color: #888888; }
-    .label-kind  { color: #4488ff; font-size: 12px; display: block; }
+
+    .label--pod {
+      border-color: rgba(0, 255, 136, 0.3);
+    }
+
+    .label--service {
+      border-color: rgba(68, 136, 255, 0.4);
+    }
+
+    .label-name {
+      color: #cde;
+      display: block;
+    }
+
+    .label-phase {
+      font-size: 12px;
+      display: block;
+    }
+
+    .label-phase--running {
+      color: #00ff88;
+    }
+
+    .label-phase--pending {
+      color: #ffaa00;
+    }
+
+    .label-phase--failed {
+      color: #ff4444;
+    }
+
+    .label-phase--terminating {
+      color: #888888;
+    }
+
+    .label-kind {
+      color: #4488ff;
+      font-size: 12px;
+      display: block;
+    }
 
     /* Hover tooltip */
     #hover-tooltip {
-      position: fixed; z-index: 15;
+      position: fixed;
+      z-index: 15;
       pointer-events: none;
-      font-size: 13px; padding: 6px 10px;
+      font-size: 13px;
+      padding: 6px 10px;
       white-space: nowrap;
     }
   </style>
 </head>
+
 <body>
   <div id="topbar">
     <span class="topbar-title">⬡ k8s 3D Visualizer</span>
@@ -211,4 +444,5 @@
   <canvas id="canvas"></canvas>
   <script type="module" src="/src/poc.js"></script>
 </body>
+
 </html>

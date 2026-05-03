@@ -7,6 +7,7 @@ import { initLabelRenderer }        from './labels/LabelRenderer.js'
 import { attachLabel }              from './labels/ObjectLabel.js'
 import { setupHoverHandler }        from './interaction/HoverHandler.js'
 import { initLogo }                 from './ui/LogoRenderer.js'
+import { PodDecorator }             from './objects/PodDecorator.js'
 
 import { IngressLayer }             from './layers/IngressLayer.js'
 import { MonitoringLayer }          from './layers/MonitoringLayer.js'
@@ -32,6 +33,8 @@ let currentData     = null
 let hoverDispose    = null
 let clickDispose    = null
 let activeNamespace = 'all'   // namespace filter を rebuildScene 越しに保持
+let isRebuilding    = false
+let pendingRebuild  = false
 
 // ---- Connection status UI ----
 
@@ -172,63 +175,90 @@ async function main() {
   // ---- Scene build / rebuild ----
 
   async function rebuildScene(data) {
-    clearBuild(scene)
-    currentData = data
-
-    const { pods, services, namespaceZones } = placeClusterObjects(data, models)
-
-    namespaceZones.forEach(z => scene.add(z))
-    pods.forEach(p => {
-      scene.add(p.mesh)
-      p.label = attachLabel(p.mesh, p.meta.name, 'pod')
-    })
-    services.forEach(s => {
-      scene.add(s.mesh)
-      s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
-    })
-
-    const layers = []
-    if (LAYER_CONFIG.INGRESS)    layers.push(new IngressLayer(scene, data, models))
-    if (LAYER_CONFIG.MONITORING) layers.push(new MonitoringLayer(scene, data, pods))
-    if (LAYER_CONFIG.STORAGE)    layers.push(new StorageLayer(scene, data, pods, namespaceZones))
-
-    const connections = []
-    for (const svc of services) {
-      for (const podName of svc.meta.targets) {
-        const pod = pods.find(p => p.meta.name === podName)
-        if (pod) {
-          const line = buildConnectionLines([{ from: svc.mesh.position, to: pod.mesh.position }])[0]
-          line.userData.namespace = svc.meta.namespace
-          scene.add(line)
-          connections.push(line)
-        }
-      }
+    if (isRebuilding) {
+      pendingRebuild = true
+      currentData = data // 最新しいデータを保持
+      return
     }
 
-    currentBuild = { pods, services, namespaceZones, connections, layers }
+    isRebuilding = true
+    try {
+      clearBuild(scene)
+      currentData = data
 
-    fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
-    updateStats(pods.length, services.length, namespaceZones.length)
+      const { pods, services, namespaceZones } = placeClusterObjects(data, models)
 
-    hoverDispose?.()
-    hoverDispose = setupHoverHandler({
-      renderer,
-      camera,
-      objects: [...pods.map(p => p.mesh), ...services.map(s => s.mesh)],
-      onEnter: showTooltip,
-      onLeave: hideTooltip,
-    }).dispose
+      namespaceZones.forEach(z => scene.add(z))
+      pods.forEach(p => {
+        scene.add(p.mesh)
+        p.label = attachLabel(p.mesh, p.meta.name, 'pod')
+      })
+      services.forEach(s => {
+        scene.add(s.mesh)
+        s.label = attachLabel(s.mesh, s.meta.name, 'service', { y: 1.0 })
+      })
 
-    clickDispose?.()
-    clickDispose = setupClickInspector(renderer, camera, pods, services)
+      const layers = []
+      if (LAYER_CONFIG.INGRESS)    layers.push(new IngressLayer(scene, data, models))
+      if (LAYER_CONFIG.MONITORING) layers.push(new MonitoringLayer(scene, data, pods))
+      if (LAYER_CONFIG.STORAGE)    layers.push(new StorageLayer(scene, data, pods, namespaceZones))
 
-    setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers)
+      const connections = []
+      for (const svc of services) {
+        for (const podName of svc.meta.targets) {
+          const pod = pods.find(p => p.meta.name === podName)
+          if (pod) {
+            const line = buildConnectionLines([{ from: svc.mesh.position, to: pod.mesh.position }])[0]
+            line.userData.namespace = svc.meta.namespace
+            scene.add(line)
+            connections.push(line)
+          }
+        }
+      }
+
+      currentBuild = { pods, services, namespaceZones, connections, layers }
+
+      fitCamera(camera, controls, [...pods.map(p => p.mesh), ...services.map(s => s.mesh)])
+      updateStats(pods.length, services.length, namespaceZones.length)
+
+      hoverDispose?.()
+      hoverDispose = setupHoverHandler({
+        renderer,
+        camera,
+        objects: [...pods.map(p => p.mesh), ...services.map(s => s.mesh)],
+        onEnter: showTooltip,
+        onLeave: hideTooltip,
+      }).dispose
+
+      clickDispose?.()
+      clickDispose = setupClickInspector(renderer, camera, pods, services)
+
+      setupNamespaceFilter(namespaceZones, pods, services, connections, camera, controls, layers)
+    } finally {
+      isRebuilding = false
+      if (pendingRebuild) {
+        pendingRebuild = false
+        rebuildScene(currentData)
+      }
+    }
   }
 
   // ---- Real-time update handlers ----
 
   function handleModified(resource, payload, sc, mdls) {
-    if (resource !== 'pod' || !currentBuild) return
+    if (resource !== 'pod' || !currentData) return
+
+    // 1. currentData (永続データ) を更新する
+    const podData = currentData.pods.find(
+      p => p.name === payload.name && p.namespace === payload.namespace
+    )
+    if (podData) {
+      Object.assign(podData, payload)
+    }
+
+    // 2. 現在のビルド (表示中メッシュ) を更新する
+    if (!currentBuild) return // rebuildScene 中なら表示更新はスキップ（再描画時に反映される）
+
     const podObj = currentBuild.pods.find(
       p => p.meta.name === payload.name && p.meta.namespace === payload.namespace
     )
@@ -278,15 +308,49 @@ async function main() {
 
 // ---- Scene clear ----
 
-function clearBuild(scene) {
-  if (!currentBuild) return
-  const b = currentBuild
+/**
+ * メッシュとその子要素（ラベルなど）をシーンから完全に削除し、メモリを解放する
+ */
+function removeMeshAndLabel(scene, mesh) {
+  if (!mesh) return
 
+  // ラベル (CSS2DObject) のクリーンアップ
+  const labels = mesh.children.filter(c => c.isCSS2DObject)
+  labels.forEach(label => {
+    mesh.remove(label)
+    if (label.element && label.element.parentNode) {
+      label.element.parentNode.removeChild(label.element)
+    }
+  })
+
+  // メッシュの削除とジオメトリ・マテリアルの解放
+  scene.remove(mesh)
+  if (mesh.geometry) mesh.geometry.dispose()
+  if (mesh.material) {
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+    materials.forEach(m => m.dispose())
+  }
+}
+
+function clearBuild(scene) {
+  // currentBuild がない場合でも、シーン内に残っている管理対象オブジェクトを掃除する
+  if (!currentBuild) {
+    const toRemove = []
+    scene.traverse(obj => {
+      if (obj.userData?.meta?.type === 'pod' || obj.userData?.meta?.type === 'service') {
+        toRemove.push(obj)
+      }
+    })
+    toRemove.forEach(obj => removeMeshAndLabel(scene, obj))
+    return
+  }
+
+  const b = currentBuild
   b.layers.forEach(l => l.destroy?.())
   b.connections.forEach(c => { scene.remove(c); c.geometry?.dispose() })
   b.namespaceZones.forEach(z => { scene.remove(z); z.geometry?.dispose() })
-  b.services.forEach(s => scene.remove(s.mesh))
-  b.pods.forEach(p => scene.remove(p.mesh))
+  b.services.forEach(s => removeMeshAndLabel(scene, s.mesh))
+  b.pods.forEach(p => removeMeshAndLabel(scene, p.mesh))
 
   currentBuild = null
 }
@@ -311,20 +375,33 @@ function recomputeServiceToPods(services, pods) {
 // ---- Pod model swap on phase change ----
 
 function swapPodModel(podObj, newPhase, models, scene) {
-  const phase = ['running', 'pending', 'failed'].includes(newPhase.toLowerCase())
-    ? newPhase.toLowerCase() : 'running'
+  const phaseLower = (newPhase ?? '').toLowerCase()
+  const allowedPhases = ['running', 'pending', 'failed']
+  const modelKey = allowedPhases.includes(phaseLower) ? `pod-${phaseLower}` : 'pod-running'
 
-  const newMesh = models[`pod-${phase}`].clone()
+  const newMesh = models[modelKey].clone()
   newMesh.position.copy(podObj.mesh.position)
   newMesh.userData.meta = podObj.meta
 
-  const labelChild = podObj.mesh.children.find(c => c.isCSS2DObject)
-  if (labelChild) {
-    podObj.mesh.remove(labelChild)
-    newMesh.add(labelChild)
+  // デコレーション（スケーリング等）を再適用
+  PodDecorator.decorate(newMesh, newMesh.userData.meta)
+
+  // 古いメッシュから全てのラベルを新しいメッシュに付け替える（重複防止のため走査）
+  const labels = podObj.mesh.children.filter(c => c.isCSS2DObject)
+  labels.forEach(label => {
+    podObj.mesh.remove(label)
+    newMesh.add(label)
+    podObj.label = label // 最後のラベルを参照として保持（通常は1つのみ）
+  })
+
+  // 古いメッシュを削除してクリーンアップ（ラベルは移動済みなので removeMeshAndLabel は使わない）
+  scene.remove(podObj.mesh)
+  if (podObj.mesh.geometry) podObj.mesh.geometry.dispose()
+  if (podObj.mesh.material) {
+    const materials = Array.isArray(podObj.mesh.material) ? podObj.mesh.material : [podObj.mesh.material]
+    materials.forEach(m => m.dispose())
   }
 
-  scene.remove(podObj.mesh)
   scene.add(newMesh)
   podObj.mesh = newMesh
 }
