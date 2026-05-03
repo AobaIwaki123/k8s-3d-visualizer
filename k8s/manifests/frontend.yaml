@@ -32,10 +32,8 @@ metadata:
   name: frontend
   namespace: k8s-visualizer
 spec:
-  type: NodePort
   selector:
     app: frontend
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080

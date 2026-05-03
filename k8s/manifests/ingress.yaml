@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s-visualizer
+  namespace: k8s-visualizer
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: k8s-visualizer.aooba.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
