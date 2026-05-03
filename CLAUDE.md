@@ -33,6 +33,7 @@ docker push ghcr.io/aobaiwaki123/k8s-3d-visualizer-frontend:v20260504-01
 ### GitOps via ArgoCD
 - WHY: Automated sync with the repository. Manifests in `k8s/manifests`.
 - WHY NOT manual kubectl: Inconsistent cluster state and lack of history.
+- **Auto-Commit:** After updating images/tags, automatically commit and push the manifest changes to trigger ArgoCD sync.
 
 ### GHCR (GitHub Container Registry)
 - WHY: Seamless integration with GitHub repository and ArgoCD.
